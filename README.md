@@ -1,38 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![index_1](https://user-images.githubusercontent.com/60413257/224629073-eb6f66a4-3308-4c91-b4fb-28a6339a8af6.jpeg)
 
-## Getting Started
+# DENTIUM TECH BLOG
 
-First, run the development server:
+덴티움은 국내 임플란트 점유율 2위, 임플란트 제조 및 판매 사업을 영위하는 중견기업입니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+**For Dentists, By Dentists**라는 슬로건을 바탕으로 치과산업에서 독보적인 기술력과 가격 경쟁력을 보유하고 있습니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 😍덴티움의 테크 블로그를 개설했습니다
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+덴티움의 IT 기술과 개발 문화를 알리고 함께할 인재를 찾고 있습니다.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 모두가 함께 합니다
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+덴티움의 테크 블로그는 ICT 사업부 모두가 함께합니다!
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 테크 블로그 로고
 
-## Learn More
+![logo](https://user-images.githubusercontent.com/60413257/224628858-10f7e61f-ecf4-4cdf-b116-64c7d21fb172.svg)
 
-To learn more about Next.js, take a look at the following resources:
+## 테크 블로그 심볼
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![logo_square](https://user-images.githubusercontent.com/60413257/224628917-b823b5fd-6b57-4021-b158-5de4c2914723.svg)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 테크 블로그 폰트
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Pretendard
