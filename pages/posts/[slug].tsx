@@ -35,27 +35,32 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
     description: frontMatter.description,
     image: `${WEBSITE_HOST_URL}${frontMatter.image}`,
     date: frontMatter.date,
-    writer : frontMatter.writer,
-    position : frontMatter.position,
+    writer: frontMatter.writer,
+    position: frontMatter.position,
     type: 'article',
   };
   return (
     <Layout customMeta={customMeta}>
       <article>
-        <header className='prose m-auto'>
+        <header className="prose m-auto">
           <h1 className="text-6xl text-gray-900 dark:text-white">
             {frontMatter.title}
           </h1>
-          <div className='flex justify-start items-center pb-2'>
-            <div className='p-2 flex justify-start items-center rounded-full overflow-hidden'>
-              <Image src={"/images/logo_square.svg"} alt="profile" width={50} height={50}/>
+          <div className="flex justify-start items-center pb-2">
+            <div className="p-2 flex justify-start items-center rounded-full overflow-hidden">
+              <Image
+                src={'/images/logo_square.svg'}
+                alt="profile"
+                width={50}
+                height={50}
+              />
             </div>
             <div>
               <div className="text-md text-gray-900 dark:text-gray-400">
                 {`${frontMatter.position} - ${frontMatter.writer}`}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {format(parseISO(frontMatter.date), 'MMMM dd, yyyy')}
+                {format(parseISO(frontMatter.date ?? ''), 'MMMM dd, yyyy')}
               </div>
             </div>
           </div>
@@ -63,14 +68,18 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
         <div className="prose dark:prose-dark m-auto">
           <MDXRemote {...source} components={components} />
         </div>
-        <div className='prose m-auto py-10'>
-          <div className='h-60 bg-white shadow-md flex items-center justify-start'>
-            <div className='px-16'>
-              <Image src={"/images/logo_square.svg"} width={100} height={100} alt="profile"></Image>
+        <div className="prose m-auto py-10">
+          <div className="h-60 bg-white shadow-md flex items-center justify-start">
+            <div className="px-16">
+              <Image
+                src={'/images/logo_square.svg'}
+                width={100}
+                height={100}
+                alt="profile"
+              ></Image>
             </div>
             <div>
               반갑습니다. 저는 <span className="font-bold">우원</span>입니다.
-
             </div>
           </div>
         </div>
@@ -80,7 +89,7 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postFilePath = path.join(POSTS_PATH, `${params.slug}.mdx`);
+  const postFilePath = path.join(POSTS_PATH, `${params?.slug}.mdx`);
   const source = fs.readFileSync(postFilePath);
 
   const { content, data } = matter(source);
