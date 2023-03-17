@@ -6,5 +6,6 @@ export type PostType = {
     title: string;
     writer?: string;
     position?: string;
+    profile?: string;
   };
   

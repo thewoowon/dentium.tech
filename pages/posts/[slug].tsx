@@ -47,13 +47,8 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
             {frontMatter.title}
           </h1>
           <div className="flex justify-start items-center pb-2">
-            <div className="p-2 flex justify-start items-center rounded-full overflow-hidden">
-              <Image
-                src={'/images/logo_square.svg'}
-                alt="profile"
-                width={50}
-                height={50}
-              />
+            <div className="mr-4 w-14 h-14 relative flex justify-start items-center rounded-full overflow-hidden">
+              <Image src={frontMatter.profile ?? "/images/profile.jpeg"} alt="profile" fill />
             </div>
             <div>
               <div className="text-md text-gray-900 dark:text-gray-400">
@@ -69,17 +64,12 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
           <MDXRemote {...source} components={components} />
         </div>
         <div className="prose m-auto py-10">
-          <div className="h-60 bg-white shadow-md flex items-center justify-start">
-            <div className="px-16">
-              <Image
-                src={'/images/logo_square.svg'}
-                width={100}
-                height={100}
-                alt="profile"
-              ></Image>
+          <div className="py-10 bg-white shadow-md rounded-md flex items-center justify-start">
+            <div className="mx-16 w-28 h-28 relative rounded-full overflow-hidden">
+              <Image src={frontMatter.profile ?? "/images/profile.jpeg"} alt="profile" fill></Image>
             </div>
             <div>
-              반갑습니다. 저는 <span className="font-bold">우원</span>입니다.
+              안녕하세요. 저는 <span className="font-bold">엘레나</span>입니다.
             </div>
           </div>
         </div>
