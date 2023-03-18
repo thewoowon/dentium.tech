@@ -4,7 +4,7 @@ import Head from './Head';
 import Navigation from './Navigation';
 import ThemeSwitch from './ThemeSwitch';
 import Image from 'next/image';
-import {IconBrandFacebookFilled, IconBrandTwitterFilled, IconBrandInstagram} from '@tabler/icons-react';
+import { IconBrandInstagram } from '@tabler/icons-react';
 import Link from 'next/link';
 
 type LayoutProps = {
@@ -49,39 +49,67 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       </div>
       <footer className="py-8">
         <div className="max-w-5xl px-8 mx-auto">
-          <div className='flex'>
-            <div className='pr-20'>
-              <div className='font-bold py-2'>덴티움</div>
-              <div className='font-light text-zinc-400'>
-                <Link href={'https://dentium.co.kr/dsn/dentium03_03.php'}>의견 보내기</Link>
+          <div className="flex">
+            <div className="pr-20">
+              <div className="font-bold py-2">덴티움</div>
+              <div className="font-light text-zinc-400">
+                <Link href={'https://dentium.co.kr/dsn/dentium03_03.php'}>
+                  의견 보내기
+                </Link>
               </div>
-              <div className='font-light text-zinc-400'>
-                <Link href={'https://dentium.ninehire.site'}>채용 바로가기</Link>
-              </div>
-            </div>
-            <div className='pr-20'>
-              <div className='font-bold py-2'>제노스</div>
-              <div className='font-light text-zinc-400'>
-                <Link href={'http://www.genoss.com/bbs/write.php?bo_table=s05_p111'}>의견 보내기</Link>
-              </div>
-              <div className='font-light text-zinc-400'>
-                <Link href={'http://www.genoss.com/bbs/board.php?bo_table=recruit'}>채용 바로가기</Link>
+              <div className="font-light text-zinc-400">
+                <Link href={'https://dentium.ninehire.site'}>
+                  채용 바로가기
+                </Link>
               </div>
             </div>
-            <div className='pr-20'>
-              <div className='font-bold py-2'>고객센터</div>
-              <div className='font-light text-zinc-400'>덴티움: 080-050-2875</div>
-              <div className='font-light text-zinc-400'>덴티움몰: 080-050-2875</div>
-              <div className='font-light text-zinc-400'>덴티움 아카데미: 070-7098-9189</div>
-              <div className='font-light text-zinc-400'>디지털센터: 070-7098-9081</div>
+            <div className="pr-20">
+              <div className="font-bold py-2">제노스</div>
+              <div className="font-light text-zinc-400">
+                <Link
+                  href={'http://www.genoss.com/bbs/write.php?bo_table=s05_p111'}
+                >
+                  의견 보내기
+                </Link>
+              </div>
+              <div className="font-light text-zinc-400">
+                <Link
+                  href={'http://www.genoss.com/bbs/board.php?bo_table=recruit'}
+                >
+                  채용 바로가기
+                </Link>
+              </div>
+            </div>
+            <div className="pr-20">
+              <div className="font-bold py-2">고객센터</div>
+              <div className="font-light text-zinc-400">
+                덴티움: 080-050-2875
+              </div>
+              <div className="font-light text-zinc-400">
+                덴티움몰: 080-050-2875
+              </div>
+              <div className="font-light text-zinc-400">
+                덴티움 아카데미: 070-7098-9189
+              </div>
+              <div className="font-light text-zinc-400">
+                디지털센터: 070-7098-9081
+              </div>
             </div>
           </div>
-          <div className='font-bold text-md pt-6'>(주)덴티움</div>
-          <div className='text-sm py-2'>Copyright © Dentium, Inc. All Rights Reserved.</div>
-          <div className='flex py-10'>
-            <Link target="_blank" href={"https://www.instagram.com/dentium_korea"} className='bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out'><IconBrandFacebookFilled size={30} stroke={1} fillOpacity={0.3}/></Link>
-            <Link target="_blank" href={"https://www.instagram.com/dentium_korea"} className='bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out'><IconBrandTwitterFilled size={30} stroke={1} fillOpacity={0.3}/></Link>
-            <Link target="_blank" href={"https://www.instagram.com/dentium_korea"} className='bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out'><IconBrandInstagram size={30} stroke={1} opacity={0.3}/></Link>
+          <div className="font-bold text-md pt-6">(주)덴티움</div>
+          <div className="text-sm py-2">
+            Copyright © Dentium, Inc. All Rights Reserved.
+          </div>
+          <div className="flex py-10">
+            {/* <Link target="_blank" href={"https://www.instagram.com/dentium_korea"} className='bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out'><IconBrandFacebookFilled size={30} stroke={1} fillOpacity={0.3}/></Link>
+            <Link target="_blank" href={"https://www.instagram.com/dentium_korea"} className='bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out'><IconBrandTwitterFilled size={30} stroke={1} fillOpacity={0.3}/></Link> */}
+            <Link
+              target="_blank"
+              href={'https://www.instagram.com/dentium_korea'}
+              className="bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out"
+            >
+              <IconBrandInstagram size={30} stroke={1} opacity={0.3} />
+            </Link>
           </div>
         </div>
       </footer>
