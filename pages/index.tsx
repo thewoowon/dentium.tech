@@ -23,7 +23,7 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
             <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
               {format(parseISO(post.date ?? ""), 'MMMM dd, yyyy')}
             </p>
-            <h1 className="mb-2 text-5xl font-bold">
+            <h1 className="mb-2 text-3xl md:text-5xl font-bold">
               <Link className="text-gray-900 hover:text-dentium transition ease-in-out duration-200 dark:text-white dark:hover:text-dentium" as={`/posts/${post.slug}`} href={`/posts/[slug]`}>
                   {post.title}
               </Link>
