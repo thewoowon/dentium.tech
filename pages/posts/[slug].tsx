@@ -42,7 +42,7 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
   return (
     <Layout customMeta={customMeta}>
       <article>
-        <header className="prose m-auto">
+        <header className="prose m-auto relative">
           <h1 className="text-6xl text-gray-900 dark:text-white">
             {frontMatter.title}
           </h1>
@@ -69,7 +69,8 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
               <Image src={frontMatter.profile ?? "/images/profile.jpeg"} alt="profile" fill></Image>
             </div>
             <div>
-              안녕하세요. 저는 <span className="font-bold">엘레나</span>입니다.
+              안녕하세요. <span className="font-bold">{frontMatter.writer}</span>입니다.
+              <br />
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.5"
   },
-  "description": "덴티움의 기술블로그, DENTIUM TECH",
+  "description": "덴티움 기술블로그, DENTIUM TECH",
   "main": "index.js",
   "repository": "https://github.com/thewoowon/dentium.tech.git",
   "author": "thewoowon <thewoowon@naver.com>",

@@ -40,7 +40,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               ></Image>
             </div>
           </div>
-          <div className="max-w-xs flex justify-start items-center text-white dark:text-black font-bold text-4xl">
+          <div className="max-w-xs flex justify-start items-center text-white dark:text-black font-bold text-3xl md:text-4xl">
             {`For Dentists,`}
             <br />
             {`By Dentists`}
@@ -50,7 +50,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       <footer className="py-8">
         <div className="max-w-5xl px-8 mx-auto">
           <div className="flex">
-            <div className="pr-20">
+            <div className="pr-20 md:block hidden">
               <div className="font-bold py-2">덴티움</div>
               <div className="font-light text-zinc-400">
                 <Link href={'https://dentium.co.kr/dsn/dentium03_03.php'}>
@@ -63,7 +63,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
                 </Link>
               </div>
             </div>
-            <div className="pr-20">
+            <div className="pr-20 md:block hidden">
               <div className="font-bold py-2">제노스</div>
               <div className="font-light text-zinc-400">
                 <Link
@@ -106,9 +106,9 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
             <Link
               target="_blank"
               href={'https://www.instagram.com/dentium_korea'}
-              className="bg-zinc-100 w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-200 transition duration-200 ease-in-out"
+              className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
             >
-              <IconBrandInstagram size={30} stroke={1} opacity={0.3} />
+              <IconBrandInstagram color='white' size={30} stroke={1} opacity={1} />
             </Link>
           </div>
         </div>
