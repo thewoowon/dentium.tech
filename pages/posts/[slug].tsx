@@ -43,12 +43,16 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
     <Layout customMeta={customMeta}>
       <article>
         <header className="prose m-auto relative">
-          <h1 className="text-6xl text-gray-900 dark:text-white">
+          <h1 className="text-4xl sm:text-6xl text-gray-900 dark:text-white">
             {frontMatter.title}
           </h1>
           <div className="flex justify-start items-center pb-2">
             <div className="mr-4 w-14 h-14 relative flex justify-start items-center rounded-full overflow-hidden">
-              <Image src={frontMatter.profile ?? "/images/profile.jpeg"} alt="profile" fill />
+              <Image
+                src={frontMatter.profile ?? '/images/profile.jpeg'}
+                alt="profile"
+                fill
+              />
             </div>
             <div>
               <div className="text-md text-gray-900 dark:text-gray-400">
@@ -63,15 +67,18 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
         <div className="prose dark:prose-dark m-auto">
           <MDXRemote {...source} components={components} />
         </div>
-        <div className="prose m-auto py-10">
-          <div className="py-10 bg-white shadow-md rounded-md flex items-center justify-start">
-            <div className="mx-16 w-28 h-28 relative rounded-full overflow-hidden">
-              <Image src={frontMatter.profile ?? "/images/profile.jpeg"} alt="profile" fill></Image>
-            </div>
-            <div>
-              안녕하세요. <span className="font-bold">{frontMatter.writer}</span>입니다.
-              <br />
-            </div>
+        <div className="prose m-auto pt-16 pb-10 flex items-center">
+          <div className="mx-4 w-20 h-20 sm:w-24 sm:h-24 relative rounded-full overflow-hidden">
+            <Image
+              src={frontMatter.profile ?? '/images/profile.jpeg'}
+              alt="profile"
+              fill
+            />
+          </div>
+          <div className="text-sm sm:text-lg">
+            안녕하세요. {frontMatter.position}{' '}
+            <span className="font-bold">{frontMatter.writer}</span>입니다.
+            <br />
           </div>
         </div>
       </article>

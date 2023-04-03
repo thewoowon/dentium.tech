@@ -16,7 +16,7 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
     <Layout>
       {posts.map((post) => (
         <article key={post.slug} className="mt-12 flex">
-          <div className='w-4/12 h-60 relative rounded-xl overflow-hidden'>
+          <div className='w-4/12 h-52 sm:h-60 relative rounded-xl overflow-hidden'>
             <Image src={post.image ?? ""} fill alt='post_image'/>
           </div>
           <div className='w-8/12 px-6'> 
