@@ -76,7 +76,7 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
             />
           </div>
           <div className="text-sm sm:text-lg">
-            안녕하세요. {frontMatter.position}{' '}
+            안녕하세요 👏<br/>{frontMatter.position}{' '}
             <span className="font-bold">{frontMatter.writer}</span>입니다.
             <br />
           </div>
