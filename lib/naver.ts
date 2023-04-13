@@ -1,0 +1,1 @@
+export const NAVER_TRACKING_ID = process.env.NEXT_PUBLIC_NAVER_ID;
