@@ -22,7 +22,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
         <div className="max-w-5xl px-8 mx-auto">
           <div className="flex items-center justify-between py-6">
             <Navigation />
-            <ThemeSwitch />
+            {/* <ThemeSwitch /> */}
           </div>
         </div>
       </header>
@@ -34,7 +34,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
           <div className="p-10 flex justify-center items-center">
             <div className="relative w-[75px] h-[75px]">
               <Image
-                layout="fill"
+                fill
                 alt="dentium tech"
                 src={'/images/logo_square.svg'}
               ></Image>

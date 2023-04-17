@@ -1,9 +1,11 @@
 import Script from "next/script";
 import * as naver from '@/lib/naver';
+import { Metadata } from "next";
 
 export const NaverAnalytics = () => {
   return (
     <>
+      <meta name="naver-site-verification" content={naver.NAVER_TRACKING_ID}/>
       <Script
         strategy="afterInteractive"
         src="//wcs.naver.net/wcslog.js"
