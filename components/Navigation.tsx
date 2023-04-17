@@ -12,14 +12,14 @@ const Navigation = () => {
           {theme === 'dark' || resolvedTheme === 'dark' ? (
             <Image
             className="cursor-pointer"
-            layout="fill"
+            fill
             alt="dentium tech"
             src={'/images/logo_white.svg'}
           />
           ) : (
             <Image
             className="cursor-pointer"
-            layout="fill"
+            fill
             alt="dentium tech"
             src={'/images/logo.svg'}
           />

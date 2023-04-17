@@ -52,6 +52,7 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
                 src={frontMatter.profile ?? '/images/profile.jpeg'}
                 alt="profile"
                 fill
+                priority
               />
             </div>
             <div>
@@ -73,6 +74,7 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
               src={frontMatter.profile ?? '/images/profile.jpeg'}
               alt="profile"
               fill
+              priority
             />
           </div>
           <div className="text-sm sm:text-lg">
