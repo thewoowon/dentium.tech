@@ -1,6 +1,5 @@
 import Script from "next/script";
 import * as naver from '@/lib/naver';
-import { Metadata } from "next";
 
 export const NaverAnalytics = () => {
   return (
