@@ -19,7 +19,7 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
           <div className='w-4/12 h-52 sm:h-60 relative rounded-xl overflow-hidden'>
             <Image src={post.image ?? ""} fill alt='post_image' priority/>
           </div>
-          <div className='w-8/12 px-6'> 
+          <div className='w-8/12 px-6 relative'>
             <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
               {format(parseISO(post.date ?? ""), 'MMMM dd, yyyy')}
             </p>
@@ -29,11 +29,9 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
               </Link>
             </h1>
             <p className="mb-3">{post.description}</p>
-            {/* <p>
-              <Link as={`/posts/${post.slug}`} href={`/posts/[slug]`}>
-                <a>더 보기</a>
-              </Link>
-            </p> */}
+            {/* <div className='text-sm text-gray-500 dark:text-gray-400 px-[24px] absolute left-0 bottom-0 flex justify-center items-center'>
+            {post.writer} - {post.position}
+            </div> */}
           </div>
         </article>
       ))}
