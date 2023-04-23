@@ -78,7 +78,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
                 </Link>
               </div>
             </div>
-            <div className="pr-20">
+            <div className="pr-20 md:block hidden">
               <div className="font-bold py-2">고객센터</div>
               <div className="font-light text-zinc-400">
                 덴티움: 080-050-2875
@@ -91,6 +91,15 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               </div>
               <div className="font-light text-zinc-400">
                 디지털센터: 070-7098-9081
+              </div>
+            </div>
+            <div className="pr-20 ">
+              <div className="font-bold py-2">더브라이트(theBright)</div>
+              <div className="font-light text-zinc-400">
+                덴티움 기술 블로그 운영진
+              </div>
+              <div className="font-light text-zinc-400">
+                mail to: wwoo@dentium.com
               </div>
             </div>
           </div>
