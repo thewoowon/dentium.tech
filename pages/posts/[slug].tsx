@@ -13,7 +13,7 @@ import rehypeCodeTitles from 'rehype-code-titles';
 import rehypePrism from 'rehype-prism-plus';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import Layout, { WEBSITE_HOST_URL } from '../../components/Layout';
+import Layout from '../../components/Layout';
 import { MetaProps } from '../../types/layout';
 import { PostType } from '../../types/post';
 import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils';
@@ -78,7 +78,9 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
             />
           </div>
           <div className="text-sm sm:text-lg">
-            안녕하세요 👏<br/>{frontMatter.position}{' '}
+            안녕하세요 👏
+            <br />
+            {frontMatter.position}{' '}
             <span className="font-bold">{frontMatter.writer}</span>입니다.
             <br />
           </div>
