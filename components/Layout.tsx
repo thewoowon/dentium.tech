@@ -27,9 +27,9 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       <main>
         <div className="max-w-5xl px-8 pt-4 pb-20 mx-auto">{children}</div>
       </main>
-      <div className="bg-black dark:bg-zinc-50 h-56">
+      <div className="bg-zinc-50 dark:bg-zinc-50 h-56 ">
         <div className="max-w-5xl h-full px-8 py-4 mx-auto flex justify-center">
-          <div className="p-10 flex justify-center items-center">
+          <div className="p-5 flex justify-center items-center">
             <div className="relative w-[75px] h-[75px]">
               <Image
                 fill
@@ -38,10 +38,10 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               ></Image>
             </div>
           </div>
-          <div className="max-w-xs flex justify-start items-center text-white dark:text-black font-bold text-3xl md:text-4xl">
-            {`For Dentists,`}
+          <div className="max-w-xs flex justify-start items-center text-black dark:text-black font-bold text-3xl md:text-4xl">
+            {`DENTIUM TECH`}
             <br />
-            {`By Dentists`}
+            {`덴티움 기술 블로그`}
           </div>
         </div>
       </div>
