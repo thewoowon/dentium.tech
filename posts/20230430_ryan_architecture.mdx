@@ -1,0 +1,207 @@
+---
+title: DENTECH TALK - Clean Architecture를 적용한 API 서비스 개발
+description: Clean Architecture를 적용한 API 서비스를 개발해보며 느낀 점을 공유하고자 합니다
+date: '2023-04-30'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9ac338ba-6bcb-4ced-c1aa-29f349d96100/public'
+writer: '라이언'
+position: 'BE & DevOps Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/1c046df5-9262-4c5f-412b-1b8c49a3af00/public'
+---
+
+<Image
+  alt={`clean architecture`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9ac338ba-6bcb-4ced-c1aa-29f349d96100/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+안녕하세요. <br/>
+덴티움의 DevOps & BE Developer 라이언입니다.
+
+저희 IT팀에서는 대규모 서비스를 개발 중에 있습니다.
+유지보수 및 빠른 확장에 용이한 MSA(Micro Service Architecture)로
+빠른 전환을 위해 Clean Architecture 기반으로 개발을 진행하고 있습니다.
+
+# Clean Architecture란 무엇일까요?
+
+<Image
+  alt={`clean architecture`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/61123908-c03e-4ea8-de79-3bb4ca669c00/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">
+  figure 1. clean architecture, 출처: [Robert C.
+  Martin](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+</p>
+
+이 다이어그램은 Robert C. Martin의 공식 블로그에서 가져왔습니다. <br/>
+Node로 API 서버를 개발하기 전, 한 번 쯤 문서를 정독하시는 것을 추천합니다.<br/>
+
+먼저 위 다이어그램에 대해 간략하게 짚고 넘어 가보겠습니다.
+그런 다음 각각의 계층에 대해 좀 더 자세히 다뤄보겠습니다.
+
+- `Layer`: 각각의 원형은 어플리케이션에서 분리되어 있는 영역을 나타냅니다.
+- `Dependency`: 의존성 방향은 외부에서 내부로 향하고 있습니다. 엔티티 계층이 독립적이고 프레임워크 계층(웹, UI 등)이 다른 모든 계층에 의존된다는 의미입니다.
+- `Entities`: 어플리케이션을 구성하는 모든 비즈니스 모델을 포함합니다.
+- `Use Cases`: 해당 영역은 비즈니스 로직을 다루는 계층입니다.
+- `Controllers`, `Presenters`: 해당 영역은 중간 계층으로 `Use Cases` 계층의 입구 또는 출구 역할로 생각하면 될 것 같습니다.
+- `Frameworks`: 해당 영역은 데이터베이스, 웹 프레임워크, 오류처리 프레임워크 등을 다루는 계층입니다.
+
+위 그림을 보고 문득 아래와 같은 의문이 드실 수 있습니다.
+
+> - “데이터베이스가 외부 계층에 있는 위치한 이유는 무언인가?”
+> - “데이터베이스의 위치는 어플리케이션의 중심이 아닌가?”
+
+물론입니다. <br/>
+하지만 지금 설명드리는 아키텍처는 데이터베이스, 개발 프레임워크,
+도구 등 보다 어플리케이션의 비즈니스 로직에 좀 더 많은 비중을 두고 있습니다.
+이 글이 끝나갈 때쯤에는 위의 의문이 해결되었을 것이라고 생각합니다.
+
+결론적으로 위와 같은 구조는
+어플리케이션의 핵심인 비즈니스 모델과 로직을 변경하지 않고 데이터베이스,
+개발 프레임워크, UI, 외부 서비스를 손 쉽게 변경하거나 조작할 수 있기 때문에
+유지보수 측면에서 굉장히 높은 생산성을 보장합니다.
+
+## Entities 및 Use Cases 계층
+
+간단한 도서 서비스를 Clean Architecture로 설계한다고 가정해보겠습니다.
+위에서 말씀 드린 어플리케이션의 중심이 되는 두 개의 계층을 먼저 구상해보겠습니다.
+
+<Image
+  alt={`entities and use cases`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/2ee6fb27-2edc-47b2-c290-5028645a2800/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">figure 2. entities and use cases</p>
+
+### Entities
+
+어플리케이션의 비즈니스 모델을 다음과 같이 가정해 보겠습니다.
+
+| 작가 | 장르 |  도서  |
+| :--: | :--: | :----: |
+|  ID  | 이름 |   ID   |
+| 이름 |      |  제목  |
+|      |      |  작가  |
+|      |      |  장르  |
+|      |      | 발행일 |
+
+이 계층은 독립적이고 서비스, 라우팅 또는 컨트롤러와 같은 외부 변경 사항에 영향을 받지 않습니다.
+
+### Use Case
+
+이 계층은 비즈니스 로직이 집중된 영역으로써 아래와 같이 어플리케이션 API를 지원한다고 가정해 보겠습니다.
+
+- 모든 책의 목록을 가져옵니다.
+- 단일 도서 정보를 가져옵니다.
+- 새 책을 추가합니다.
+- 새 작성자를 추가합니다.
+
+이 중에 `새 책을 추가합니다.`라는 API를 만들기 위해서는 아래와 같은 절차가 필요합니다.
+
+- 비즈니스 규칙에 대한 유효성을 검사합니다.
+- 책이 데이터베이스에 존재하지 않는지 확인합니다.
+- 신규 책에 대한 오브젝트를 생성합니다.
+- 신규 책을 데이터베이스에 저장합니다.
+- 도서관 CRM 시스템으로 도서 목록 업데이트 요청을 보냅니다.
+
+위 절차들을 살펴보면 두 가지 서비스와의 의존 관계를 찾을 수 있습니다.
+
+- 데이터베이스 서비스: 해당 책이 시스템에 존재하는지 확인하고 책의 세부 정보를 저장합니다. 
+해당 서비스는 PostgreSQL과 같은 DBMS를 호출하는 클래스로 구현할 수 있습니다.
+- 도서관 CRM 서비스: 신규 책에 대해 도서관 CRM 어플리케이션에 도서 목록 업데이트 요청을 보내야 합니다. 
+이 기능은 외부 시스템을 호출하는 클래스로 구현될 수 있습니다.
+
+여기서 만약 데이터베이스 서비스와 도서관 CRM 서비스를 연동하는 부분은 다른 팀에서 구현한다고 가정해 보겠습니다. 
+이때 어떻게 해야 두 가지 서비스의 의존성을 분리할 수 있을까요?
+
+바로 `추상화(Abstract)`와 `의존성 주입(Dependency Injection)`을 활용하면 됩니다.
+
+<Image
+  alt={`entities and use cases`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/29abfe92-6d2e-4e7e-5615-d674bbc5da00/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">
+  figure 2. abstract and dependency injection
+</p>
+
+이제 `추상화(Abstract)`와 `의존성 주입(Dependency Injection)`의 개념을 활용해 좀 더 자세하게 설계해 보겠습니다.
+먼저 추상화로 정의할 수 있는 항목을 살펴보겠습니다.
+
+>- 데이터 서비스 추상화
+>- CRM 서비스 추상화
+
+이제 추상화 할 수 있는 항목을 정의했으니, 이를 구현하는 방법을 살펴보겠습니다.
+데이터 서비스는 3개의 저장소 클래스로 구분할 수 있습니다.
+
+- Book Repository
+- Author Repository
+- Genre Repository
+
+이들은 각각 데이터베이스에 저장된 책, 작가, 장르에 대한 CRUD(Create, Read, Update, Delete) 작업을 수행합니다.
+
+<Image
+  alt={`insert book use case`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b02504ac-158e-470b-8601-128ba130ae00/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">figure 4. insert book use case</p>
+
+그렇다면, 위와 같이 Use Case에 서비스의 의존성을 주입해주는 역할은 누가 할까요?
+이어서 살펴보겠습니다.
+
+## Controllers와 Presenters 계층
+
+<Image
+  alt={`controllers and presenters`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/4d834850-a7b1-4518-0935-48bd58535400/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">
+  figure 5. controllers and presenters
+</p>
+
+Controller와 Presenters는 중간 계층입니다. <br/>
+Use Case를 외부로 노출시키고 반대로, 외부의 시스템을 내부로 연결하는 역할을 담당합니다.
+
+### Controller
+
+Controller는 다음과 같은 역할을 수행합니다.
+
+- DTO를 통해 사용자 입력을 받습니다.
+- 사용자 입력에 대한 유효성을 검사합니다.
+- 사용자 입력을 Use Case 계층에서 사용하는 모델로 변환합니다.
+- Use Case의 서비스를 호출하고 변환한 신규 모델을 전달합니다.
+
+### Presenter
+
+Presenter는 다음과 같은 역할을 수행합니다.
+
+- 데이터베이스에서 가져온 데이터를 클라이언트에 전달할 형식으로 변환합니다. ex) 날짜를 문자열로 변환
+- 클라이언트의 요청에 대한 결과를 추가합니다. ex) 성공이면 true, 실패면 false
+- 요청이 성공했다며 클라이언트에게 전달할 데이터를 작성합니다. ex) 신규로 추가된 도서 정보
+
+Node에서도 MVC 프로젝트와 마찬가지로 Controller와 Presenter가 하나로 구현됩니다.
+
+# 정리
+
+이제 Clean Architecture가 무엇이고 어떻게 설계되어야 하는지 알았습니다. 
+하지만 실제로 익숙하지 않은 구조로 위와 같은 형식과 규칙을 지키면서 
+API를 구현하는 것은 쉽지 않은 일이 될 수 있습니다.
+
+그래서 저희 IT팀은 Clean Architecture 기반의 백엔드 프레임워크인 Nest.js를 사용하고 있습니다.
+추후 NestJS를 사용하면서 발생한 이슈와 해결 방안을 공유하는 시간을 가져보도록 하겠습니다.
+
+긴 글을 끝까지 읽어 주셔서 감사합니다.
