@@ -54,7 +54,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
           </div>
           <div className="font-bold text-md pt-6">(주)덴티움</div>
           <div className="text-sm py-2">
-            Copyright © ENIGMA, Inc. All Rights Reserved.
+            Copyright 2023. ENIGMA
           </div>
           <div className="flex py-10">
           <Link
