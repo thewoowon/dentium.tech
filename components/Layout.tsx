@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { IconBrandInstagram, IconBrandYoutube,IconHome,IconNetwork } from '@tabler/icons-react';
 import Link from 'next/link';
 import Banner from './Banner';
-import { bannerList } from '@/constants/banner';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -28,7 +27,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       </header>
       <main>
         <div className='flex justify-center items-center relative'>
-        <Banner banners={bannerList}/>
+        <Banner/>
         </div>
         <div className="max-w-5xl px-8 pt-4 pb-20 mx-auto">{children}</div>
       </main>

@@ -1,4 +1,4 @@
-import { Navigation, Pagination, A11y, Autoplay } from 'swiper';
+import { Navigation, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -7,14 +7,10 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import styled from '@emotion/styled';
 
-type Banner = {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-};
+function Banner() {
 
-function Banner({ banners }: { banners: Banner[] }) {
+  const videoList = ['/videos/rest.mp4','/videos/typing.mp4','/videos/typing_3.mp4']
+
   return (
     <SliderOutsideAlign>
       <DecoArea>
@@ -40,10 +36,10 @@ function Banner({ banners }: { banners: Banner[] }) {
           prevEl: '._swiper-button-prev',
         }}
       >
-        {banners.map(({ id, title, subtitle, image }) => (
+        {Array.from({ length: 3 }).map((_, id) => (
           <SwiperSlide key={id}>
             <video autoPlay muted loop>
-              <source src={'/videos/rest.mp4'} />
+              <source src={videoList[id]} />
             </video>
           </SwiperSlide>
         ))}
