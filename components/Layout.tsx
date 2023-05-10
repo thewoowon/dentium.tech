@@ -5,6 +5,7 @@ import Navigation from './Navigation';
 import Image from 'next/image';
 import { IconBrandInstagram, IconBrandYoutube,IconHome,IconNetwork } from '@tabler/icons-react';
 import Link from 'next/link';
+import Banner from './Banner';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -19,12 +20,15 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       <Head customMeta={customMeta} />
       <header>
         <div className="max-w-5xl px-8 mx-auto">
-          <div className="flex items-center justify-between py-6">
+          <div className="flex items-center justify-between py-4">
             <Navigation />
           </div>
         </div>
       </header>
       <main>
+        <div className='flex justify-center items-center relative'>
+        <Banner/>
+        </div>
         <div className="max-w-5xl px-8 pt-4 pb-20 mx-auto">{children}</div>
       </main>
       <div className="bg-zinc-50 dark:bg-zinc-50 h-56 ">

@@ -1,0 +1,514 @@
+---
+title: DENTECH TALK - Webpack, 어디까지 알고 계신가요?
+description: Webpack에 대해 좀 더 깊게 알아보고, 실제로 사용해보는 시간을 갖도록 하겠습니다.
+date: '2023-05-10'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/a74ca209-7e84-4e3b-a3a8-04d17f8b5900/public'
+writer: '죠지'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/a74ca209-7e84-4e3b-a3a8-04d17f8b5900/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+_안녕하세요.<br/>
+덴티움의 FE Developer 죠지입니다._
+
+_`webpack`은 현재 프론트엔드 개발에서 필수적인 도구입니다.<br/>
+하지만, webpack을 사용하면서도, webpack이 무엇인지,
+어떻게 동작하는지에 대해 잘 모르는 분들이 많습니다.
+이번 시간에는 webpack에 대해 좀 더 깊게 알아보고,
+실제로 사용해보는 시간을 갖도록 하겠습니다._
+
+_추가로 아래의 항목에 대한 내용도 함께 다루도록 하겠습니다._
+
+> - next.js 13에서 webpack과 babel
+> - parcel, rollup, snowpack, vite 등의 번들러
+
+# Webpack
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/61805e7a-ee6d-401c-efdf-1eb68e112f00/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+_webpack의 공식 문서를 방문하면 가장 먼저 보이는 애니메이션입니다.
+이 애니메이션을 보면 webpack이 무엇인지 대략적으로 이해할 수 있습니다.
+여러 개의 파일, .js, .css, .png, .jpg 등이 일련의 과정 후에
+하나의 파일로 묶이는 것을 볼 수 있습니다._
+
+## Webpack 공식 정의
+
+> webpack은 모듈 번들러(Module Bundler)입니다.
+
+_모듈 번들러란, 프로젝트를 구성하는 모든 파일을 하나의 파일로 만들어주는 도구입니다.
+webpack이 어떤 도구인지에 대해 모호했던 부분이 조금은 명확해졌습니다._
+
+> 만약 모듈이 궁금하시다면...<br/>
+> :[모듈이란?](https://ko.javascript.info/modules-intro)
+
+_이제 어떤 방향으로 webpack을 공부해야 하는지 얼추 감이 잡히는 것 같습니다.
+이제 정확한 정의를 알게 되었으니, webpack을 구성하는 주요 개념으로 넘어가도록 하겠습니다._
+
+## Webpack 베이스
+
+> 좀 더 자세한 내용이 필요하다면 [Webpack 공식 문서](https://webpack.js.org/concepts/)를 참고하세요.
+
+### Entry
+
+_엔트리 포인트는 webpack이 내부에서 `Dependency Graph` 생성을 위해
+어디서부터 파일을 읽어들여야 하는지를 나타냅니다._
+
+```tsx
+// pages/_app.tsx
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { NaverAnalytics } from '@/components/analytics/NaverAnalytics';
+import { ThemeProvider } from 'next-themes';
+import type { AppProps } from 'next/app';
+import React from 'react';
+import '../styles/globals.css';
+
+const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+  return (
+    <ThemeProvider attribute="class" enableSystem={false} defaultTheme="light">
+      <GoogleAnalytics />
+      <NaverAnalytics />
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
+};
+
+export default MyApp;
+```
+
+_DENTECH 블로그의 엔트리 포인트는 'pages/\_app.tsx'입니다.
+webpack은 엔트리 포인트가 (직간접적으로) 의존하는 다른 모듈과 라이브러리를 찾아냅니다.
+이것을 그림을 통해 살펴보겠습니다._
+
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+  <div className="text-lg font-bold">Warning</div>
+  <div>ECMAScript 모듈을 사용하고 있습니다.</div>
+</div>
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/1e2f9be8-1aa3-48f9-3baa-2ff99e5f3e00/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+_그림에는 'pages/\_app.tsx'가 의존하는 모듈들이 표시되어 있습니다.
+이 모듈들은 'pages/\_app.tsx'에서 직접적으로 import한 모듈들입니다.
+마찬가지로 이 모듈들은 다른 모듈들에 의존하고 있기 때문에
+연쇄적으로 의존하는 모듈들을 찾아내야 합니다.
+이런 식으로 의존하는 모듈들을 찾아내고,
+모듈들의 의존성을 나타내는 그래프를 `Dependency Graph`라고 합니다._
+
+### Output
+
+_output은 webpack이
+엔트리 포인트를 통해 생성된 `Dependency Graph`를 기반으로
+하나의 파일로 묶어주는 역할을 합니다._
+
+```tsx
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+```
+
+_output은 `filename`과 `path`를 설정할 수 있습니다.(props를 가지고 있는 것처럼 생각하시면 됩니다.)
+'filename'은 묶인 파일의 이름을 의미하고,
+'path'는 묶인 파일의 경로를 의미합니다._
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    공식 문서에서는 생성된 번들을 내보낼 위치와 이 파일의 이름을 지정하는 방법을
+    webpack에 알려주는 역할로 정의하고 있습니다.
+  </div>
+</div>
+
+### Loaders
+
+_webpack은 기본적으로 JavaScript와 JSON만 이해할 수 있습니다.
+하지만, `loader`를 사용하면 webpack이 다른 타입의 파일들을
+처리하고, 해당 파일들을 의존성 그래프에 추가할 수 있습니다._
+
+```tsx
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+};
+```
+
+_module.rules는 `test`와 `use`를 통해
+어떤 파일을 어떤 loader를 사용하여 처리할지를 정의합니다.
+공식 문서에서는 컴파일러를 의인화해서 아주 신선한(?) 방법으로
+loader를 설명하고 있습니다._
+
+> "이봐 webpack 컴파일러, require ()/import 문 내에서 '.txt' 파일로 확인되는 경로를 발견하면 번들에 추가하기 전에 raw-loader를 사용하여 변환해."
+
+또 한 가지 예를 들어보겠습니다.
+
+```tsx
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+};
+```
+
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+  <div className="text-lg font-bold">Warning</div>
+  <div>
+    헷갈리지 마시길 바랍니다. loader는 오른쪽에서 왼쪽으로 실행됩니다. 위의
+    예시에서는 'css-loader'가 먼저 실행되고, 'style-loader'가 실행됩니다.
+  </div>
+</div>
+
+_'css-loader'는 CSS 파일을 읽어들이고,
+'style-loader'는 읽어들인 CSS를 DOM에 삽입합니다.
+이렇게 두 개의 loader를 활용하면 복합적인 과정을 자동화할 수 있습니다._
+
+### Plugins
+
+_`plugins`는 번들 최적화, 자산 관리 및 환경 변수 주입과 같은
+광범위한 작업을 수행할 수 있습니다._
+
+```tsx
+// webpack.config.js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+};
+```
+
+_plugins는 new를 통해 인스턴스화된 객체를 배열에 담아서 사용합니다.
+공식 문서에는 없지만 다시 한 번 컴파일러를 의인화해서
+plugins를 설명하겠습니다._
+
+> "이봐 webpack 컴파일러, 번들에 대한 HTML 파일을 생성하고
+> 모든 번들된 JavaScript 파일을 자동으로 추가해."
+
+### Mode
+
+_`mode`는 webpack이 최적화하는 방식을 지정합니다._
+
+```tsx
+// webpack.config.js
+module.exports = {
+  mode: 'production',
+};
+```
+
+_mode는 `development`, `production`, `none` 중 하나를 선택할 수 있습니다.
+development는 개발 모드, production은 배포 모드,
+none은 아무것도 설정하지 않은 모드입니다._
+
+### Browser Compatibility
+
+_webpack은 ES5를 준수하는 모든 브라우저를 지원합니다.
+webpack은 `import()` 및 `require.ensure()`를 사용하여
+동적으로 모듈을 로드하는 코드를 생성합니다._
+
+_둘을 조금더 기능적으로 구분하자면
+`import()`는 ECMAScript에 정의된 동적 모듈 로딩을 지원하고
+`require.ensure()`는 webpack에 의해 지원되는
+동적 모듈 로딩을 지원합니다._
+
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+  <div className="text-lg font-bold">Warning</div>
+  <div>require.ensure()는 import()로 대체되었습니다.</div>
+</div>
+
+### Configuration
+
+_어쩌면 당연한 말이겠지만 webpack은 `webpack.config.js`
+파일을 사용하여 설정을 관리합니다._
+
+```tsx
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+  output: {
+    filename: 'my-first-webpack.bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+```
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    Next.js에서는 제공하는 기본 설정이 충분하기 때문에, 따로 webpack 설정을 해줄
+    필요는 없습니다. 그러나, 만약에 특정한 webpack 설정이 필요하다면,
+    Next.js에서 제공하는 next.config.js 파일을 이용하여 사용자 정의 설정을
+    추가하시면 됩니다.
+  </div>
+</div>
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    Next.js 13 버전에서는 Babel이 기본적으로 적용됩니다. 기본적으로 next/babel
+    preset을 사용하며, 이 preset은 Next.js에서 자주 사용되는 최신 자바스크립트
+    문법과 React의 변환을 처리합니다. 또한, 개발자가 필요한 경우에는 .babelrc
+    파일을 통해 Babel 구성을 사용자 정의할 수도 있습니다.
+  </div>
+</div>
+
+## Webpack 이외의 모듈 번들러
+
+_webpack 이외에도 다양한 모듈 번들러가 존재합니다._
+
+- [Parcel](https://parceljs.org/)
+- [Rollup](https://rollupjs.org/guide/en/)
+- [Browserify](http://browserify.org/)
+- [Brunch](https://brunch.io/)
+- [FuseBox](https://fuse-box.org/)
+- [Snowpack](https://www.snowpack.dev/)
+- [Vite](https://vitejs.dev/)... 등등
+
+_이 중 parcle, rollup, vite, snowpac_k에 대해 간단히 살펴보겠습니다._
+
+<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+  <div className="text-lg font-bold">Parcel</div>
+  <div>
+    Zero-configuration 모듈 번들러로, 구성이 간단하며 빠른 빌드 속도가
+    특징입니다.
+  </div>
+</div>
+
+<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+  <div className="text-lg font-bold">Rollup</div>
+  <div>
+    ES6 모듈 시스템에 최적화된 번들러로, 라이브러리나 모듈을 빌드하기에
+    적합합니다.
+  </div>
+</div>
+
+<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+  <div className="text-lg font-bold">Vite</div>
+  <div>
+    개발 시에 빠른 빌드와 라이브 리로딩(live reloading)을 지원하며, 프로덕션
+    빌드 시에는 Rollup을 사용합니다.
+  </div>
+</div>
+
+<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+  <div className="text-lg font-bold">Snowpack</div>
+  <div>
+    개발 시에 빠른 빌드와 HMR(hot module replacement)을 지원하는데, 특히 웹
+    애플리케이션의 빌드 속도를 향상시키는데 중점을 둡니다.
+  </div>
+</div>
+
+## 간단한 실습
+
+_마지막으로는 간단한 실습을 통해 webpack을 사용해보겠습니다.
+먼저 webpack 폴더를 생성하고, 그 안에 package.json 파일을 생성합니다._
+
+```bash
+mkdir webpack
+cd webpack
+npm init -y
+```
+
+_이어서 webpack을 설치합니다._
+
+```bash
+npm install webpack webpack-cli --save-dev
+```
+
+_webpack 설치가 완료 되었으면 webpack.config.js 파일을 생성합니다._
+
+```bash
+touch webpack.config.js
+```
+
+_그리고 webpack.config.js 파일에 다음과 같이 작성합니다._
+
+```tsx
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  mode: 'development',
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+};
+```
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    style-loader, css-loader는 dev dependency로 설치되어야 합니다.
+  </div>
+</div>
+
+_다음은 src 폴더를 생성하고, 그 안에 index.js 파일을 생성합니다._
+
+```bash
+mkdir src
+cd src
+touch index.js
+```
+
+_index.js 파일에 다음과 같이 작성합니다._
+
+```tsx
+// src/index.js
+import _ from 'lodash';
+// import 하고 안하고의 차이는 무엇일까요?
+// 번들된 파일의 크기를 확인해보세요.
+import './global.css';
+// css 파일을 import 하면, css-loader가 css 파일을 모듈로 변환하고,
+// style-loader가 HTML에 style 태그를 추가합니다.
+
+function component() {
+  const element = document.createElement('div');
+
+  element.innerHTML = _.join(['안녕', '웹팩!'], ' ');
+  element.classList.add('redClass');
+
+  return element;
+}
+
+document.body.appendChild(component());
+// 이제 body에는 div 태그가 추가되었고,
+// div 태그의 내용은 '안녕 웹팩!'이며 class는 'redClass'입니다.
+```
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    lodash는 dev dependency로 설치되어야 합니다.
+  </div>
+</div>
+
+_추가로 global.css 파일을 생성하고, 다음과 같이 작성합니다._
+
+```tsx
+// src/global.css
+body {
+  background-color: green;
+}
+
+.redClass {
+  color: red;
+}
+```
+
+_거의 다 왔습니다!
+이제 package.json 파일의 scripts를 다음과 같이 작성하고, 빌드를 해보겠습니다._
+
+```tsx
+"build": "webpack"
+```
+
+```bash
+npm run build
+```
+
+_dist 폴더에 index.html 파일을 생성합니다._
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    빌드를 하기 전에 dist 폴더가 없어도 괜찮습니다. 빌드를 하면 자동으로
+    생성됩니다.
+  </div>
+</div>
+
+```bash
+cd dist
+touch index.html
+```
+
+_index.html 파일을 다음과 같이 작성합니다._
+
+```tsx
+// dist/index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>재미있는 예제</title>
+  </head>
+  <body>
+    <script src="bundle.js"></script>
+  </body>
+</html>
+```
+
+_그리고 다음과 같이 실행합니다._
+
+```bash
+npx serve
+```
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    serve 패키지가 설치되어 있지 않다면, 자동으로 설치됩니다. 정적 파일을
+    간단하게 서빙해주는 패키지입니다.
+  </div>
+</div>
+
+_이제 브라우저상의 dist/를 확인해보시면 됩니다!
+초록색 배경에 빨간 글씨가 나타난다면 성공입니다._
+
+## 마치며
+
+_webpack의 개념이 당장에 이해되지 않더라도 천천히 익혀나가시길 바라겠습니다.
+또한 webpack에 대한 내용은 방대한 양이라 글에서 다루지 못한 많은 기능들이 있습니다.
+직접 사용하고 공부하시면서 더 많은 기능들을 알아보시기 바랍니다._
+
+## 참고자료
+
+- [webpack 공식 문서](https://webpack.js.org/concepts/)
