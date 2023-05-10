@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { IconBrandInstagram, IconBrandYoutube,IconHome,IconNetwork } from '@tabler/icons-react';
 import Link from 'next/link';
 import Banner from './Banner';
+import { useRouter } from 'next/router';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -15,6 +16,8 @@ type LayoutProps = {
 export const WEBSITE_HOST_URL = 'https://dentium.tech';
 
 const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
+
+  const router = useRouter();
   return (
     <>
       <Head customMeta={customMeta} />
@@ -27,7 +30,9 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       </header>
       <main>
         <div className='flex justify-center items-center relative'>
-        <Banner/>
+          {
+            router.pathname === '/' ? <Banner/> : null
+          }
         </div>
         <div className="max-w-5xl px-8 pt-4 pb-20 mx-auto">{children}</div>
       </main>
