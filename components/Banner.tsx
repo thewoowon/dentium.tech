@@ -36,7 +36,7 @@ function Banner() {
           prevEl: '._swiper-button-prev',
         }}
       >
-        {Array.from({ length: 3 }).map((_, id) => (
+        {Array.from({ length: 2 }).map((_, id) => (
           <SwiperSlide key={id}>
             <video autoPlay muted loop>
               <source src={videoList[id]} />
@@ -93,6 +93,7 @@ const TitleText = styled.div`
   line-height: 42px;
   font-weight: 700;
   padding-bottom: 12px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   @media (max-width: 1080px) {
     font-size: 42px;
@@ -112,6 +113,7 @@ const SubTitleText = styled.div`
   font-size: 24px;
   line-height: 40px;
   font-weight: 400;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   @media (max-width: 1080px) {
     font-size: 20px;
