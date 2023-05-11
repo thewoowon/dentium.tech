@@ -74,7 +74,7 @@ const DecoArea = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 32px;
+  
 `;
 const TextArea = styled.div`
   color: white;
@@ -135,7 +135,6 @@ const ButtonArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   padding: 32px;
-
 `;
 
 const Button = styled.button`

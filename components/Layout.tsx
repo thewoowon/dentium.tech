@@ -47,7 +47,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               ></Image>
             </div>
           </div>
-          <div className="max-w-xs flex justify-start items-center text-black dark:text-black font-bold text-3xl md:text-4xl">
+          <div className="max-w-xs flex justify-start items-center text-black dark:text-black font-bold text-xl xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
             {`DENTIUM TECH`}
             <br />
             {`덴티움 기술 블로그`}
