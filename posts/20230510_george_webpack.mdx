@@ -150,13 +150,22 @@ _webpack은 기본적으로 JavaScript와 JSON만 이해할 수 있습니다.
 하지만, `loader`를 사용하면 webpack이 다른 타입의 파일들을
 처리하고, 해당 파일들을 의존성 그래프에 추가할 수 있습니다._
 
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+  <div className="text-lg font-bold">Warning</div>
+  <div>
+  markdown to html 변환 과정에서 정규식을 인식하지 못하는 문제가 있습니다.
+  그렇기 때문에 코드 필드에 정규식을 사용하지 않고, 문자열로 변환하여 사용하고 있습니다.
+  rules -> test을 확인해주세요.
+  </div>
+</div>
+
 ```tsx
 // webpack.config.js
 const path = require('path');
 
 module.exports = {
   module: {
-    rules: [{ test: /\.txt$/i, use: 'raw-loader' }],
+    rules: [{ test: '/\.txt$/', use: 'raw-loader' }],
   },
 };
 ```
@@ -178,7 +187,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: '/\.css$/i',
         use: ['style-loader', 'css-loader'],
       },
     ],
@@ -210,7 +219,7 @@ const webpack = require('webpack');
 
 module.exports = {
   module: {
-    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+    rules: [{ test: '/\.txt$/', use: 'raw-loader' }],
   },
   plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
 };
@@ -304,7 +313,7 @@ _webpack 이외에도 다양한 모듈 번들러가 존재합니다._
 - [Snowpack](https://www.snowpack.dev/)
 - [Vite](https://vitejs.dev/)... 등등
 
-_이 중 parcle, rollup, vite, snowpac_k에 대해 간단히 살펴보겠습니다._
+_이 중 parcle, rollup, vite, snowpack에 대해 간단히 살펴보겠습니다._
 
 <div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
   <div className="text-lg font-bold">Parcel</div>
@@ -377,7 +386,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: '/\.css$/i',
         use: ['style-loader', 'css-loader'],
       },
     ],
@@ -387,9 +396,7 @@ module.exports = {
 
 <div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
-  <div>
-    style-loader, css-loader는 dev dependency로 설치되어야 합니다.
-  </div>
+  <div>style-loader, css-loader는 dev dependency로 설치되어야 합니다.</div>
 </div>
 
 _다음은 src 폴더를 생성하고, 그 안에 index.js 파일을 생성합니다._
@@ -427,9 +434,7 @@ document.body.appendChild(component());
 
 <div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
-  <div>
-    lodash는 dev dependency로 설치되어야 합니다.
-  </div>
+  <div>lodash는 dev dependency로 설치되어야 합니다.</div>
 </div>
 
 _추가로 global.css 파일을 생성하고, 다음과 같이 작성합니다._
