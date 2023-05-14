@@ -114,4 +114,12 @@ const Button = styled.button<{ selected: boolean }>`
   margin-right: 1rem;
   padding: 0.5rem 1rem;
   transition: all 0.2s ease-in-out;
+  @media (max-width: 768px) {
+    margin-right: 0.7rem;
+    padding: 0.4rem 0.7rem;
+  }
+  @media (max-width: 480px) {
+    margin-right: 0.5rem;
+    padding: 0.3rem 0.5rem;
+  }
 `;
