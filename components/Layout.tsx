@@ -70,6 +70,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://www.dentium.co.kr/'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='home'
             >
               <IconHome
                 color="white"
@@ -82,6 +83,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://dentium.ninehire.site/'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='network'
             >
               <IconNetwork
                 color="white"
@@ -94,6 +96,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://www.youtube.com/@dentiumworld'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='youtube'
             >
               <IconBrandYoutube
                 color="white"
@@ -106,6 +109,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://www.instagram.com/dentium_korea'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='instagram'
             >
               <IconBrandInstagram
                 color="white"
