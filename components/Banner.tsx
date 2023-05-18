@@ -6,10 +6,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 
 function Banner() {
 
-  const videoList = ['/videos/rest.mp4','/videos/typing.mp4','/videos/typing_3.mp4']
+  const videoList = ['/videos/typing.mp4','/videos/rest.mp4','/videos/typing_3.mp4']
 
   return (
     <SliderOutsideAlign>
@@ -21,8 +22,12 @@ function Banner() {
           </SubTitleText>
         </TextArea>
         <ButtonArea>
-          <Button className="_swiper-button-prev text-2xl">{'<'}</Button>
-          <Button className="_swiper-button-next text-2xl">{'>'}</Button>
+          <Button className="_swiper-button-prev text-2xl">
+            <Image src={'/images/chevron_square_left.svg'} width={40} height={40} alt="leftChevron"/>
+          </Button>
+          <Button className="_swiper-button-next text-2xl">
+          <Image src={'/images/chevron_square_right.svg'} width={40} height={40} alt="rightChevron"/>
+          </Button>
         </ButtonArea>
       </DecoArea>
       <Swiper
@@ -140,14 +145,8 @@ const ButtonArea = styled.div`
 const Button = styled.button`
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid #ffffff;
   margin-right: 8px;
   cursor: pointer;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.4);
-  }
   display: flex;
   justify-content: center;
   align-items: center;
