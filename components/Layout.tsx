@@ -5,6 +5,8 @@ import Navigation from './Navigation';
 import Image from 'next/image';
 import { IconBrandInstagram, IconBrandYoutube,IconHome,IconNetwork } from '@tabler/icons-react';
 import Link from 'next/link';
+import Banner from './Banner';
+import { useRouter } from 'next/router';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,17 +16,24 @@ type LayoutProps = {
 export const WEBSITE_HOST_URL = 'https://dentium.tech';
 
 const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
+
+  const router = useRouter();
   return (
     <>
       <Head customMeta={customMeta} />
       <header>
         <div className="max-w-5xl px-8 mx-auto">
-          <div className="flex items-center justify-between py-6">
+          <div className="flex items-center justify-between py-4">
             <Navigation />
           </div>
         </div>
       </header>
       <main>
+        <div className='flex justify-center items-center relative'>
+          {
+            router.pathname === '/' ? <Banner/> : null
+          }
+        </div>
         <div className="max-w-5xl px-8 pt-4 pb-20 mx-auto">{children}</div>
       </main>
       <div className="bg-zinc-50 dark:bg-zinc-50 h-56 ">
@@ -38,7 +47,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               ></Image>
             </div>
           </div>
-          <div className="max-w-xs flex justify-start items-center text-black dark:text-black font-bold text-3xl md:text-4xl">
+          <div className="max-w-xs flex justify-start items-center text-black dark:text-black font-bold text-xl xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
             {`DENTIUM TECH`}
             <br />
             {`덴티움 기술 블로그`}
@@ -61,6 +70,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://www.dentium.co.kr/'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='home'
             >
               <IconHome
                 color="white"
@@ -73,6 +83,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://dentium.ninehire.site/'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='network'
             >
               <IconNetwork
                 color="white"
@@ -85,6 +96,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://www.youtube.com/@dentiumworld'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='youtube'
             >
               <IconBrandYoutube
                 color="white"
@@ -97,6 +109,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               target="_blank"
               href={'https://www.instagram.com/dentium_korea'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
+              aria-label='instagram'
             >
               <IconBrandInstagram
                 color="white"
