@@ -7,26 +7,51 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import Typewriter from 'typewriter-effect';
 
 function Banner() {
-
-  const videoList = ['/videos/typing.mp4','/videos/rest.mp4','/videos/typing_3.mp4']
+  const videoList = [
+    '/videos/typing.mp4',
+    '/videos/rest.mp4',
+    '/videos/typing_3.mp4',
+  ];
 
   return (
     <SliderOutsideAlign>
       <DecoArea>
         <TextArea>
           <TitleText>{'DENTECH'}</TitleText>
-          <SubTitleText>
-            {'우리는 항상 더 나은 방법을 찾아가며 고객과 함께 성장합니다.'}
-          </SubTitleText>
+          <Typewriter
+            options={{
+              strings: [
+                '덴티움 기술 블로그에 오신 것을 환영합니다.',
+                '우리는 항상 더 나은 방법을 찾아가며 고객과 함께 성장합니다.',
+                '새로운 시도는 언제나 가슴을 뛰게 합니다.',
+              ],
+              autoStart: true,
+              loop: true,
+              delay: 100,
+              deleteSpeed: 50,
+            }}
+            component={SubTitleText}
+          />
         </TextArea>
         <ButtonArea>
           <Button className="_swiper-button-prev text-2xl">
-            <Image src={'/images/chevron_square_left.svg'} width={40} height={40} alt="leftChevron"/>
+            <Image
+              src={'/images/chevron_square_left.svg'}
+              width={40}
+              height={40}
+              alt="leftChevron"
+            />
           </Button>
           <Button className="_swiper-button-next text-2xl">
-          <Image src={'/images/chevron_square_right.svg'} width={40} height={40} alt="rightChevron"/>
+            <Image
+              src={'/images/chevron_square_right.svg'}
+              width={40}
+              height={40}
+              alt="rightChevron"
+            />
           </Button>
         </ButtonArea>
       </DecoArea>
@@ -43,7 +68,7 @@ function Banner() {
       >
         {Array.from({ length: 2 }).map((_, id) => (
           <SwiperSlide key={id}>
-            <video autoPlay muted loop>
+            <video autoPlay muted loop controls>
               <source src={videoList[id]} />
             </video>
           </SwiperSlide>
@@ -79,7 +104,6 @@ const DecoArea = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  
 `;
 const TextArea = styled.div`
   color: white;
