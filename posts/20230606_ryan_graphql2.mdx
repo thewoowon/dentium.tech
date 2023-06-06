@@ -1,0 +1,255 @@
+---
+title: DENTECH TALK - 당신의 GraphQL은 해킹으로 부터 안녕하신가요?
+description: GraphQL를 적용한 API 서비스를 개발해보며 몇가지 보안 이슈를 공유하고자 합니다.
+date: '2023-06-06'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9ac338ba-6bcb-4ced-c1aa-29f349d96100/public'
+writer: '라이언'
+position: 'BE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/1c046df5-9262-4c5f-412b-1b8c49a3af00/public'
+category: 'tech'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9ac338ba-6bcb-4ced-c1aa-29f349d96100/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+_안녕하세요. <br/>
+덴티움 IT팀의 BE Developer 라이언입니다.
+
+_빠르게 커져가는 프로젝트의 규모를 보며 
+점점 성능과 보안에 대해 고민이 커져가는 것 같습니다. 
+오늘은 이 2가지 고민 중에서도 
+GraphQL API의 보안에 대한 고민을 공유하고자 합니다._
+
+# GraphQL API 보안 이슈
+
+_GraphQL을 사용하면 API를 통해 필요한 데이터를 언제든지 원하는 대로 쿼리할 수 있습니다. 
+이는 API 작업에 있어서 매우 편리한 기능이지만, 보안 측면에서는 주의해야 할 점이 있습니다._
+
+_해커는 서버를 과부하 상태로 만들기 위해 매우 복잡하고 비용이 많이 드는 중첩된 쿼리를 요청할 수 있다는 점입니다. 
+이러한 상황에서는 서비스 거부 (DoS) 공격에 취약해질 수 있습니다._
+
+_예를 들어, 아래와 같이 운영하는 GraphQL API에는 특정 관계가 있다고 생각해보겠습니다._
+
+```graphql
+type User {
+  recommender: User
+}
+
+type Query {
+  user(id: ID!): User
+}
+```
+
+_사용자(User)는 소개자(User)를 가지며, 소개자(User)는 다시 소개자(User)를 가지고 있습니다. 
+이렇게 순환하는 관계로 인해 해커는 악의적인 목적으로 매우 복잡한 쿼리를 구성할 수 있습니다._
+
+```graphql
+query Query {
+  user(id: 1) {
+    recommender {
+      recommender {
+        recommender {
+          # ...10000번 반복...
+        }
+      }
+    }
+  }
+}
+```
+
+_이렇게 중첩된 쿼리를 허용하게 되면, 서버가 처리해야 할 데이터 양이 기하급수적으로 증가하여 
+전체 시스템에 장애를 일으킬 수 있습니다. 이는 심각한 문제가 될 수 있으므로 주의해야 합니다. 
+이러한 쿼리를 방지하기 위해 쿼리 전송을 어렵게 만드는 다양한 방법이 있지만 (예: [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)), 
+완벽한 방어가 어렵다는 점이 큰 이슈입니다._
+
+_그렇다면 과연 해커의 무자비한 공격을 막을 방법이 없는 것일까요?_
+
+_아예 없는 것은 아닙니다. 
+해커로 부터 GraphQL API를 안전하게 보호하기 위해 아래와 같이 다양한 방법들이 있습니다._
+
+- **크기 제한**
+- **쿼리 화이트리스트**
+- **쿼리 복잡도 제한**
+- **개수 제한**
+- **쿼리 비요 제한**
+
+## 크기 제한
+
+_첫 번째 방법으로는 쿼리 자체의 길이를 제한하는 것입니다.
+쿼리는 문자열로 전송되기 때문에 길이를 간단히 확인할 수 있습니다._
+
+```jsx
+app.use('*', (req, res, next) => {
+  const query = req.query.query || req.body.query || '';
+
+  if (query.length > 1000) {
+    throw new Error('쿼리가 너무 깁니다');
+  }
+
+  next();
+});
+```
+
+_하지만, 실제로 이 방법이 제대로 동작하지 않을 수 있습니다.
+이 방법은 짧은 필드 이름을 사용하는 악의적인 쿼리를 허용하거나 
+긴 필드 이름을 사용하는 정당한 쿼리를 차단할 수 있습니다.
+
+## 쿼리 화이트리스트
+
+_두 번째 방법으로는 클라이언트에서 사용하는 승인된 쿼리 목록을 화이트리스트로 유지하고, 
+서버에게 해당 목록에 포함되지 않은 쿼리는 허용하지 않도록 하는 것이었습니다._
+
+```jsx
+app.use('*', (req, res, next) => {
+  const query = req.query.query || req.body.query || '';
+
+  if (!whitelist[query]) {
+    throw new Error('쿼리가 화이트리스트에 없습니다.');
+  }
+
+  next();
+});
+```
+
+_이 방법은 승인된 쿼리 목록을 유지해야 한다는 번거로움이 있습니다.
+하지만, 다행히 Apollo에서 [persistgraphql](https://github.com/apollographql/persistgraphql)이라는 도구를 개발하여 
+클라이언트 사이드 코드에서 쿼리를 자동으로 추출하고 이를 JSON 파일로 생성해줍니다._
+
+## 깊이 제한
+
+_세 번재 방법으로는 위에서 언급한 [중첩 쿼리](# GraphQL API 보안 이슈)의 깊이를 제한하는 것입니다._
+
+_이 방법 또한 [graphql-depth-limit](https://www.npmjs.com/package/graphql-depth-limit)라는 오픈 소스가 있습니다. 
+이 오픈 소스를 사용하면 들어오는 쿼리의 최대 깊이를 쉽게 제한할 수 있습니다._
+
+_만약에 클라이언트를 확인해본 결과, 가장 깊은 쿼리는 10단계라면 아래와 같이 구현할 수 있습니다._
+
+```jsx
+app.use('*', graphqlHTTP((req, res) => ({
+  schema,
+  validationRules: [ depthLimit(10) ]
+})))
+```
+
+## 개수 제한
+
+_네 번째 방법으로는 악의적인 목적으로 많은 양의 데이터를 요청하는 할 때, 
+해당 쿼리의 결과에 대한 개수를 제한하는 것입니다._
+
+_이 방법도 [깊이 제한 방법](## 깊이 제한)과 마찬가지로 [graphql-scalar](https://github.com/joonhocho/graphql-scalar)라는 오픈 소스가 있습니다._
+
+_만약 최소 개수를 1로 설정하고 최대 개수를 10개로 설정하고 싶으면 아래와 같이 간단하게 구현할 수 있습니다._
+
+```jsx
+const argType = createIntScalar({
+  name: string;
+  maximum: 1;
+  minimum: 10;
+})
+```
+
+## 쿼리 비용 제한
+
+_앞서 소개한 여러 제한 방법들에도 방어가 되지 않으면서
+서버에 과부화를 줄 수 있는 잠재적인 취약점이 여전히 존재합니다._
+
+_바로, 쿼리의 깊이나 개별 객체의 수가 특별하게 높지 않아 제한 범위를 우회하여 통과하는 경우 입니다._
+
+_이 쿼리는 수만 개의 레코드를 가져올 수 있으므로 데이터베이스, 서버 및 네트워크에 많은 부하를 줄 수 있습니다._
+
+_이를 방지하기 위해서는 쿼리를 실행하기 전에 쿼리를 분석하여 복잡성을 계산하고, 
+비용이 너무 많이 드는 경우 차단해야 합니다. 
+이 방법은 이전의 방법들보다 더 많은 개발 소요 시간을 필요로 합니다. 
+하지만, 모든 악의적인 쿼리를 확실하게 방어할 수 있게 됩니다._
+
+_실제로 GitHub에서도 이 방법을 채택하여 사용하고 있습니다. [GitHub GraphQL API](https://docs.github.com/ko/graphql/overview/resource-limitations#node-limit)_
+
+_아래 쿼리는 GitHub에서 제공하는 예시 쿼리입니다._
+
+```graphql
+query {
+  viewer {
+    repositories(first: 50) {
+      edges {
+        repository:node {
+          name
+
+          pullRequests(first: 20) {
+            edges {
+              pullRequest:node {
+                title
+
+                comments(first: 10) {
+                  edges {
+                    comment:node {
+                      bodyHTML
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          issues(first: 20) {
+            totalCount
+            edges {
+              issue:node {
+                title
+                bodyHTML
+
+                comments(first: 10) {
+                  edges {
+                    comment:node {
+                      bodyHTML
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    followers(first: 10) {
+      edges {
+        follower:node {
+          login
+        }
+      }
+    }
+  }
+}
+```
+
+_위 쿼리의 비용을 아래와 같이 계산할 수 있다고 합니다._
+
+```
+50           = 50 repositories
+ +
+50 x 20      = 1,000 pullRequests
+ +
+50 x 20 x 10 = 10,000 pullRequest comments
+ +
+50 x 20      = 1,000 issues
+ +
+50 x 20 x 10 = 10,000 issue comments
+ +
+10           = 10 followers
+
+             = 22,060 total nodes
+```
+
+_GitHub에서 쿼리의 비용을 500,000으로 제한하고 있습니다. 
+따라서, 위 쿼리는 안전하다고 판단하여 실행될 수 있다고 합니다._
+
+# 마치며
+_모든 GraphQL API에 대해서 최소한의 보호 수단으로 깊이 및 개수 제한을 ​​사용하는 것이 좋다고 합니다.
+이유는 구현하기 쉽고 개발 비용에 비해 충분한 안전성을 제공하기 때문입니다.
+만약, 개발 기간이 충분히 주어진다면 악의적인 공격자에 대해 완벽하게 방어하는
+쿼리 비용 분석 방식을 도입하는 것을 추천드립니다._
