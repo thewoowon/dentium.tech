@@ -109,7 +109,7 @@ _첫 번째 방법으로는 쿼리 자체의 길이를 제한하는 것입니다
 
 ```jsx
 app.use('*', (req, res, next) => {
-  // 쿼리를 추춟합니다.
+  // 쿼리를 추출합니다.
   const query = req.query.query || req.body.query || '';
   // 쿼리의 길이를 확인합니다.
   if (query.length > 1000) {
@@ -130,7 +130,7 @@ _두 번째 방법으로는 클라이언트에서 사용하는 승인된 쿼리 
 
 ```jsx
 app.use('*', (req, res, next) => {
-  // 쿼리를 추춟합니다.
+  // 쿼리를 추출합니다.
   const query = req.query.query || req.body.query || '';
   // 화이트 리스트
   const whitelist = {
