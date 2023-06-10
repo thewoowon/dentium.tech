@@ -11,8 +11,8 @@ import Typewriter from 'typewriter-effect';
 
 function Banner() {
   const videoList = [
-    '/videos/typing.mp4',
     '/videos/rest.mp4',
+    '/videos/typing.mp4',
     '/videos/typing_3.mp4',
   ];
 
@@ -68,7 +68,7 @@ function Banner() {
       >
         {Array.from({ length: 2 }).map((_, id) => (
           <SwiperSlide key={id}>
-            <video autoPlay muted loop controls>
+            <video autoPlay muted loop>
               <source src={videoList[id]} />
             </video>
           </SwiperSlide>
