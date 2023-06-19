@@ -1,0 +1,31 @@
+---
+title: DENTECH TALK - SOLID 원칙을 통해 FE 코드 분리하기
+description: SOLID를 원칙을 통해 프론트엔드의 코드를 어떻게 분리해야 하는지 알아봅니다.
+date: '2023-06-21'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/29e9b7a5-55c8-444a-1966-e634772ecf00/public'
+writer: '죠지'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
+category: 'tech'
+---
+
+안녕하세요. 루카스입니다. 이번시간에 얘기할 내용은 SOLID 입니다. SOLID는 객체지향을 설계할 때, 적용하는 원칙을 말합니다.
+보통 SOLID 원칙은 백엔드에서 많이 얘기되는 내용이지만, 프론트엔드에서도 적용할 수 있는 원칙이기 때문에 이번 시간에는 SOLID 원칙을 통해 프론트엔드의 코드를 어떻게 분리해야 하는지 알아보겠습니다.
+
+## SOLID 원칙
+
+SOLID는 다음과 같은 원칙을 말합니다.
+
+- SRP(Single Responsibility Principle) : 단일 책임 원칙
+- OCP(Open Closed Principle) : 개방 폐쇄 원칙
+- LSP(Liskov Substitution Principle) : 리스코프 치환 원칙
+- ISP(Interface Segregation Principle) : 인터페이스 분리 원칙
+- DIP(Dependency Inversion Principle) : 의존 역전 원칙
+
+하나씩 살펴보겠습니다.
+
+### SRP(Single Responsibility Principle) : 단일 책임 원칙
+
+> 하나의 클래스는 하나의 책임만 가져야 한다.
+
+이 원칙을 FE에서는 어떻게 이해해야 할까요?
