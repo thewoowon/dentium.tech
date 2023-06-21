@@ -13,7 +13,7 @@ function Banner() {
   const videoList = [
     '/videos/coding.mp4',
     // '/videos/rest.mp4',
-    // '/videos/typing.mp4',
+    '/videos/typing.mp4',
     // '/videos/typing_3.mp4',
   ];
 
@@ -70,7 +70,7 @@ function Banner() {
           prevEl: '._swiper-button-prev',
         }}
       >
-        {Array.from({ length: 1 }).map((_, id) => (
+        {Array.from({ length: 2 }).map((_, id) => (
           <SwiperSlide key={id}>
             <video autoPlay muted loop>
               <source src={videoList[id]} />
