@@ -1,0 +1,404 @@
+---
+title: DENTECH TALK - React를 SOLID원칙으로 바라보기
+description: React에 SOLID 원칙을 적용해보자.
+date: '2023-06-28'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0c40cf1b-1b18-4cbc-09ab-0905bde3f000/public'
+writer: '루카스'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/75661ff5-2f0f-44ad-039d-a465fb4da000/public'
+category: 'tech'
+---
+
+안녕하세요. 루카스입니다. 이번시간에 얘기할 내용은 SOLID 입니다. SOLID는 객체지향을 설계할 때, 적용하는 원칙을 말합니다.
+보통 SOLID 원칙은 백엔드에서 많이 얘기되는 내용이지만, 프론트엔드에서도 적용할 수 있는 원칙이기 때문에 이번 시간에는 React 코드를 통해 SOLID 원칙을 바라보는 시간을 가져보려고 합니다.
+
+## SOLID 원칙
+
+SOLID는 다음과 같은 원칙을 말합니다.
+
+- SRP(Single Responsibility Principle) : 단일 책임 원칙
+- OCP(Open Closed Principle) : 개방 폐쇄 원칙
+- LSP(Liskov Substitution Principle) : 리스코프 치환 원칙
+- ISP(Interface Segregation Principle) : 인터페이스 분리 원칙
+- DIP(Dependency Inversion Principle) : 의존 역전 원칙
+
+하나씩 살펴보겠습니다.
+
+### SRP(Single Responsibility Principle) : 단일 책임 원칙
+
+> 모든 클래스는 한가지 책임만을 갖는다.
+
+SOLID 원칙의 가장 첫번째 원칙은 SRP(Single Responsibility Principle)입니다. 프론트엔드에서 해석한다면 컴포넌트는 한가지 일만 해야 한다고 해석할 수 있습니다.
+
+```jsx
+const ReceptionList = () => {
+  const [receptionList, setReceptionList] = useState<Reception[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchReceptionList = async () => {
+      try {
+        setLoading(true);
+        const { data } = await getReceptionList();
+        setReceptionList(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReceptionList();
+  }
+  , []);
+
+  if (loading) {
+    return <div>로딩중</div>;
+  }
+
+  if (error) {
+    return <div>에러</div>;
+  }
+
+  return (
+    <div>
+      {receptionList.map((reception) => (
+        <div key={reception.id}>{reception.name}</div>
+      ))}
+    </div>
+  );
+};
+```
+
+위 코드는 접수 정보를 가져와 접수 정보를 보여주는 컴포넌트입니다.
+해당 컴포넌트는 `데이터를 가져오는 일`과 `데이터를 보여주는 일` 두 가지의 일을 하고 있습니다.
+이는 SRP를 위배하는 코드입니다. 다음과 같이 컴포넌트를 분할하여 SRP를 만족시킬 수 있습니다.
+
+```jsx
+const ReceptionList = () => {
+  const [receptionList, setReceptionList] = useState<Reception[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchReceptionList = async () => {
+      try {
+        setLoading(true);
+        const { data } = await getReceptionList();
+        setReceptionList(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReceptionList();
+  }
+  , []);
+
+  if (loading) {
+    return <div>로딩중</div>;
+  }
+
+  if (error) {
+    return <div>에러</div>;
+  }
+
+  return (
+    <div>
+      {receptionList.map((reception) => (
+        <ReceptionInfo key={reception.id} name={reception.name} /> // reception을 보여주는 컴포넌트로 분리
+      ))}
+    </div>
+  );
+};
+
+const ReceptionInfo = ({name}) => {
+  return <div>{name}</div>
+}
+```
+
+이렇게 분리함으로써, 컴포넌트가 하나의 역할만 하게 됬습니다.
+
+### 넓은 의미에 SRP
+
+코드 수준에서는 책임을 기능으로 해석해 볼 수 있었습니다. 이제는 조금 더 넓은 의미에 SRP에 대해 생각해보겠습니다. 책임은 변경의 이유라고 해석할 수 있습니다. 즉, 하나의 책임을 갖는다는 것은 변경되는 이유가 같은 것을 하나로 묶어두는 것을 의미합니다.
+
+프론트엔드의 코드가 변경되는 경우는 크게보면 두가지 입니다.
+
+- 기획적인 변경(UX)
+- 디자인적인 변경(UI)
+
+즉, UI와 UX적인 요소를 분리하여 다룬다면 넓은 의미에 SRP를 만족한다고 볼 수 있습니다. 이와 같은 해석은 다음 글을 참고해보세요. ([프론트엔드와 SOLID 원칙](https://fe-developers.kakaoent.com/2023/230330-frontend-solid/))
+
+### OCP(Open Closed Principle) : 개방 폐쇄 원칙
+
+> 소프트웨어의 개체(Entity)는 확장(Extention)에 열려있고 변경(Modification)에 닫혀있다.
+
+이 원칙은 **변화에 대한 대응**에 관한 원칙입니다. 새로운 요구사항이 생긴 경우, 기존 코드를 변경하는 것이 아니라 새로운 개체를 생성함으로써 대응할 수 있도록 설계하는 것을 의미합니다. 이렇게 하면 기존코드의 변경이 없기 때문에 유지보수하기 좋은 코드를 생성할 수 있습니다.
+
+컴포넌트 레벨에서 OCP를 만족시키기 위해서는 어떻게 작성해야 할까요? 예제를 통해 확인해보겠습니다.
+
+로그인 페이지를 구성하면서 환자의 name, email, password를 입력하는 form을 다음과 만들었습니다.
+
+```jsx
+const SignInForm = ({ name, email, password, onSubmit, onChange }) => {
+  return (
+    <div>
+      <h2>SignIn Form</h2>
+      <form onSubmit={onSubmit}>
+        <input type="text" name="name" value={name} onChange={onChange} />
+        <input type="text" name="email" value={email} onChange={onChange} />
+        <input
+          type="password"
+          name="password"
+          value={password}
+          onChange={onChange}
+        />
+        <button type="submit">Sumbit</button>
+      </form>
+    </div>
+  );
+};
+```
+
+지금까지는 문제가 없습니다. 새로운 기능을 개발하다 보니 문의 form을 만들게 되었습니다. 문의 form은 name, email, content가 들어가야 합니다. `name`항목과 `email` 항목이 겹침으로, 기존 form을 재사용하기로 했습니다. `SignInForm`의 이름을 `Form`으로 바꾸고 다음과 같이 작성하였습니다.
+
+```jsx
+const Form = ({ name, email, password, content, onSubmit, onChange }) => {
+  return (
+    <div>
+      <h2>SignIn Form</h2>
+      <form onSubmit={onSubmit}>
+        <input type="text" name="name" value={name} onChange={onChange} />
+        <input type="text" name="email" value={email} onChange={onChange} />
+        {!content && (
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={onChange}
+          />
+        )}
+        {content && (
+          <input
+            type="text"
+            name="content"
+            value={content}
+            onChange={onChange}
+          />
+        )}
+        <button type="submit">Sumbit</button>
+      </form>
+    </div>
+  );
+};
+```
+
+`content`를 통해 form에 렌더링 될 항목을 결정하고 있습니다. 크게 문제가 없어 보이지만, 이 코드는 OCP를 위배하였습니다. 기존 코드의 변경을 통해(변경에 열림) 해결하려고 했기 때문입니다. Contact form, 의사 로그인 form, 간호사 로그인 form 등 새로운 요구사항이 추가되면 기존 코드를 계속 수정하며 대응해야 합니다. 그러면 기존 코드는 수 많은 분기로 인해 유지보수가 어려운 코드가 될 것입니다. 해당 코드를 기존 코드의 변경 없이 해결하려면 어떻게 해야할까요? React에서는 **Composition**을 이용하면 됩니다.
+
+```jsx
+const Form = ({ name, email, onSubmit, onChange, children }) => {
+  return (
+    <div>
+      <h2>SignIn Form</h2>
+      <form onSubmit={onSubmit}>
+        <input type="text" name="name" value={name} onChange={onChange} />
+        <input type="text" name="email" value={email} onChange={onChange} />
+        {children}
+        <button type="submit">Sumbit</button>
+      </form>
+    </div>
+  );
+};
+
+const SignInForm = ({ children, onChange, password, ...props }) => {
+  return (
+    <div>
+      <h2>SignIn Form</h2>
+      <input
+        type="password"
+        name="password"
+        value={password}
+        onChange={onChange}
+      />
+      <Form {...props}>{children}</Form>
+    </div>
+  );
+};
+
+const QuestionnaireForm = ({ content, onChange, children, ...props }) => {
+  return (
+    <div>
+      <h2>Questionnaire Form</h2>
+      <textarea name="content" value={content} onChange={onChange} />
+      <Form {...props}>{children}</Form>
+    </div>
+  );
+};
+```
+
+`Form`을 Base로 하여, Composition과정을 통해 `SiginForm`, `QuetionnaireForm` 을 만들었습니다.
+이제는 새로운 form에 대한 요구사항이 들어와도 기존 컴포넌트인 `Form`을 수정하지 않고
+`Form`을 Composition하여 새로운 form을 만들어 대응할 수 있게 되었습니다.
+즉, 확장(Composition)에 열려있고 변경(기존 코드 수정)에 닫혀있는 컴포넌트를 만들 수 있게 되었습니다.
+
+### LSP(Liskov Substitution Principle) : 리스코프 치환 원칙
+
+> 서브 타입은 기반타입을 대체할 수 있다.
+
+리스코프 치환 원칙은 클래스의 상속을 설명하는 원칙입니다.
+이를 프론트엔드에서는 어떻게 해석할 수 있을까요? 좁은 범위에서는 LSP를 논할 수 없지만, 넓은 의미에서 바라보면 프론트엔드에서도 LSP를 논할 수 있습니다.
+넓은 의미에서 상속은 `is-a`관계를 만족하면 상속관계를 만족한다고 볼 수 있고, LSP 원칙을 지켰다고 볼 수 있습니다.  
+예를 들어 `새는 동물이다` 와 같은 명제가 상속을 의미합니다. 상속 관계인 두 관계에서 `새는 광합성을 한다` 와 같은 이야기를 하지 않습니다.
+즉, **예상하지 못한 행동을 하지 말라는 관점**으로 해석할 수 있습니다.
+
+`SubmitButton` 컴포넌트를 보고 `onChange`가 있는 것은 LSP를 위배하는 코드를 작성한 것입니다. 또한, `ErrorBoundary`라는 컴포넌트에서 데이터를 fetch할거라는 생각을 하지 않습니다. 예측 가능한 컴포넌트를 구성하는 것이 곧 LSP를 만족한다고 볼 수 있습니다.
+
+## ISP(Interface Segregation Principle) : 인터페이스 분리 원칙
+
+> 객체는 자신이 사용하는 메서드에만 의존해야 한다.
+
+컴포넌트는 자신이 사용하는 메서드나 props에 의존해야 한다고 생각해볼 수 있습니다. 이 원칙은 불필요한 의존성을 제거하여 확장성 있는 컴포넌트를 작성할 수 있도록 도와줍니다.
+다음의 예를 보겠습니다.
+
+- `VideoList` 컴포넌트
+
+```tsx
+interface Video {
+  title: string;
+  coverUrl: string;
+}
+
+const VideoList = ({ items }: Video[]) => {
+  return (
+    <ul>
+      {items.map((item) => (
+        <Thumbnail key={item.title} video={item} />
+      ))}
+    </ul>
+  );
+};
+```
+
+- `Thumbnail` 컴포넌트
+
+```tsx
+interface Props {
+  video: Video;
+}
+
+const Thumbnail = ({ video }: Props) => {
+  return <img src={video.coverUrl} />;
+};
+```
+
+위 코드는 `Video` 객체를 `Thumbnail`컴포넌트의 props로 내려줘서 썸네일을 보여주고 있습니다.
+하지만 위 컴포넌트의 구조는 문제가 있을 수 있습니다.
+`Video`라는 구체적인 도메인에 의존적이기 때문입니다. Thumbnail 컴포넌트는 `Video`객체가 필요한 것이 아니라 `coverUrl`이라는 데이터만 필요합니다.
+`LiveStream`이라는 새로운 도메인이 추가된다면 `Thumbnail`은 재사용할 수 없는 컴포넌트가 됩니다.
+
+```tsx
+interface LiveStream {
+  name: string;
+  previewUrl: string;
+} // 다음과 같은 도메인이 추가된다면 Thumbnail 컴포넌트는 재사용할 수 없는 컴포넌트가 됩니다.
+```
+
+즉, `Thumbnail` 컴포넌트는 자신에게 필요 없는 정보까지 받고 있어서 ISP를 위배하고 있다고 볼 수 있습니다.
+
+ISP를 만족시켜, 확장성 있는 컴포넌트로 변경하려면 **필요한 데이터만 받아야 합니다.**
+
+```tsx
+interface Props {
+  coverUrl: string;
+}
+
+const Thumbnail = ({ coverUrl }: Props) => {
+  return <img src={coverUrl} />;
+};
+```
+
+```tsx
+const VideoList = ({ items }) => {
+  return (
+    <ul>
+      {items.map((item) => {
+        'coverUrl' in item ? (
+          <Thumbnail coverUrl={item.coverUrl} /> // type: Video
+        ) : (
+          <Thumbnail coverUrl={item.previewUrl} /> // type: LiveStream
+        );
+      })}
+    </ul>
+  );
+};
+```
+
+`Thumbnail` 컴포넌트가 관심있는 이미지 경로만 주입 받게 된다면 확장성 있는 컴포넌트를 작성할 수 있게 됩니다.
+
+**Tip**
+GraphQL은 ISP를 만족시키기 위한 좋은 도구일 수 있습니다.
+컴포넌트에 필요한 데이터만 요청하여 사용하는 것이 가능하기 때문입니다.
+
+### DIP(Dependency Inversion Principle) : 의존 역전 원칙
+
+> 상위 모듈은 하위 모듈과 같은 구체화 된 것에 의존하면 안된다. 추상화에 의존해야 한다.
+
+여기서 상위 모듈은 추상화 된 것을 의미하고 하위 모듈은 구체화 된 것을 의미합니다.
+자바와 같은 객체 지향 언어에서는 상위 모듈을 추상 인터페이스를 의미하고 하위 모듈은 이를 구현한 구현체를 뜻합니다.
+
+그렇다면 프론트엔드에서 DIP는 어떤 것을 의미할까요? React에서는 구체적인 상황에 의존하지 않고 추상화 시켜서 처리할 수 있는 좋은 방법이 있습니다.
+바로 `children`입니다. `children`을 이용하여 특정 상황을 일반화 시켜 구체적인 상황에 의존하지 않게 구성할 수 있습니다. 다음의 예제를 보겠습니다.
+
+```jsx
+const MemoContainer = () => {
+  const { data, loading, error } = useQuery(GET_MEMO);
+
+  if (loading) return <div>loading...</div>;
+  if (error) return <div>error...:(</div>;
+
+  return <Memo data={data} />;
+};
+```
+
+위 코드는 메모 정보를 가져와, 로딩이나 에러에 대한 처리를 하고 `Memo` 컴포넌트를 렌더링 하고 있습니다. 일반적으로 작성하는 코드 입니다.
+`Memo`컴포넌트 뿐만 아니라 게시판, 프로필 모든 상황에서 loading과 error에 대해 처리해야 합니다.
+`Memo`컴포넌트는 사실 loading과 error에 관심이 없습니다.
+그저 메모를 렌더링하는 것에만 관심이 있을 뿐입니다. 이런 경우 DIP를 이용해 의존성을 역전시킨다면 더 좋은 컴포넌트를 작성할 수 있습니다.
+
+```jsx
+const Fetcher = ({ query, children }) => {
+  const { data, loading, error } = query();
+
+  if (loading) return <Loading />;
+  if (error) return <Error />;
+
+  return children;
+};
+
+const MemoContainer = () => {
+  const [memo, MemoFetcher] = useFetcher(useGetMemoQuery);
+
+  return (
+    <MemoFetcher>
+      <Memo data={memo} />
+    </MemoFetcher>
+  );
+};
+```
+
+`Fetcher`를 구현한 `useFetcher`를 통해 로딩이나 에러에 대한 처리를 맡기고, `MemoContainer`는 단순히 메모를 그리는 코드를 작성하고 있습니다.
+이렇게 되면 자연스럽게 관심사 분리가 이루어지고 해당 코드는 유지보수성이 좋은 코드가 됩니다.
+
+## 정리
+
+개발자가 작성하는 모든 프로그램은 변화합니다. 어제 작성했던 코드를 오늘 수정 할 수도 있고, 내일 수정할 수도 있고, 더 나아가 몇달 후에 수정할 수도 있습니다.
+그렇기 때문에 개발자는 변화에 대응하기 쉬운 코드를 작성해야 합니다. 이는 백엔드, 프론트엔드 모두 동일합니다.
+
+그렇다면 어떻게 해야 변화에 대응하기 쉬운 코드를 작성해야 할까요?
+
+그 방법은 바로 격리입니다. 변화율이 같은 것을 묶고 변화율이 다른 코드들을 분리하여 변화에 대한 영향을 최소화 시키는 것입니다.
+즉, SOLID 원칙은 변화율에 따른 격리를 도와, 변화에 대응하기 쉬운 코드를 작성할 수 있게 도와주는 원칙이라고 할 수 있습니다. 감사합니다. 🙏
