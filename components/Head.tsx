@@ -10,8 +10,8 @@ const Head = ({ customMeta }: { customMeta?: MetaProps }): JSX.Element => {
   const meta: MetaProps = {
     title: 'DENTECH - HOME',
     description:
-      '덴티움 기술블로그, For Dentists, By Dentists',
-    image: `${WEBSITE_HOST_URL}/images/index_1.jpeg`,
+      '덴티움 기술블로그',
+    image: `${WEBSITE_HOST_URL}/images/index.jpeg`,
     type: 'website',
     ...customMeta,
   };
