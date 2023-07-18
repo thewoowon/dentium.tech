@@ -24,14 +24,7 @@ function Banner() {
           <TitleText>{'DENTECH'}</TitleText>
           <Typewriter
             options={{
-              strings: [
-                '덴티움 기술 블로그에 오신 것을 환영합니다.',
-                '우리는 항상 더 나은 방법을 찾아가며 고객과 함께 성장합니다.',
-                '새로운 도전는 언제나 가슴을 뛰게 합니다.',
-                '내일을 위한 기술을 만들어갑니다.',
-                '글로벌 기업으로 도약하는 덴티움을 응원합니다.',
-                '함께 성장하고 싶은 당신을 기다립니다.',
-              ],
+              strings: ['내일을 위한 기술을 만들어갑니다.'],
               autoStart: true,
               loop: true,
               delay: 100,
