@@ -1,0 +1,319 @@
+---
+title: DENTECH TALK - 스토리북 함께 사용해보기
+description: 스토리북을 함께 사용해보며 그 매력에 빠져봅시다.
+date: '2023-07-16'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/ebcf5906-4804-40b5-cd26-d88449235500/public'
+writer: '기원'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/f9c6284c-f46b-4665-4a89-a2ff29f05200/public'
+category: 'tech'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={
+    'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/ebcf5906-4804-40b5-cd26-d88449235500/public'
+  }
+  width={1440}
+  height={960}
+  priority
+/>
+
+<p className="text-center text-gray-500">Kiwon's cat created by Midjourney</p>
+
+# 목차
+
+1. [들어가며](#들어가며)
+2. [스토리북이란](#스토리북이란)
+3. [스토리북 사용해보기](#스토리북-사용해보기)
+4. [스토리북 장단점](#스토리북-장단점)
+5. [마치며](#마치며)
+
+# 들어가며
+
+_안녕하세요._ 🖐 <br/>
+_IT팀 FE Developer 기원입니다._
+
+_현재, IT팀은 전자 차트의 성공적인 출시를 위해 열심히 달려가고 있습니다.
+처음 팀에 합류하여 프로젝트에 적응하던 과정에서 스토리북의 도움을 많이 받았던 경험이 있습니다.
+초기 프로젝트는 아토믹 디자인을 도입하여 컴포넌트를 설계하고,
+스토리북을 도입해 각각 스토리화 했기 때문에 프로젝트에서 사용되는
+여러 컴포넌트를 한 눈에 확인할 수 있었고 빠르게 적응할 수 있었습니다._
+
+_이번 글에서는 제게 많은 도움이 됬던 스토리북에 대해 간단히 알아보고
+실습을 진행 하면서, 끝으로는 개인적으로 느낀 장단점에 대해 이야기하며 마무리하겠습니다._
+
+# 스토리북이란
+
+_[스토리북](https://storybook.js.org/)은 프로젝트의
+**UI 컴포넌트를 개별적으로 렌더링 및 개발, 테스트, 문서화 등을 제공하는 오픈소스 라이브러리**입니다._
+
+_이미 [Adobe](https://opensource.adobe.com/spectrum-web-components/storybook/?path=/story/accordion--default),
+[Github](https://main--61a90feace7802003a4d9c45.chromatic.com/?path=/story/components-actionlist--default)를
+포함한 수천 개의 팀에서 사용 중이며 [유지보수](https://github.com/storybookjs/storybook/releases)가 활발히 이루어 지고 있습니다.
+이제 아래에서 함께 스토리북을 설치하고 기본적인 사용법을 알아보겠습니다._
+
+# 스토리북 사용해보기
+
+_이번 포스트에서 [React](https://react.dev/), [Vite](https://vitejs.dev/)와 함께 Storybook을 사용해 보겠습니다._
+
+_먼저 아래의 명령어를 통해 vite 프로젝트를 구성해 봅시다._
+
+```bash
+yarn create vite
+```
+
+_설치한 프로젝트 경로에서 스토리북을 설치합니다._
+
+```bash
+npx storybook@latest init
+```
+
+_스토리북을 실행해 봅시다._
+
+```bash
+yarn storybook
+```
+
+_브라우저가 자동으로 실행되며 스토리북을 확인할 수 있습니다._
+
+![storybook-first-run](https://github.com/chigomuh/gandan/assets/84620459/a5433364-c0fe-4506-a25c-305350081ae6)
+
+_경로가 http://localhost:6006/가 맞는지 확인해 봅시다.
+이제 실제로 스토리북을 사용해 보겠습니다._
+
+_우선 Button을 클릭해 봅니다.
+제일 먼저 Docs를 확인할 수 있습니다._
+
+![storybook_button_docs](https://github.com/chigomuh/gandan/assets/84620459/42358a7e-a483-4816-a863-3a9b43413354)
+
+_그런데 프로젝트 폴더에서는 `Button.mdx`와 같은 별도의 Docs 파일이 없습니다._
+
+![button-docs-path](https://github.com/chigomuh/gandan/assets/84620459/3dbd4979-527a-49aa-bac4-0b782b1fd803)
+
+어떻게 Docs가 자동으로 생성되었을까요?  
+그 비밀은 바로 `Button.stories.ts`에 있습니다.
+
+```typescript
+// Button.stories.ts
+
+const meta = {
+  title: 'Example/Button',
+  components: Button,
+  tags: ['autodocs'],
+  argsTypes: {
+    backgroundColor: { control: 'color' },
+  },
+} satisfies Meta<typeof Button>;
+```
+
+_Button.stories.ts의 파일을 살펴보면 tags의 `autodocs`가 보입니다.
+코드를 다루는 우리는 이 tags의 `autodocs`가 굉장히 의심스럽습니다._
+
+_물론 그 추측은 맞습니다. 스토리북은 `autodocs` 태그를 가진 스토리를 자동으로 문서화합니다._
+
+_[Autodocs](https://storybook.js.org/docs/react/writing-docs/autodocs)는
+7.0부터 도입된 새로운 옵션입니다.
+이전(6.x)에는 Story 내부에 Docs Tab이 별도로 존재 했지만,
+7.0부터는 이 부분을 사이드바 영역으로 옮기고 Autodocs를 추가했습니다.
+기본적으로 Docs는 활성화 되어 있지 않습니다.
+따라서 명시를 해주어야 하는데, `main.js` 파일에서 기본값을 설정할 수 있습니다._
+
+```typescript
+// .storybook/main.js
+
+module.exports = {
+  docs: {
+    autodocs: true,
+  },
+};
+```
+
+_`Button.tsx`를 살펴볼까요?_
+
+```typescript
+// Button.tsx
+
+interface ButtonProps {
+  /**
+   * Is this the principal call to action on the page?
+   */
+  primary?: boolean;
+  /**
+   * What background color to use
+   */
+  backgroundColor?: string;
+  /**
+   * How large should the button be?
+   */
+  size?: 'small' | 'medium' | 'large';
+  /**
+   * Button contents
+   */
+  label: string;
+  /**
+   * Optional click handler
+   */
+  onClick?: () => void;
+}
+
+/**
+ * Primary UI component for user interaction
+ */
+export const Button = ({
+  primary = false,
+  size = 'medium',
+  backgroundColor,
+  label,
+  ...props
+}: ButtonProps) => {
+	...
+}
+```
+
+_Docs에 작성된 설명은 모두 `Button.stories.ts`에
+작성된 것이 아닌 `Button.tsx`에 작성된 것을 볼 수 있습니다.
+이처럼 스토리북을 사용하는 데에 별도의 작업이 필요 없습니다!
+개발자는 추가 작업 없이 컴포넌트 개발과 동시에 문서화할 수 있습니다._
+
+_이제 `Button.stories.ts` 파일을 살펴보며 기본적인 Story 작성 방법을 알아 보겠습니다.
+우선 `meta`는 '\*.stories.ts' 파일에서 default로 내보내야 하는 객체입니다._
+
+```typescript
+const meta = {
+  title: 'Example/Button',
+  component: Button,
+  tags: ['autodocs'],
+  argTypes: {
+    backgroundColor: { control: 'color' },
+  },
+} satisfies Meta<typeof Button>;
+```
+
+_**title**은 스토리북 좌측 사이드바에 보일 경로를 의미합니다.
+위의 경우에는 Example > Button 경로에 Story가 위치합니다._
+
+_**component**는 Story에 사용될 컴포넌트를 의미합니다.
+tags는 Story 파일들은 필터링하기 위해 사용하는 tag를 지정할 수 있습니다.
+위의 경우에는 'autodocs'로 필터링하여 자동으로 Docs를 생성합니다._
+
+_**argTypes**는 Story에서 Props 값을 컨트롤할 수 있는 타입을 지정할 수 있습니다.
+위의 경우에는 backgroundColor의 컨트롤 타입을 color type으로 선택할 수 있게 합니다._
+
+|   속성    |                설명                |
+| :-------: | :--------------------------------: |
+|   title   |    사이드바에 보여질 경로 설정     |
+| component |   스토리에 사용될 컴포넌트 설정    |
+|   tags    | 스토리를 필터링하기 위한 태그 설정 |
+| argsTypes |  스토리 prop 값 컨트롤 타입 설정   |
+
+_이제 실제 스토리를 생성하는 부분을 살펴봅시다._
+
+```typescript
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
+  args: {
+    primary: true,
+    label: 'Button',
+  },
+};
+```
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    StoryObj는 스토리북에서 제공하는 타입으로 스토리를 생성할 때 사용됩니다.
+  </div>
+</div>
+
+_meta 데이터를 바탕으로 Story 타입을 생성하고,
+이를 이용하여 Primary Story를 생성합니다.
+args에는 컴포넌트에 필요한 Props를 작성해주도록 합니다._
+
+_위의 경우에는 `<Button primary label='Button' />`을
+렌더링하는 것과 동일한 결과가 나옵니다._
+
+_한가지 흥미로운 기능으로 스토리북에서 제공하는 [상호작용 테스트](https://storybook.js.org/docs/react/writing-tests/interaction-testing)
+기능이 있습니다.
+`Page.stories.ts` 파일을 확인해 봅시다._
+
+```typescript
+import { within, userEvent } from '@storybook/testing-library';
+
+export const LoggedIn: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const loginButton = await canvas.getByRole('button', {
+      name: /Log in/i,
+    });
+    await userEvent.click(loginButton);
+  },
+};
+```
+
+_**LoggedIn Story**를 살펴보면 Button과 달리 `play` 속성이 작성되어 있습니다.
+이미 알아차린 분들도 계시겠지만, 실행을 의미하는 play로 직관적으로 이해할 수 있습니다._
+
+![storybook-interaction_test](https://github.com/chigomuh/gandan/assets/84620459/f6d856a4-e190-4c52-9fec-39c3aa7d22a5)
+
+_실패 테스트 케이스로 변경해 보겠습니다._
+
+```typescript
+const loginButton = await canvas.getByRole('button', {
+  name: /Log out/i, // 테스트 변경
+});
+```
+
+![storybook_page_test_fail](https://github.com/chigomuh/gandan/assets/84620459/3e0473f5-74af-4ca2-b352-034bfb5a1ea8)
+
+_의도적으로 테스트가 실패한 것을 확인할 수 있습니다._
+
+_이렇게 스토리북을 활용하면 개발 중에 독립된 환경에서 컴포넌트
+UI를 확인할 수 있고 자동으로 문서화 및 최신화가 가능하며 또한
+컴포넌트가 담당하는 기능들을 테스트까지 할 수 있습니다._
+
+_그렇다면 스토리북은 오직 컴포넌트만을 문서화할 수 있을까요?
+답변은 '**아니다**'입니다._
+
+_답변을 통해서도 아시겠지만, 스토리북은 문서화하고 싶은 모든 것들을 문서화할 수 있습니다.
+스토리북에서는 처음 마주한 `Introduction.mdx` 파일과 같이 `mdx` 파일을 읽고 보여줄 수 있습니다.
+따라서, 팀이나 프로젝트에서 사용하는 공통의 hook, util 함수, 컨벤션 등을
+문서화할 때 문서화 툴로써 매우 유용하게 사용할 수 있습니다._
+
+![storybook_hooks_docs](https://github.com/chigomuh/gandan/assets/84620459/e083e580-dcb9-443d-8871-47ce1c3e29a3)
+
+_어떠신가요? 스토리북을 사용해 볼 마음이 샘솟지 않나요?_ 😁
+
+# 스토리북 장단점
+
+_개인적으로 스토리북을 사용해 보며 느낀 장단점은 다음과 같습니다._
+
+## 장점
+
+- _개발과 동시에 자동으로 문서 생성 및 최신화가 가능하다._
+- _스토리를 기준으로 컴포넌트를 분리할 수 있다._
+- _간단한 UI 테스트가 가능하다._
+- _자연스럽게 데이터를 가져오는 로직과 UI를 그리는 로직을 분리하여 개발할 수 있다._
+- _독립적인 환경에서 UI를 개발할 수 있다._
+- _배포 시, 개발된 UI를 확인하기 위해 스크린샷과 같은 별도의 추가 작업 없이 커뮤니케이션할 수 있다._
+
+## 단점
+
+- _사용을 위한 추가 학습이 필요하다._
+- _팀, 프로젝트 규모에 따라, 구두나 구글 Docs와 같은 협업 도구보다 관리하기 힘들 수 있다._
+
+# 마치며
+
+_프로젝트 개발을 진행하다 보면 개발 과정에 대해 문서를 작성하고 최신화할 필요가 있습니다.
+그리고 이러한 문서는 기존 팀원과 미래의 팀원, 그리고 나를 위해 반드시 필요로 합니다.
+스토리북은 개발 단계에서 이 작업을 마무리할 수 있도록 도와주는 아주 매력적인 라이브러리라고 생각합니다.
+또한, [UI 테스트](https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/),
+[상호작용 테스트](https://storybook.js.org/docs/react/writing-tests/interaction-testing),
+[여러 통합 기능](https://storybook.js.org/integrations/) 등 앞서 언급한 것 외에 미처
+다루지 못한 많은 기능들이 남아 있습니다. 글을 읽으신 이후 흥미가 생기신다면
+천천히 스토리북의 기능들을 살펴 보시는 것은 어떨까요?_
+
+_여러분도 이번 글을 읽으시면서 스토리북의 매력에 푹 빠지셨기를 바랍니다!_
+
+_감사합니다._
