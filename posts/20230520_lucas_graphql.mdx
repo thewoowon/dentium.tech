@@ -1,5 +1,5 @@
 ---
-title: DENTECH TALK - 우리가 GraphQL을 선택한 이유
+title: 우리가 GraphQL을 선택한 이유
 description: GraphQL을 도입하게 된 배경과 특징을 소개하고, 효과적인 협업을 위해 어떤 방식으로 활용하고 있는지 공유합니다.
 date: '2023-05-20'
 image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0c40cf1b-1b18-4cbc-09ab-0905bde3f000/public'
@@ -7,6 +7,7 @@ writer: '루카스'
 position: 'FE Developer'
 profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/75661ff5-2f0f-44ad-039d-a465fb4da000/public'
 category: 'tech'
+tag: 'DENTECH TALK'
 ---
 
 <Image
@@ -51,7 +52,12 @@ _server와 client는 API(Application Programming Interface)를 활용해 상호 
 <div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
-    GraphQL은 페이스북에서 만든 쿼리 언어입니다. <br />: GraphQL에 대해 좀 더 자세히 알고 싶다면{' '}<a href="https://graphql-kr.github.io/" target="_blank">여기</a>를 참고해주세요.
+    GraphQL은 페이스북에서 만든 쿼리 언어입니다. <br />: GraphQL에 대해 좀 더
+    자세히 알고 싶다면{' '}
+    <a href="https://graphql-kr.github.io/" target="_blank">
+      여기
+    </a>
+    를 참고해주세요.
   </div>
 </div>
 
@@ -138,7 +144,7 @@ _기존 REST에서는 리소스에 대한 명세를 정의하여 데이터를 �
 ```
 
 _위 예시처럼 특정 환자에 대한 정보를 요청하면 명세에 정의한 대로 모든 데이터를 가져오게 됩니다.
-프론트엔드에서는 모든 환자 정보를 알 필요가 없지만, 리소스의 데이터 구조를 정했기 때문에 모두 가져올 수밖에 없습니다. 
+프론트엔드에서는 모든 환자 정보를 알 필요가 없지만, 리소스의 데이터 구조를 정했기 때문에 모두 가져올 수밖에 없습니다.
 필요하지 않은 정보까지 요청하는 것을 **오버페칭**(over-fetching)이라고 합니다._
 
 _이와 반대로, 어떤 페이지에서 환자 정보뿐만 아니라 보험 정보까지 가져와야 하는 요구사항이 생길 수 있습니다.
@@ -188,14 +194,28 @@ query Get_Patient {
 <div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
-    IT팀은 GraphQL을 편리하게 사용하기 위해 Apollo를 사용하고 있습니다. Apollo는 GraphQL을 사용하는데 필요한 다양한 기능을 제공합니다.<br />: Apollo에 대해 좀 더 자세히 알고 싶다면{' '}<a href="https://www.apollographql.com/docs/react/" target="_blank">여기</a>를 참고해주세요.
+    IT팀은 GraphQL을 편리하게 사용하기 위해 Apollo를 사용하고 있습니다. Apollo는
+    GraphQL을 사용하는데 필요한 다양한 기능을 제공합니다.
+    <br />: Apollo에 대해 좀 더 자세히 알고 싶다면 <a
+      href="https://www.apollographql.com/docs/react/"
+      target="_blank"
+    >
+      여기
+    </a>를 참고해주세요.
   </div>
 </div>
 
 <div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
-    Apollo 이외에는 Relay를 사용할 수 있습니다. Relay는 페이스북에서 만든 GraphQL 클라이언트 라이브러리입니다.<br />: Relay에 대해 좀 더 자세히 알고 싶다면{' '}<a href="https://relay.dev/" target="_blank">여기</a>를 참고해주세요.
+    Apollo 이외에는 Relay를 사용할 수 있습니다. Relay는 페이스북에서 만든
+    GraphQL 클라이언트 라이브러리입니다.
+    <br />: Relay에 대해 좀 더 자세히 알고 싶다면 <a
+      href="https://relay.dev/"
+      target="_blank"
+    >
+      여기
+    </a>를 참고해주세요.
   </div>
 </div>
 
@@ -232,7 +252,8 @@ _또한 스키마를 기반으로 자동으로 API 문서화할 수 있기 때�
   <div className="text-lg font-bold">Warning</div>
   <div>
     위의 비교는 GraphQL이 REST보다 장점이 될 수 있는 부분만 언급하였을 뿐,
-    GraphQL이 REST보다 좋다는 것을 의미하지 않습니다. 프로젝트의 특성에 맞는 기술을 선택하는 것이 중요합니다.
+    GraphQL이 REST보다 좋다는 것을 의미하지 않습니다. 프로젝트의 특성에 맞는
+    기술을 선택하는 것이 중요합니다.
   </div>
 </div>
 
@@ -247,7 +268,8 @@ _위 사항들을 종합해보면 GraphQL은 프로젝트의 특성에 맞는 �
 <div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
-    REST로도 충분히 프로젝트를 진행할 수 있습니다. GraphQL을 사용하면 좋은 점이 많지만, 분명히 단점도 존재합니다.
+    REST로도 충분히 프로젝트를 진행할 수 있습니다. GraphQL을 사용하면 좋은 점이
+    많지만, 분명히 단점도 존재합니다.
   </div>
 </div>
 
@@ -261,8 +283,8 @@ GraphQL은 필요한 리소스만 요청할 수 있는 유연함이 있고, **�
 
 ### API를 기다리지 않고 MSW(Mock Service Worker)로
 
-_프론트엔드와 백엔드는 스키마를 기준으로 독립적으로 개발을 진행할 수 있습니다. 
-독립적인 개발방식을 적극 활용하기 위해 선택한 방법이 MSW입니다. 
+_프론트엔드와 백엔드는 스키마를 기준으로 독립적으로 개발을 진행할 수 있습니다.
+독립적인 개발방식을 적극 활용하기 위해 선택한 방법이 MSW입니다.
 다음은 MSW의 handler의 예시입니다._
 
 ```tsx
@@ -295,11 +317,11 @@ const handler = [
 ];
 ```
 
-_위와 같이 Handler를 등록해 두면, 
-실제 서버와 통신하는 것과 같은 환경에서 테스트를 진행할 수 있습니다. 
-이후에 백엔드 작업이 완료되고, 실제 서버와 통신하는 환경으로 옮기더라도 
+_위와 같이 Handler를 등록해 두면,
+실제 서버와 통신하는 것과 같은 환경에서 테스트를 진행할 수 있습니다.
+이후에 백엔드 작업이 완료되고, 실제 서버와 통신하는 환경으로 옮기더라도
 스키마 기준으로 작업을 진행했기 때문에 변경 사항이 발생하지 않습니다.
-또한, 서버와 통신하는 부분을 hook처럼 재사용할 수 있는 
+또한, 서버와 통신하는 부분을 hook처럼 재사용할 수 있는
 로직으로 분리해 둔다면 컴포넌트에 영향을 거의 미치지 않고 변경할 수 있습니다._
 
 ### 편리한 라이브러리
