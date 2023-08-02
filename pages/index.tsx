@@ -8,6 +8,9 @@ import { PostType } from '../types/post';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { ARTICLE_TYPE } from '@/constant';
+// import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+// import { faHeart } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type IndexProps = {
   posts: PostType[];
@@ -45,7 +48,7 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
               </p>
               <h1 className="mb-2 text-sm xs:text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
                 <Link
-                  className="text-gray-900 hover:text-dentium transition ease-in-out duration-200 dark:text-white dark:hover:text-dentium"
+                  className="text-gray-900 hover:text-gray-900 transition ease-in-out duration-200 dark:text-white dark:text-gray-900"
                   as={`/posts/${post.slug}`}
                   href={`/posts/[slug]`}
                 >
@@ -55,9 +58,6 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
               <p className="text-xs xss:text-xs xs:text-sm sm:text-md md:text-lg lg:text-lg mb-3">
                 {post.description}
               </p>
-              {/* <div className='text-sm text-gray-500 dark:text-gray-400 px-[24px] absolute left-0 bottom-0 flex justify-center items-center'>
-            {post.writer} - {post.position}
-            </div> */}
             </div>
           </article>
         );
