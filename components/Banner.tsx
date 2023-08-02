@@ -6,8 +6,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import styled from '@emotion/styled';
-import Image from 'next/image';
-import Typewriter from 'typewriter-effect';
+// import Image from 'next/image';
+// import Typewriter from 'typewriter-effect';
 
 function Banner() {
   // const videoList = [
@@ -90,101 +90,101 @@ const SliderOutsideAlign = styled.div`
   overflow: hidden;
 `;
 
-const DecoArea = styled.div`
-  max-width: 1280px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  color: white;
-  font-family: Pretendard;
-  font-weight: 700;
-  z-index: 2;
-  padding-left: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-const TextArea = styled.div`
-  color: white;
-  font-family: Pretendard;
-  padding-left: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 32px;
-`;
+// const DecoArea = styled.div`
+//   max-width: 1280px;
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+//   color: white;
+//   font-family: Pretendard;
+//   font-weight: 700;
+//   z-index: 2;
+//   padding-left: 32px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   align-items: flex-start;
+// `;
+// const TextArea = styled.div`
+//   color: white;
+//   font-family: Pretendard;
+//   padding-left: 32px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   align-items: flex-start;
+//   padding: 32px;
+// `;
 
-const TitleText = styled.div`
-  padding-top: 28px;
-  font-size: 52px;
-  line-height: 42px;
-  font-weight: 700;
-  padding-bottom: 12px;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+// const TitleText = styled.div`
+//   padding-top: 28px;
+//   font-size: 52px;
+//   line-height: 42px;
+//   font-weight: 700;
+//   padding-bottom: 12px;
+//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-  @media (max-width: 1080px) {
-    font-size: 42px;
-    line-height: 42px;
-  }
-  @media (max-width: 768px) {
-    font-size: 32px;
-    line-height: 32px;
-  }
-  @media (max-width: 480px) {
-    font-size: 24px;
-    line-height: 24px;
-  }
-`;
+//   @media (max-width: 1080px) {
+//     font-size: 42px;
+//     line-height: 42px;
+//   }
+//   @media (max-width: 768px) {
+//     font-size: 32px;
+//     line-height: 32px;
+//   }
+//   @media (max-width: 480px) {
+//     font-size: 24px;
+//     line-height: 24px;
+//   }
+// `;
 
-const SubTitleText = styled.div`
-  font-size: 24px;
-  line-height: 40px;
-  font-weight: 400;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+// const SubTitleText = styled.div`
+//   font-size: 24px;
+//   line-height: 40px;
+//   font-weight: 400;
+//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-  @media (max-width: 1080px) {
-    font-size: 20px;
-    line-height: 36px;
-  }
-  @media (max-width: 768px) {
-    font-size: 14px;
-    line-height: 30px;
-  }
-  @media (max-width: 480px) {
-    font-size: 10px;
-    line-height: 20px;
-  }
-`;
+//   @media (max-width: 1080px) {
+//     font-size: 20px;
+//     line-height: 36px;
+//   }
+//   @media (max-width: 768px) {
+//     font-size: 14px;
+//     line-height: 30px;
+//   }
+//   @media (max-width: 480px) {
+//     font-size: 10px;
+//     line-height: 20px;
+//   }
+// `;
 
-const ButtonArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 32px;
-`;
+// const ButtonArea = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: flex-start;
+//   align-items: center;
+//   padding: 32px;
+// `;
 
-const Button = styled.button`
-  width: 40px;
-  height: 40px;
-  margin-right: 8px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// const Button = styled.button`
+//   width: 40px;
+//   height: 40px;
+//   margin-right: 8px;
+//   cursor: pointer;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  @media (max-width: 1080px) {
-    width: 38px;
-    height: 38px;
-  }
-  @media (max-width: 768px) {
-    width: 36px;
-    height: 36px;
-  }
-  @media (max-width: 480px) {
-    width: 32px;
-    height: 32px;
-  }
-`;
+//   @media (max-width: 1080px) {
+//     width: 38px;
+//     height: 38px;
+//   }
+//   @media (max-width: 768px) {
+//     width: 36px;
+//     height: 36px;
+//   }
+//   @media (max-width: 480px) {
+//     width: 32px;
+//     height: 32px;
+//   }
+// `;
