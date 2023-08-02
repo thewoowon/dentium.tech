@@ -19,7 +19,7 @@ function Banner() {
 
   return (
     <SliderOutsideAlign>
-      <DecoArea>
+      {/* <DecoArea>
         <TextArea>
           <TitleText>{'DENTECH'}</TitleText>
           <Typewriter
@@ -51,7 +51,7 @@ function Banner() {
             />
           </Button>
         </ButtonArea>
-      </DecoArea>
+      </DecoArea> */}
       <Swiper
         id="carousel"
         slidesPerView={1}
