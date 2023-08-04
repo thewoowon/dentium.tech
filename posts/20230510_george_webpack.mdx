@@ -1,5 +1,5 @@
 ---
-title: DENTECH TALK - Webpack, 어디까지 알고 계신가요?
+title: Webpack, 어디까지 알고 계신가요?
 description: Webpack에 대해 좀 더 깊게 알아보고, 실제로 사용해보는 시간을 갖도록 하겠습니다.
 date: '2023-05-10'
 image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/a74ca209-7e84-4e3b-a3a8-04d17f8b5900/public'
@@ -7,6 +7,7 @@ writer: '죠지'
 position: 'FE Developer'
 profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
 category: 'tech'
+tag: 'DENTECH TALK'
 ---
 
 <Image
@@ -94,7 +95,7 @@ _DENTECH 블로그의 엔트리 포인트는 'pages/\_app.tsx'입니다.
 webpack은 엔트리 포인트가 (직간접적으로) 의존하는 다른 모듈과 라이브러리를 찾아냅니다.
 이것을 그림을 통해 살펴보겠습니다._
 
-<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l-4 border-yellow-500">
   <div className="text-lg font-bold">Warning</div>
   <div>ECMAScript 모듈을 사용하고 있습니다.</div>
 </div>
@@ -137,7 +138,7 @@ _output은 `filename`과 `path`를 설정할 수 있습니다.(props를 가지�
 'filename'은 묶인 파일의 이름을 의미하고,
 'path'는 묶인 파일의 경로를 의미합니다._
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
     공식 문서에서는 생성된 번들을 내보낼 위치와 이 파일의 이름을 지정하는 방법을
@@ -151,12 +152,12 @@ _webpack은 기본적으로 JavaScript와 JSON만 이해할 수 있습니다.
 하지만, `loader`를 사용하면 webpack이 다른 타입의 파일들을
 처리하고, 해당 파일들을 의존성 그래프에 추가할 수 있습니다._
 
-<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l-4 border-yellow-500">
   <div className="text-lg font-bold">Warning</div>
   <div>
-  markdown to html 변환 과정에서 정규식을 인식하지 못하는 문제가 있습니다.
-  그렇기 때문에 코드 필드에 정규식을 사용하지 않고, 문자열로 변환하여 사용하고 있습니다.
-  rules -> test을 확인해주세요.
+    markdown to html 변환 과정에서 정규식을 인식하지 못하는 문제가 있습니다.
+    그렇기 때문에 코드 필드에 정규식을 사용하지 않고, 문자열로 변환하여 사용하고
+    있습니다. rules -> test을 확인해주세요.
   </div>
 </div>
 
@@ -166,7 +167,7 @@ const path = require('path');
 
 module.exports = {
   module: {
-    rules: [{ test: '/\.txt$/', use: 'raw-loader' }],
+    rules: [{ test: '/.txt$/', use: 'raw-loader' }],
   },
 };
 ```
@@ -188,7 +189,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: '/\.css$/i',
+        test: '/.css$/i',
         use: ['style-loader', 'css-loader'],
       },
     ],
@@ -196,7 +197,7 @@ module.exports = {
 };
 ```
 
-<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l-4 border-yellow-500">
   <div className="text-lg font-bold">Warning</div>
   <div>
     헷갈리지 마시길 바랍니다. loader는 오른쪽에서 왼쪽으로 실행됩니다. 위의
@@ -220,7 +221,7 @@ const webpack = require('webpack');
 
 module.exports = {
   module: {
-    rules: [{ test: '/\.txt$/', use: 'raw-loader' }],
+    rules: [{ test: '/.txt$/', use: 'raw-loader' }],
   },
   plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
 };
@@ -259,7 +260,7 @@ _둘을 조금더 기능적으로 구분하자면
 `require.ensure()`는 webpack에 의해 지원되는
 동적 모듈 로딩을 지원합니다._
 
-<div className="px-4 py-2 my-4 bg-yellow-100 border-l border-l-4 border-yellow-500">
+<div className="px-4 py-2 my-4 bg-yellow-100 border-l-4 border-yellow-500">
   <div className="text-lg font-bold">Warning</div>
   <div>require.ensure()는 import()로 대체되었습니다.</div>
 </div>
@@ -282,7 +283,7 @@ module.exports = {
 };
 ```
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
     Next.js에서는 제공하는 기본 설정이 충분하기 때문에, 따로 webpack 설정을 해줄
@@ -292,7 +293,7 @@ module.exports = {
   </div>
 </div>
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
     Next.js 13 버전에서는 Babel이 기본적으로 적용됩니다. 기본적으로 next/babel
@@ -316,7 +317,7 @@ _webpack 이외에도 다양한 모듈 번들러가 존재합니다._
 
 _이 중 parcle, rollup, vite, snowpack에 대해 간단히 살펴보겠습니다._
 
-<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+<div className="px-4 py-2 my-4 bg-green-100 border-l-4 border-green-500">
   <div className="text-lg font-bold">Parcel</div>
   <div>
     Zero-configuration 모듈 번들러로, 구성이 간단하며 빠른 빌드 속도가
@@ -324,7 +325,7 @@ _이 중 parcle, rollup, vite, snowpack에 대해 간단히 살펴보겠습니�
   </div>
 </div>
 
-<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+<div className="px-4 py-2 my-4 bg-green-100 border-l-4 border-green-500">
   <div className="text-lg font-bold">Rollup</div>
   <div>
     ES6 모듈 시스템에 최적화된 번들러로, 라이브러리나 모듈을 빌드하기에
@@ -332,7 +333,7 @@ _이 중 parcle, rollup, vite, snowpack에 대해 간단히 살펴보겠습니�
   </div>
 </div>
 
-<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+<div className="px-4 py-2 my-4 bg-green-100 border-l-4 border-green-500">
   <div className="text-lg font-bold">Vite</div>
   <div>
     개발 시에 빠른 빌드와 라이브 리로딩(live reloading)을 지원하며, 프로덕션
@@ -340,7 +341,7 @@ _이 중 parcle, rollup, vite, snowpack에 대해 간단히 살펴보겠습니�
   </div>
 </div>
 
-<div className="px-4 py-2 my-4 bg-green-100 border-l border-l-4 border-green-500">
+<div className="px-4 py-2 my-4 bg-green-100 border-l-4 border-green-500">
   <div className="text-lg font-bold">Snowpack</div>
   <div>
     개발 시에 빠른 빌드와 HMR(hot module replacement)을 지원하는데, 특히 웹
@@ -387,7 +388,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: '/\.css$/i',
+        test: '/.css$/i',
         use: ['style-loader', 'css-loader'],
       },
     ],
@@ -395,7 +396,7 @@ module.exports = {
 };
 ```
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>style-loader, css-loader는 dev dependency로 설치되어야 합니다.</div>
 </div>
@@ -433,7 +434,7 @@ document.body.appendChild(component());
 // div 태그의 내용은 '안녕 웹팩!'이며 class는 'redClass'입니다.
 ```
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>lodash는 dev dependency로 설치되어야 합니다.</div>
 </div>
@@ -464,7 +465,7 @@ npm run build
 
 _dist 폴더에 index.html 파일을 생성합니다._
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
     빌드를 하기 전에 dist 폴더가 없어도 괜찮습니다. 빌드를 하면 자동으로
@@ -498,7 +499,7 @@ _그리고 다음과 같이 실행합니다._
 npx serve
 ```
 
-<div className="px-4 py-2 my-4 bg-blue-100 border-l border-l-4 border-blue-500">
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Tip</div>
   <div>
     serve 패키지가 설치되어 있지 않다면, 자동으로 설치됩니다. 정적 파일을

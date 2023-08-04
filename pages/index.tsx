@@ -38,17 +38,20 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
       {posts.map((post) => {
         if (post.category !== category) return null;
         return (
-          <article key={post.slug} className="mt-6 flex">
+          <article key={post.slug} className="mt-6 flex relative">
             <div className="w-4/12 h-28 xs:h-32 sm:h-48 md:h-56 lg:h-60 relative rounded-xl overflow-hidden">
               <Image src={post.image ?? ''} fill alt="post_image" priority />
             </div>
             <div className="w-8/12 px-6 relative">
-              <p className="mb-1 text-xs xs:text-xs sm:text-xs md:text-sm lg:text-sm text-gray-500 dark:text-gray-400">
+              <p className="mb-2 text-xs xs:text-xs sm:text-xs md:text-sm lg:text-sm text-gray-500 dark:text-gray-400">
+                <span className="border-2 border-black text-white bg-black">
+                  {post.tag}
+                </span>{' '}
                 {format(parseISO(post.date ?? ''), 'MMMM dd, yyyy')}
               </p>
               <h1 className="mb-2 text-sm xs:text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
                 <Link
-                  className="text-gray-900 hover:text-gray-900 transition ease-in-out duration-200 dark:text-white dark:text-gray-900"
+                  className="text-gray-900 hover:text-gray-900 transition ease-in-out duration-200 dark:text-white"
                   as={`/posts/${post.slug}`}
                   href={`/posts/[slug]`}
                 >
@@ -59,6 +62,13 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
                 {post.description}
               </p>
             </div>
+            {/* <div className="absolute w-6 h-6 right-2 bottom-2">
+              <FontAwesomeIcon
+                icon={faHeart}
+                size={'lg'}
+                className="animate-pulse"
+              />
+            </div> */}
           </article>
         );
       })}
@@ -76,6 +86,7 @@ export const getStaticProps: GetStaticProps = async () => {
     'position',
     'image',
     'category',
+    'tag',
   ]);
 
   return {

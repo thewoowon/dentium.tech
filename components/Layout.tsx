@@ -22,7 +22,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
     <>
       <Head customMeta={customMeta} />
       <header>
-        <div className="max-w-5xl px-8 mx-auto">
+        <div className="max-w-[1920px] px-8 mx-auto">
           <div className="flex items-center justify-between py-4">
             <Navigation />
           </div>

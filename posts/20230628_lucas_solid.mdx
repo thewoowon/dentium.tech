@@ -1,5 +1,5 @@
 ---
-title: DENTECH TALK - React를 SOLID 원칙으로 바라보기
+title: React를 SOLID 원칙으로 바라보기
 description: React에 SOLID 원칙을 적용해보자.
 date: '2023-06-28'
 image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/44950d26-de55-43ea-3be5-0da3b612e400/public'
@@ -7,6 +7,7 @@ writer: '루카스'
 position: 'FE Developer'
 profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/75661ff5-2f0f-44ad-039d-a465fb4da000/public'
 category: 'tech'
+tag: 'DENTECH TALK'
 ---
 
 <Image
@@ -316,7 +317,7 @@ _예를 들어 `새는 동물이다` 와 같은 명제가 상속을 의미합니
 상속 관계인 두 관계에서 `새는 광합성을 한다` 와 같은 이야기를 하지 않습니다.
 즉, **예상하지 못한 행동을 하지 말라는 관점**으로 해석할 수 있습니다._
 
-_`SubmitButton` 컴포넌트를 보고 `onChange`가 있는 것은 LSP를 위배하는 코드를 작성한 것입니다. 
+_`SubmitButton` 컴포넌트를 보고 `onChange`가 있는 것은 LSP를 위배하는 코드를 작성한 것입니다.
 또한, `ErrorBoundary`라는 컴포넌트에서 데이터를 fetch 할거라는 생각을 하지 않습니다.
 예측 가능한 컴포넌트를 구성하는 것이 곧 LSP를 만족한다고 볼 수 있습니다._
 
@@ -475,15 +476,15 @@ _`Fetcher`를 구현한 `useFetcher`를 통해 로딩이나 에러에 대한 처
 _개발자가 작성하는 모든 프로그램은 변화합니다.
 어제 작성했던 코드를 오늘 수정할 수도 있고, 빠르면 내일이나
 몇 달 후에 수정할 수도 있습니다.
-그러므로 개발자는 변화에 대응하기 쉬운 코드를 작성해야 합니다. 
+그러므로 개발자는 변화에 대응하기 쉬운 코드를 작성해야 합니다.
 이는 백엔드, 프론트엔드 모두 동일합니다._
 
 > 변화에 대응하기 쉬운 코드는 어떻게 작성할 수 있을까요?
 
-_그 방법은 바로 **격리**입니다. 
-변화율이 같은 것을 묶고 변화율이 다른 코드들을 분리하여 
+_그 방법은 바로 **격리**입니다.
+변화율이 같은 것을 묶고 변화율이 다른 코드들을 분리하여
 변화에 대한 영향을 최소화시키는 것입니다.
-즉, SOLID 원칙은 변화율에 따른 격리를 도와, 
+즉, SOLID 원칙은 변화율에 따른 격리를 도와,
 변화에 대응하기 쉬운 코드를 작성할 수 있게 도와주는 원칙이라고 할 수 있습니다._
 
 감사합니다. 🙏
