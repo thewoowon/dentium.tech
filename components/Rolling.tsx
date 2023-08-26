@@ -51,12 +51,33 @@ const Rolling = ({ title, posts }: RollingProps) => {
                     position: 'relative',
                   }}
                 >
-                  <Image
-                    src={post.image ?? ''}
-                    fill
-                    alt="post_image"
-                    priority
-                  />
+                  {title === 'interview' ? (
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '200px',
+                        height: '200px',
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
+                    >
+                      <Image
+                        src={post.profile ?? ''}
+                        fill
+                        alt="post_image"
+                        priority
+                      />
+                    </div>
+                  ) : (
+                    <Image
+                      src={post.image ?? ''}
+                      fill
+                      alt="post_image"
+                      priority
+                    />
+                  )}
                 </div>
                 <div
                   style={{
