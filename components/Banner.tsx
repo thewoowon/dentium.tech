@@ -1,190 +1,52 @@
-import { Navigation, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import 'swiper/css/autoplay';
 import styled from '@emotion/styled';
-// import Image from 'next/image';
-// import Typewriter from 'typewriter-effect';
 
-function Banner() {
-  // const videoList = [
-  //   '/videos/coding.mp4',
-  //   '/videos/rest.mp4',
-  //   '/videos/typing.mp4',
-  //   '/videos/typing_3.mp4',
-  // ];
-
+const Banner = () => {
   return (
-    <SliderOutsideAlign>
-      {/* <DecoArea>
-        <TextArea>
-          <TitleText>{'DENTECH'}</TitleText>
-          <Typewriter
-            options={{
-              strings: ['내일을 위한 기술을 만들어갑니다.'],
-              autoStart: true,
-              loop: true,
-              delay: 100,
-              deleteSpeed: 50,
-            }}
-            component={SubTitleText}
-          />
-        </TextArea>
-        <ButtonArea>
-          <Button className="_swiper-button-prev text-2xl">
-            <Image
-              src={'/images/chevron_square_left.svg'}
-              width={40}
-              height={40}
-              alt="leftChevron"
-            />
-          </Button>
-          <Button className="_swiper-button-next text-2xl">
-            <Image
-              src={'/images/chevron_square_right.svg'}
-              width={40}
-              height={40}
-              alt="rightChevron"
-            />
-          </Button>
-        </ButtonArea>
-      </DecoArea> */}
-      <Swiper
-        id="carousel"
-        slidesPerView={1}
-        loop={true}
-        modules={[Navigation, A11y]}
-        style={{ position: 'relative' }}
-        navigation={{
-          nextEl: '._swiper-button-next',
-          prevEl: '._swiper-button-prev',
-        }}
-      >
-        <SwiperSlide>
-          <img src="/images/bg.png" />
-        </SwiperSlide>
-        {/* {Array.from({ length: 2 }).map((_, id) => (
-          <SwiperSlide key={id}>
-            <video autoPlay muted loop>
-              <source src={videoList[id]} />
-            </video>
-          </SwiperSlide>
-        ))} */}
-      </Swiper>
-    </SliderOutsideAlign>
+    <BannerContainer>
+      <Typography>
+        DENTECH,
+        <SpanTypography>어느새 기술에 가까워지다.</SpanTypography>
+      </Typography>
+      <BottomTypography>
+        기술을 통해 사람과 사람을 연결하는 서비스를 만듭니다.
+      </BottomTypography>
+    </BannerContainer>
   );
-}
+};
 
 export default Banner;
 
-const SliderOutsideAlign = styled.div`
-  max-width: 1920px;
-  max-height: 450px;
+const BannerContainer = styled.div`
+  max-width: 1024px;
+  width: 100%;
+  height: 300px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding-bottom: 32px;
+  align-items: flex-start;
   overflow: hidden;
+  flex-direction: column;
+`;
+// 글자 간격 조정
+const Typography = styled.div`
+  font-size: 65px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+  font-weight: 700;
 `;
 
-// const DecoArea = styled.div`
-//   max-width: 1280px;
-//   width: 100%;
-//   height: 100%;
-//   position: absolute;
-//   color: white;
-//   font-family: Pretendard;
-//   font-weight: 700;
-//   z-index: 2;
-//   padding-left: 32px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   align-items: flex-start;
-// `;
-// const TextArea = styled.div`
-//   color: white;
-//   font-family: Pretendard;
-//   padding-left: 32px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-start;
-//   align-items: flex-start;
-//   padding: 32px;
-// `;
+const SpanTypography = styled.div`
+  font-size: 60px;
+  font-weight: 600;
+  color: #6e6e73;
+`;
 
-// const TitleText = styled.div`
-//   padding-top: 28px;
-//   font-size: 52px;
-//   line-height: 42px;
-//   font-weight: 700;
-//   padding-bottom: 12px;
-//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-//   @media (max-width: 1080px) {
-//     font-size: 42px;
-//     line-height: 42px;
-//   }
-//   @media (max-width: 768px) {
-//     font-size: 32px;
-//     line-height: 32px;
-//   }
-//   @media (max-width: 480px) {
-//     font-size: 24px;
-//     line-height: 24px;
-//   }
-// `;
-
-// const SubTitleText = styled.div`
-//   font-size: 24px;
-//   line-height: 40px;
-//   font-weight: 400;
-//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-//   @media (max-width: 1080px) {
-//     font-size: 20px;
-//     line-height: 36px;
-//   }
-//   @media (max-width: 768px) {
-//     font-size: 14px;
-//     line-height: 30px;
-//   }
-//   @media (max-width: 480px) {
-//     font-size: 10px;
-//     line-height: 20px;
-//   }
-// `;
-
-// const ButtonArea = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: flex-start;
-//   align-items: center;
-//   padding: 32px;
-// `;
-
-// const Button = styled.button`
-//   width: 40px;
-//   height: 40px;
-//   margin-right: 8px;
-//   cursor: pointer;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   @media (max-width: 1080px) {
-//     width: 38px;
-//     height: 38px;
-//   }
-//   @media (max-width: 768px) {
-//     width: 36px;
-//     height: 36px;
-//   }
-//   @media (max-width: 480px) {
-//     width: 32px;
-//     height: 32px;
-//   }
-// `;
+const BottomTypography = styled.div`
+  font-size: 20px;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+  font-weight: 500;
+  padding-top: 5px;
+  padding-left: 5px;
+  color: #606073;
+`;
