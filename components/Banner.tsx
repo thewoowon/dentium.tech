@@ -1,15 +1,21 @@
 import styled from '@emotion/styled';
+import Cube from './Cube';
 
 const Banner = () => {
   return (
     <BannerContainer>
-      <Typography>
-        DENTECH,
-        <SpanTypography>어느새 기술에 가까워지다.</SpanTypography>
-      </Typography>
-      <BottomTypography>
-        기술을 통해 사람과 사람을 연결하는 서비스를 만듭니다.
-      </BottomTypography>
+      <TextSection>
+        <Typography>
+          DENTECH,
+          <SpanTypography>어느새 기술에 가까워지다.</SpanTypography>
+        </Typography>
+        <BottomTypography>
+          기술을 통해 사람과 사람을 연결하는 서비스를 만듭니다.
+        </BottomTypography>
+      </TextSection>
+      <CubeSection>
+        <Cube />
+      </CubeSection>
     </BannerContainer>
   );
 };
@@ -21,10 +27,18 @@ const BannerContainer = styled.div`
   width: 100%;
   height: 300px;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   overflow: hidden;
-  flex-direction: column;
+`;
+
+const TextSection = styled.div``;
+
+const CubeSection = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 // 글자 간격 조정
 const Typography = styled.div`
