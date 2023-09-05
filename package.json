@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js --ext jsx",
     "test": "jest",
-    "test:complete": "yarn lint && yarn type-check && yarn test"
+    "test:complete": "yarn lint && yarn type-check && yarn test",
+    "prebuild": "next-sitemap"
   },
   "dependencies": {
     "@emotion/core": "^11.0.0",
@@ -34,6 +35,7 @@
     "mdx-prism": "^0.3.4",
     "next": "13.2.4",
     "next-mdx-remote": "^4.4.1",
+    "next-sitemap": "^4.2.2",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
