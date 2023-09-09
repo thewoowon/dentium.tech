@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://dentium.tech
+
+# Sitemaps
+Sitemap: https://dentium.tech/sitemap.xml

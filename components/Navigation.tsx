@@ -5,7 +5,7 @@ import React from 'react';
 const Navigation = () => {
   return (
     <nav className="flex justify-between items-center">
-      <div className="relative w-[243px] h-[33px]">
+      <div className="relative w-[203px] h-[28px]">
         <Link href={'/'}>
           <Image
             className="cursor-pointer"
