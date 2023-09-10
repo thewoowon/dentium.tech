@@ -589,7 +589,9 @@ export default function BasicForm() {
 }
 ```
 
-![분리_후_저장하기_결과](https://github.com/thewoowon/dentium.tech/assets/84620459/5cf25071-fa6f-4b39-8710-a9e2b511605c)
+<div className="flex justify-center">
+  ![분리_후_저장하기_결과](https://github.com/thewoowon/dentium.tech/assets/84620459/5cf25071-fa6f-4b39-8710-a9e2b511605c)
+</div>
 
 저장하기 버튼을 누르면 자식 컴포넌트에서 넘겨준 입력값을 잘 가져오는 것을 볼 수 있어요.
 부모 컴포넌트의 코드를 보면 사용자 정보와 추가 정보에 대한 코드는 볼 수 없어요.
@@ -619,7 +621,9 @@ export default function BasicForm() {
 }
 ```
 
-![자동완성](https://github.com/thewoowon/dentium.tech/assets/84620459/ba09e3d1-f73e-4f85-a5d3-c1dfe74b18cf)
+<div className="flex justify-center">
+  ![자동완성](https://github.com/thewoowon/dentium.tech/assets/84620459/ba09e3d1-f73e-4f85-a5d3-c1dfe74b18cf)
+</div>
 
 이처럼 자식 컴포넌트에서 타입을 제공하여 부모 컴포넌트에서 안전하게 개발할 수 있어요.
 위와 같이 직접 타입을 제공할 수도 있지만 `ElementRef`를 통해서도 가능해요.
@@ -777,7 +781,9 @@ export default function BasicForm() {
 }
 ```
 
-![reset](https://github.com/thewoowon/dentium.tech/assets/84620459/1fdd4405-2bd7-49a1-b96c-e0e194261457)
+<div className="flex justify-center">
+  ![reset](https://github.com/thewoowon/dentium.tech/assets/84620459/1fdd4405-2bd7-49a1-b96c-e0e194261457)
+</div>
 
 초기화가 잘 동작하는 것을 볼 수 있네요!
 이처럼 `forwardRef`와 `useImperativeHandle`을 사용해서 자식 컴포넌트에서 상위로 전달하고 싶은 것들만 선택적으로 제공할 수 있어요.
