@@ -11,6 +11,7 @@ export interface MetaProps
     | 'position'
     | 'profile'
     | 'category'
+    | 'tag'
   > {
   type?: string;
 }

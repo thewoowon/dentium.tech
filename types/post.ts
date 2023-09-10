@@ -1,12 +1,12 @@
 export type PostType = {
-    date?: string;
-    description: string;
-    image: string;
-    slug: string;
-    title: string;
-    writer?: string;
-    position?: string;
-    profile?: string;
-    category?: string;
-  };
-  
+  date?: string;
+  description: string;
+  image: string;
+  slug: string;
+  title: string;
+  writer?: string;
+  position?: string;
+  profile?: string;
+  category?: string;
+  tag?: string;
+};

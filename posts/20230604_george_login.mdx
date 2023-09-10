@@ -1,17 +1,18 @@
 ---
-title: DENTECH TALK - FIRST ARIT, 인증/인가 프로세스
+title: FIRST ARIT, 인증/인가 프로세스
 description: 3 가지 토큰을 운용하는 인증/인가 프로세스를 구현하는 과정에서 고민한 내용을 공유합니다.
 date: '2023-06-04'
-image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/29e9b7a5-55c8-444a-1966-e634772ecf00/public'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9567450f-8d0f-499f-c04b-a6848d2ea100/public'
 writer: '죠지'
 position: 'FE Developer'
 profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
 category: 'tech'
+tag: 'DENTECH TALK'
 ---
 
 <Image
   alt={`Thumbnail`}
-  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/29e9b7a5-55c8-444a-1966-e634772ecf00/public`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9567450f-8d0f-499f-c04b-a6848d2ea100/public`}
   width={1440}
   height={960}
   priority
@@ -33,28 +34,28 @@ category: 'tech'
   priority
 />
 
-_안녕하세요.<br/>
-덴티움의 FE Developer 죠지입니다._
+안녕하세요.<br/>
+덴티움의 FE Developer 죠지입니다.
 
-_오늘의 주제가 `인증/인가 프로세스`인 만큼
+오늘의 주제가 `인증/인가 프로세스`인 만큼
 이집트의 사후세계에 대한 이야기로 글을 시작했습니다.
 조금 더 덧붙이자면, 사후세계로 가면서 마주치는 7개의 관문을 아리트(Arit)라고 하고,
 이를 모두 통과하면 아누비스에 의해 심장의 무게가 재어진 후,
-결과에 따라 오시리스의 심판을 받게 된다고 합니다._
+결과에 따라 오시리스의 심판을 받게 된다고 합니다.
 
-_현대를 살아가는 우리에게는 허무맹랑한 이야기로 들리지만,
+현대를 살아가는 우리에게는 허무맹랑한 이야기로 들리지만,
 한 가지 주목하고 넘어가야 할 부분이 있습니다.
 바로 `사자의 서에 적힌 주문들을 올바르게 암송`해야만 한다는 점입니다.
 이는 우리가 인증/인가 프로세스를 구현할 때,
-로그인하는 과정에서 `사용자의 정보를 올바르게 전달`해야만 한다는 의미로 이해할 수 있습니다._
+로그인하는 과정에서 `사용자의 정보를 올바르게 전달`해야만 한다는 의미로 이해할 수 있습니다.
 
 # Authentication & Authorization
 
-_`Authentication`과 `Authorization`에 대해 짚고 넘어가겠습니다.
+`Authentication`과 `Authorization`에 대해 짚고 넘어가겠습니다.
 Authentication과 Authorization의 단어는 비슷하지만, 의미는 다릅니다.
 Authentication은 `인증`으로서 흔히 로그인을 의미하고
 , Authorization 즉 `인가`는 로그인한 사용자가 특정 자원에 접근할 수 있는
-권한을 가지고 있는지를 확인하는 과정입니다._
+권한을 가지고 있는지를 확인하는 과정입니다.
 
 |      | Authentication | Authorization |
 | ---- | -------------- | ------------- |
@@ -74,9 +75,9 @@ Authentication은 `인증`으로서 흔히 로그인을 의미하고
 
 ## First Arit
 
-_어떤 서비스든 로그인은 필수입니다.
+어떤 서비스든 로그인은 필수입니다.
 신원이 확인된 사용자만 서비스에 접근할 수 있도록 하기 위해서입니다.
-그리고 이러한 인증 단계는 개발자가 가장 먼저 마주치는 아리트(Arit)이기도 합니다._
+그리고 이러한 인증 단계는 개발자가 가장 먼저 마주치는 아리트(Arit)이기도 합니다.
 
 <div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
   <div className="text-lg font-bold">Talk</div>
@@ -88,23 +89,23 @@ _어떤 서비스든 로그인은 필수입니다.
   </div>
 </div>
 
-_결론부터 이야기하자면 IT팀에서는 로그인을 구현할 때, `jwt`를 활용했습니다.
+결론부터 이야기하자면 IT팀에서는 로그인을 구현할 때, `jwt`를 활용했습니다.
 세션이나 쿠키를 활용한 방식도 있지만, jwt를 활용한 방식이 더 효율적이라고 판단했기 때문입니다.
 또한 jwt를 access token과 refresh token으로 구분하고
-2차 로그인 프로세스를 위한 execute token을 추가했습니다._
+2차 로그인 프로세스를 위한 execute token을 추가했습니다.
 
-_각 토큰에 대한 내용과 프로세스는 뒤에서 더 자세히 다루도록 하겠습니다._
+각 토큰에 대한 내용과 프로세스는 뒤에서 더 자세히 다루도록 하겠습니다.
 
 # Hot Debate
 
-_jwt를 활용한 로그인 방식에서 token의 저장 위치는 항상 고민이 됩니다.
-그리고 아직까지도 포털이나 각종 커뮤니티에서 이에 대한 엇갈린 의견이 있습니다._
+jwt를 활용한 로그인 방식에서 token의 저장 위치는 항상 고민이 됩니다.
+그리고 아직까지도 포털이나 각종 커뮤니티에서 이에 대한 엇갈린 의견이 있습니다.
 
-_로그인을 구현해 보신 분들이라면 알 수 있습니다. 로그인을 구현할 때 가장 먼저 마주치는 문제는
+로그인을 구현해 보신 분들이라면 알 수 있습니다. 로그인을 구현할 때 가장 먼저 마주치는 문제는
 방식 자체를 결정하는 일이 될 수도 있지만, `어디에 토큰을 저장할 것인가`도 큰 고민거리입니다.
-이와 같은 고민을 IT팀에서도 했고, 그 결과 `cookie`를 활용하기로 결정했습니다._
+이와 같은 고민을 IT팀에서도 했고, 그 결과 `cookie`를 활용하기로 결정했습니다.
 
-_이유는 다음과 같이 정리할 수 있습니다._
+이유는 다음과 같이 정리할 수 있습니다.
 
 - `localStorage`는 javascript로 접근이 가능해 XSS 공격에 취약한데 반해, `cookie`는 httpOnly와 secure 속성을 추가해 해결할 수 있습니다.
 - `localStorage`는 서버에 요청을 보낼 때마다 토큰을 함께 보내야 하지만, `cookie`는 브라우저가 알아서 처리해주기 때문에 편리합니다.
@@ -131,18 +132,18 @@ _이유는 다음과 같이 정리할 수 있습니다._
 
 # The Musketeers(삼총사)
 
-_IT팀은 인증/인가 프로세스에 3 가지 토큰을 운용합니다._
+IT팀은 인증/인가 프로세스에 3 가지 토큰을 운용합니다.
 
 - access token
 - refresh token
 - execute token
 
-_앞서 말씀드렸듯이 access token과 refresh token은 1차 로그인,
-execute token은 2차 로그인을 위해 사용됩니다._
+앞서 말씀드렸듯이 access token과 refresh token은 1차 로그인,
+execute token은 2차 로그인을 위해 사용됩니다.
 
 ## Life Cycle
 
-_토큰의 생명주기는 다음과 같습니다._
+토큰의 생명주기는 다음과 같습니다.
 
 - access token: 1시간
 - refresh token: 1주일 ~ 1개월
@@ -150,8 +151,8 @@ _토큰의 생명주기는 다음과 같습니다._
 
 ## Status Decision
 
-_3 가지 토큰을 운용 할 때, 서버는 토큰의 상태를 확인해야 합니다.
-그리고 각 토큰의 상태에 따라 다음과 같은 처리를 해야 합니다._
+3 가지 토큰을 운용 할 때, 서버는 토큰의 상태를 확인해야 합니다.
+그리고 각 토큰의 상태에 따라 다음과 같은 처리를 해야 합니다.
 
 | access token | refresh token | execute token |       server        |        status         |
 | :----------: | :-----------: | :-----------: | :-----------------: | :-------------------: |
@@ -164,10 +165,10 @@ _3 가지 토큰을 운용 할 때, 서버는 토큰의 상태를 확인해야 �
 |      X       |       X       |       O       | execute token 삭제  |  로그아웃, 앱 미실행  |
 |      X       |       X       |       X       |          -          |  로그아웃, 앱 미실행  |
 
-_복잡하다고 생각하실 수도 있지만, 8가지 경우의 수를 모두 고려해야만 합니다.
-각각의 상태에 따라 서버가 처리해야하는 내용이 다르기 때문입니다._
+복잡하다고 생각하실 수도 있지만, 8가지 경우의 수를 모두 고려해야만 합니다.
+각각의 상태에 따라 서버가 처리해야하는 내용이 다르기 때문입니다.
 
-_아래는 간단하게 각 경우의 수에 대해 설명드리겠습니다._
+아래는 간단하게 각 경우의 수에 대해 설명드리겠습니다.
 
 > 첫번째 경우, access token과 refresh token, execute token이 모두 존재하기 때문에
 > 서버는 아무런 처리를 하지 않고, 클라이언트는 2차 로그인을 한 상태에서 앱을 실행합니다.
@@ -202,7 +203,7 @@ _아래는 간단하게 각 경우의 수에 대해 설명드리겠습니다._
 
 ## Flow Chart
 
-_토큰의 상태를 확인하는 과정을 flow chart로 표현하면 다음과 같습니다._
+토큰의 상태를 확인하는 과정을 flow chart로 표현하면 다음과 같습니다.
 
 <Image
   alt={`Thumbnail`}
@@ -212,23 +213,23 @@ _토큰의 상태를 확인하는 과정을 flow chart로 표현하면 다음과
   priority
 />
 
-_간단하게 설명을 덧붙이자면 apollo client는 access token만
+간단하게 설명을 덧붙이자면 apollo client는 access token만
 감시하면서 true & false를 반환합니다.
 이는 전역으로 관리되어 어디서든 접근이 가능합니다.
 만약 처음 상태 이 후에 토큰의 상태가 변한다면,
 apollo client는 이를 감지하고, 다시 true & false를 반환합니다.
 그리고 해당 토큰 상태를 defendency로 관리하는
-AuthObserver에서 Auth_Me를 호출하여 서버에서 토큰 상태를 확인합니다._
+AuthObserver에서 Auth_Me를 호출하여 서버에서 토큰 상태를 확인합니다.
 
 <div className="my-4"></div>
 
 ## Auth Observer
 
-_이제부터는 토큰의 상태를 확인하는 과정을 코드로 구현해 보겠습니다._
+이제부터는 토큰의 상태를 확인하는 과정을 코드로 구현해 보겠습니다.
 
-_먼저 위치입니다.
+먼저 위치입니다.
 최상위 Apollo Provider 바로 아래에서
-토큰의 상태를 감시하는 Auth Observer를 작성합니다._
+토큰의 상태를 감시하는 Auth Observer를 작성합니다.
 
 ```tsx
 <ApolloProvider client={apolloClient}>
@@ -240,11 +241,11 @@ _먼저 위치입니다.
 </ApolloProvider>
 ```
 
-_이미 토큰이 존재하는 경우의 수를 모두 살펴 보아서 알고 계시겠지만,
+이미 토큰이 존재하는 경우의 수를 모두 살펴 보아서 알고 계시겠지만,
 클라이언트는 access token의 존재만 알고 있으면 됩니다.
 나머지는 서버에서 처리해주기 때문입니다.
 그리고 access token을 쿠키에서 확인하여 makeVar()로 관리합니다.
-이 부분은 apollo client가 담당하고 있습니다._
+이 부분은 apollo client가 담당하고 있습니다.
 
 ```tsx
 
@@ -300,7 +301,7 @@ export default AuthObserver;
 
 ```
 
-_실제 코드가 동작하는 과정을 살펴보면 다음과 같습니다._
+실제 코드가 동작하는 과정을 살펴보면 다음과 같습니다.
 
 1. AuthObserver가 렌더링됩니다.
 2. isLoggedInVar()를 통해 access token의 존재 여부를 확인합니다.
@@ -316,19 +317,19 @@ _실제 코드가 동작하는 과정을 살펴보면 다음과 같습니다._
 
 # 앞으로의 과제
 
-_이번 글에서는 인증/인가 프로세스를 구현하는 과정에서 고민한 내용을 공유했습니다.
-하지만 토큰 3개를 운용하는 과정에서도 여전히 해결해야하는 과제가 있습니다._
+이번 글에서는 인증/인가 프로세스를 구현하는 과정에서 고민한 내용을 공유했습니다.
+하지만 토큰 3개를 운용하는 과정에서도 여전히 해결해야하는 과제가 있습니다.
 
-_만약에 사용자의 수가 만명을 넘어간다면, 토큰의 수도 만개가 넘어갈 것입니다.
+만약에 사용자의 수가 만명을 넘어간다면, 토큰의 수도 만개가 넘어갈 것입니다.
 이는 서버의 부하를 증가시킬 수 있습니다.
 그렇기 때문에 레디스를 활용해 refresh token 관리하거나
-최대한 부하를 분산시킬 수 있는 방법을 고민해야 합니다._
+최대한 부하를 분산시킬 수 있는 방법을 고민해야 합니다.
 
 # Reference
 
-_`Authentication on the We`이라는 영상입니다.
+`Authentication on the We`이라는 영상입니다.
 기본적인 인증/인가 프로세스에 대해 설명하고 있습니다.
-관심있는 분들은 한번쯤 보시는 것도 좋을 것 같습니다._
+관심있는 분들은 한번쯤 보시는 것도 좋을 것 같습니다.
 
 <div className="flex justify-center items-center">
   <iframe
@@ -342,8 +343,8 @@ _`Authentication on the We`이라는 영상입니다.
   ></iframe>
 </div>
 
-_jwt에 대해 좀 더 자세히 다룬 영상입니다.
-jwt를 활용한 로그인 방식을 구현할 때, 참고하시면 좋을 것 같습니다._
+jwt에 대해 좀 더 자세히 다룬 영상입니다.
+jwt를 활용한 로그인 방식을 구현할 때, 참고하시면 좋을 것 같습니다.
 
 <div className="flex justify-center items-center">
   <iframe
