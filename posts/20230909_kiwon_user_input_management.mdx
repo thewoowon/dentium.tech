@@ -2,13 +2,25 @@
 title: 쏟아지는 사용자 입력 관리하기
 description: 다양한 사용자 입력을 적절히 분리하며 관리하는 방법을 소개합니다.
 date: '2023-09-09'
-image: ''
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/5908d68d-c9e0-42c6-25c2-ec0d56311800/public'
 writer: '기원'
 position: 'FE Developer'
 profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/f9c6284c-f46b-4665-4a89-a2ff29f05200/public'
 category: 'tech'
 tag: 'DENTECH TALK'
 ---
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/5908d68d-c9e0-42c6-25c2-ec0d56311800/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+<p className="text-center text-gray-500">
+  The pouring waves of Japan reinterpreted by Midjourney.
+</p>
 
 # 목차
 
@@ -22,8 +34,11 @@ tag: 'DENTECH TALK'
 안녕하세요. 🖐 <br/>
 IT팀 FE Developer 기원입니다.
 
-IT팀에서 개발 중인 전자 차트는 사용자로부터 다양한 입력 폼을 통해 입력값을 제어하고 또 비즈니스 로직에 맞게 적절히 처리하고 있어요.  
-저 또한, 다양한 입력 폼을 개발하면서 사용자의 입력값을 관리하는 여러 가지 방법을 사용해 봤는데요. 이번 포스팅에서는 최근 유용하게 사용 중인 관리 방법에 대해 소개해 드릴게요.
+IT팀에서 개발 중인 전자 차트는 사용자로부터 다양한 입력 폼을 통해
+입력값을 제어하고 또 비즈니스 로직에 맞게 적절히 처리하고 있어요.
+
+저 또한, 다양한 입력 폼을 개발하면서 사용자의 입력값을 관리하는 여러 가지 방법을 사용해 봤는데요.
+이번 포스팅에서는 최근 유용하게 사용 중인 관리 방법에 대해 소개해 드릴게요.
 
 # 가장 일반적인 사용자 입력 폼 관리하기
 
@@ -65,49 +80,50 @@ export default function BasicForm() {
   }
 
   return (
-      <form className="basic-form" onSubmit={handleSubmit}>
-        <h1>사용자 정보 입력</h1>
-        <div className="input-box">
-          <label htmlFor="name">이름</label>
-          <input  
-            id="name"
-            name="name"
-            type="text"
-            placeholder="이름을 입력하세요"
-            value={name}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="userId">아이디</label>
-          <input
-            id="userId"
-            name="userId"
-            type="text"
-            placeholder="아이디를 입력하세요"
-            value={userId}
-            onChange={handleUserIdChange}
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="password">패스워드</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <button type="submit">저장하기</button>
-      </form>
+    <form className="basic-form" onSubmit={handleSubmit}>
+      <h1>사용자 정보 입력</h1>
+      <div className="input-box">
+        <label htmlFor="name">이름</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="이름을 입력하세요"
+          value={name}
+          onChange={handleNameChange}
+        />
+      </div>
+      <div className="input-box">
+        <label htmlFor="userId">아이디</label>
+        <input
+          id="userId"
+          name="userId"
+          type="text"
+          placeholder="아이디를 입력하세요"
+          value={userId}
+          onChange={handleUserIdChange}
+        />
+      </div>
+      <div className="input-box">
+        <label htmlFor="password">패스워드</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+      </div>
+      <button type="submit">저장하기</button>
+    </form>
   );
 }
 ```
 
 리액트에서는 사용자의 입력값을 제어 컴포넌트 방식으로 사용하도록 안내하고 있어요.
-이는 아이디, 패스워드의 양식을 검증하는 등 사용자의 입력값에 따라, 다른 UI 상태를 보여주기 위함이에요.  
+이는 아이디, 패스워드의 양식을 검증하는 등 사용자의 입력값에 따라, 다른 UI 상태를 보여주기 위함이에요.
+
 비제어 컴포넌트 방식을 사용한다면 입력값은 업데이트 되지만, UI는 업데이트되지 않기 때문이에요.  
 만약, 우리가 구현하고자 하는 입력 폼의 요구사항이 사용자의 입력값에 따라 UI 상태를 변경할 필요가 없다면 아래와 같이 비제어 컴포넌트 방식으로 입력값을 관리할 수 있어요.
 
@@ -132,21 +148,21 @@ export default function BasicForm() {
   }
 
   return (
-      <form className="basic-form" onSubmit={handleSubmit}>
-        <h1>사용자 정보 입력</h1>
-        <div className="input-box">
-          <label htmlFor="name">이름</label>
-          <input
-            ref={nameInputRef}
-            id="name"
-            name="name"
-            type="text"
-            placeholder="이름을 입력하세요"
-          />
-        </div>
-        // ...
-        <button type="submit">저장하기</button>
-      </form>
+    <form className="basic-form" onSubmit={handleSubmit}>
+      <h1>사용자 정보 입력</h1>
+      <div className="input-box">
+        <label htmlFor="name">이름</label>
+        <input
+          ref={nameInputRef}
+          id="name"
+          name="name"
+          type="text"
+          placeholder="이름을 입력하세요"
+        />
+      </div>
+      // ...
+      <button type="submit">저장하기</button>
+    </form>
   );
 }
 ```
@@ -155,10 +171,12 @@ export default function BasicForm() {
 
 # 보다 복잡한 사용자 입력 폼 관리하기
 
-지금까지 제어와 비제어 방식을 사용하여 기본적인 입력 상태를 관리하는 방법을 알아봤어요.  
+지금까지 제어와 비제어 방식을 사용하여 기본적인 입력 상태를 관리하는 방법을 알아봤어요.
+
 이제 기획이 변경되어 단일 페이지에서 사용자 정보 입력과 사용자 추가 정보 입력을 함께 받아야 하며, 나이와 성별은 사용자의 입력값에 따라 다른 UI 상태를 보여줘야 한다고 가정해 볼게요.
 
 이제 우리는 아래와 같이 적절한 방식으로 입력 상태를 관리할 수 있어요.
+
 - 제어
   - 아이디
   - 패스워드
@@ -189,11 +207,13 @@ export default function BasicForm() {
     setPassword(event.target.value);
   }
 
-  function handleAgeChange(event: ChangeEvent<HTMLInputElement>) { // 추가된 핸들러
+  function handleAgeChange(event: ChangeEvent<HTMLInputElement>) {
+    // 추가된 핸들러
     setAge(event.target.value);
   }
 
-  function handleGenderChange(event: ChangeEvent<HTMLInputElement>) { // 추가된 핸들러
+  function handleGenderChange(event: ChangeEvent<HTMLInputElement>) {
+    // 추가된 핸들러
     setGender(event.target.value);
   }
 
@@ -214,69 +234,73 @@ export default function BasicForm() {
   }
 
   return (
-      <form className="basic-form" onSubmit={handleSubmit}>
-        // ...
-        <h1>사용자 추가 정보 입력</h1>
-        <div className="input-box">
-          <label htmlFor="age">나이</label>
+    <form className="basic-form" onSubmit={handleSubmit}>
+      // ...
+      <h1>사용자 추가 정보 입력</h1>
+      <div className="input-box">
+        <label htmlFor="age">나이</label>
+        <input
+          id="age"
+          name="age"
+          type="number"
+          placeholder="나이를 입력하세요"
+          value={age}
+          onChange={handleAgeChange}
+        />
+      </div>
+      <div className="input-box">
+        <span>성별</span>
+        <div>
+          <label htmlFor="male">남</label>
           <input
-            id="age"
-            name="age"
-            type="number"
-            placeholder='나이를 입력하세요'
-            value={age}
-            onChange={handleAgeChange}
+            id="male"
+            name="gender"
+            type="radio"
+            value="male"
+            onChange={handleGenderChange}
+          />
+          <label htmlFor="female">여</label>
+          <input
+            id="female"
+            name="gender"
+            type="radio"
+            value="female"
+            onChange={handleGenderChange}
+          />
+          <label htmlFor="other">기타</label>
+          <input
+            id="other"
+            name="gender"
+            type="radio"
+            value="other"
+            onChange={handleGenderChange}
           />
         </div>
-        <div className="input-box">
-          <span>성별</span>
-          <div>
-            <label htmlFor="male">남</label>
-            <input
-              id="male"
-              name="gender"
-              type="radio"
-              value='male'
-              onChange={handleGenderChange}
-            />
-            <label htmlFor="female">여</label>
-            <input
-              id="female"
-              name="gender"
-              type="radio"
-              value='female'
-              onChange={handleGenderChange}
-            />
-            <label htmlFor="other">기타</label>
-            <input
-              id="other"
-              name="gender"
-              type="radio"
-              value='other'
-              onChange={handleGenderChange}
-            />
-          </div>
-        </div>
-        <div className="input-box">
-          <label htmlFor="region">지역</label>
-          <input
-            ref={regionInputRef}
-            id="region"
-            name="region"
-            type="text"
-            placeholder="지역을 입력하세요"
-          />
-        </div>
-        <button type="submit">저장하기</button>
-      </form>
+      </div>
+      <div className="input-box">
+        <label htmlFor="region">지역</label>
+        <input
+          ref={regionInputRef}
+          id="region"
+          name="region"
+          type="text"
+          placeholder="지역을 입력하세요"
+        />
+      </div>
+      <button type="submit">저장하기</button>
+    </form>
   );
 }
 ```
 
-우리는 경험을 통해 기획은 언제든 수정될 수 있음을 알고 있어요. 여기서 또 다른 추가 정보를 받는 기획이 추가된다면 어떻게 될까요?  
+우리는 경험을 통해 기획은 언제든 수정될 수 있음을 알고 있어요.
+여기서 또 다른 추가 정보를 받는 기획이 추가된다면 어떻게 될까요?
+
 우리는 기존과 같이 코드에 추가된 몇 가지 상태와 핸들러를 추가하여 관리할 거예요.
-그런데, 요구사항을 자세히 살펴보면 사용자 정보 입력과 사용자 추가 정보 입력은 서로 관련이 없어 보여요. 이는 관심사에 따라 서로 다른 컴포넌트로 적절히 분리될 수 있음을 의미해요.
-분리하지 않고 하나의 컴포넌트로 관리하는 것은 유지보수에도 좋지 않을 거예요.  
+그런데, 요구사항을 자세히 살펴보면 사용자 정보 입력과 사용자 추가 정보 입력은 서로 관련이 없어 보여요.
+이는 관심사에 따라 서로 다른 컴포넌트로 적절히 분리될 수 있음을 의미해요.
+분리하지 않고 하나의 컴포넌트로 관리하는 것은 유지보수에도 좋지 않을 거예요.
+
 이제 관심사에 따라 각 컴포넌트로 분리해 볼게요.
 
 ### 사용자 정보 입력 컴포넌트
@@ -298,41 +322,41 @@ export default function UserInfoForm() {
   }
 
   return (
-      <>
-        <h1>사용자 정보 입력</h1>
-        <div className="input-box">
-          <label htmlFor="name">이름</label>
-          <input
-            ref={nameInputRef}
-            id='name'
-            name="name"
-            type="text"
-            placeholder="이름을 입력하세요"
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="userId">아이디</label>
-          <input
-            id='userId'
-            name="userId"
-            type="text"
-            placeholder="아이디를 입력하세요"
-            value={userId}
-            onChange={handleUserIdChange}
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="password">패스워드</label>
-          <input
-            id='password'
-            name="password"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-      </>
+    <>
+      <h1>사용자 정보 입력</h1>
+      <div className="input-box">
+        <label htmlFor="name">이름</label>
+        <input
+          ref={nameInputRef}
+          id="name"
+          name="name"
+          type="text"
+          placeholder="이름을 입력하세요"
+        />
+      </div>
+      <div className="input-box">
+        <label htmlFor="userId">아이디</label>
+        <input
+          id="userId"
+          name="userId"
+          type="text"
+          placeholder="아이디를 입력하세요"
+          value={userId}
+          onChange={handleUserIdChange}
+        />
+      </div>
+      <div className="input-box">
+        <label htmlFor="password">패스워드</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+      </div>
+    </>
   );
 }
 ```
@@ -356,59 +380,59 @@ export default function UserAddInfoForm() {
   }
 
   return (
-      <>
-        <h1>사용자 추가 정보 입력</h1>
-        <div className="input-box">
-          <label htmlFor="age">나이</label>
+    <>
+      <h1>사용자 추가 정보 입력</h1>
+      <div className="input-box">
+        <label htmlFor="age">나이</label>
+        <input
+          id="age"
+          name="age"
+          type="number"
+          placeholder="나이를 입력하세요"
+          value={age}
+          onChange={handleAgeChange}
+        />
+      </div>
+      <div className="input-box">
+        <span>성별</span>
+        <div>
+          <label htmlFor="male">남</label>
           <input
-            id='age'
-            name="age"
-            type="number"
-            placeholder='나이를 입력하세요'
-            value={age}
-            onChange={handleAgeChange}
+            id="male"
+            name="gender"
+            type="radio"
+            value="male"
+            onChange={handleGenderChange}
+          />
+          <label htmlFor="female">여</label>
+          <input
+            id="female"
+            name="gender"
+            type="radio"
+            value="female"
+            onChange={handleGenderChange}
+          />
+          <label htmlFor="other">기타</label>
+          <input
+            id="other"
+            name="gender"
+            type="radio"
+            value="other"
+            onChange={handleGenderChange}
           />
         </div>
-        <div className="input-box">
-          <span>성별</span>
-          <div>
-            <label htmlFor="male">남</label>
-            <input
-              id='male'
-              name="gender"
-              type="radio"
-              value='male'
-              onChange={handleGenderChange}
-            />
-            <label htmlFor="female">여</label>
-            <input
-              id='female'
-              name="gender"
-              type="radio"
-              value='female'
-              onChange={handleGenderChange}
-            />
-            <label htmlFor="other">기타</label>
-            <input
-              id='other'
-              name="gender"
-              type="radio"
-              value='other'
-              onChange={handleGenderChange}
-            />
-          </div>
-        </div>
-        <div className="input-box">
-          <label htmlFor="region">지역</label>
-          <input
-            ref={regionInputRef}
-            id='region'
-            name="region"
-            type="text"
-            placeholder="지역을 입력하세요"
-          />
-        </div>
-      </>
+      </div>
+      <div className="input-box">
+        <label htmlFor="region">지역</label>
+        <input
+          ref={regionInputRef}
+          id="region"
+          name="region"
+          type="text"
+          placeholder="지역을 입력하세요"
+        />
+      </div>
+    </>
   );
 }
 ```
@@ -428,21 +452,32 @@ export default function BasicForm() {
   }
 
   return (
-      <form className="basic-form" onSubmit={handleSubmit}>
-        <UserInfoForm />
-        <UserAddInfoForm />
-        <button type="submit">저장하기</button>
-      </form>
+    <form className="basic-form" onSubmit={handleSubmit}>
+      <UserInfoForm />
+      <UserAddInfoForm />
+      <button type="submit">저장하기</button>
+    </form>
   );
 }
 ```
 
-관심사에 따라 컴포넌트를 적절히 분리했어요. 이를 통해 우리는 이전보다 좀 더 나은 코드를 가지게 되었어요.
-그런데, 최종 입력값을 전달하는 부모 컴포넌트에서 저장하기 버튼을 눌렀을 때, 우리는 어떻게 사용자 정보와 추가 정보를 자식 컴포넌트에서 가져와 적절히 처리할 수 있을까요?  
-리액트는 부모에서 자식, 즉, 위에서 아래로 상태 값을 전달하는 방식을 채택하고 있는데요. 그렇기에 일반적으로 부모 컴포넌트에서 각 상태를 가지고 있고 상태를 변경하는 핸들러를 분리된 자식 컴포넌트에 Props로 넘겨주며 부모 상태를 변경하는 방식을 사용해요.  
-하지만 이 방식을 사용하면 자식 컴포넌트에서 사용하는 입력값이 추가될 때마다, 부모 컴포넌트에서 자식 컴포넌트의 상태를 추가하고 핸들러를 작성하여 자식에게 넘겨줘야 할 거예요.  
-즉, 컴포넌트가 분리되었지만, 실제 상태(관심사)는 적절하게 분리되지 않았음을 의미해요. 그렇다면 어떻게 자식 컴포넌트의 값을 부모 컴포넌트에서 알 수 있을까요?  
-바로 리액트에서 제공하는 `forwardRef`와 `useImperativeHandle`을 사용하여 해결할 수 있어요. 아래에서 함께 살펴보시죠.
+관심사에 따라 컴포넌트를 적절히 분리했어요.
+이를 통해 우리는 이전보다 좀 더 나은 코드를 가지게 되었어요.
+그런데, 최종 입력값을 전달하는 부모 컴포넌트에서 저장하기 버튼을 눌렀을 때,
+우리는 어떻게 사용자 정보와 추가 정보를 자식 컴포넌트에서 가져와 적절히 처리할 수 있을까요?
+
+리액트는 부모에서 자식, 즉, 위에서 아래로 상태 값을 전달하는 방식을 채택하고 있는데요.
+그렇기에 일반적으로 부모 컴포넌트에서 각 상태를 가지고 있고 상태를 변경하는 핸들러를
+분리된 자식 컴포넌트에 Props로 넘겨주며 부모 상태를 변경하는 방식을 사용해요.
+
+하지만 이 방식을 사용하면 자식 컴포넌트에서 사용하는 입력값이 추가될 때마다,
+부모 컴포넌트에서 자식 컴포넌트의 상태를 추가하고 핸들러를 작성하여 자식에게 넘겨줘야 할 거예요.
+
+즉, 컴포넌트가 분리되었지만, 실제 상태(관심사)는 적절하게 분리되지 않았음을 의미해요.
+그렇다면 어떻게 자식 컴포넌트의 값을 부모 컴포넌트에서 알 수 있을까요?
+
+바로 리액트에서 제공하는 `forwardRef`와 `useImperativeHandle`을 사용하여 해결할 수 있어요.
+아래에서 함께 살펴보시죠.
 
 ## forwardRef와 useImperativeHandle로 자식 컴포넌트 값 사용하기
 
@@ -450,9 +485,15 @@ export default function BasicForm() {
 
 ```typescript
 // UserInfoForm
-import { type ChangeEvent, useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import {
+  type ChangeEvent,
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 
-const UserInfoForm = forwardRef(function({}, ref) {
+const UserInfoForm = forwardRef(function ({}, ref) {
   // ...
 
   function getUserInfo() {
@@ -462,28 +503,34 @@ const UserInfoForm = forwardRef(function({}, ref) {
       name,
       userId,
       password,
-    }
+    };
   }
 
-  useImperativeHandle(ref, () => {
-    return {
-      getUserInfo,
-    }
-  }, [userId, password])
-
-  return (
-      <>
-        // ...
-      </>
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        getUserInfo,
+      };
+    },
+    [userId, password]
   );
+
+  return <>// ...</>;
 });
 
 export default UserInfoForm;
 
 // UserAddInfoForm
-import { type ChangeEvent, useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import {
+  type ChangeEvent,
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 
-const UserAddInfoForm = forwardRef(function({}, ref) {
+const UserAddInfoForm = forwardRef(function ({}, ref) {
   // ...
 
   function getUserAddInfo() {
@@ -493,20 +540,20 @@ const UserAddInfoForm = forwardRef(function({}, ref) {
       age,
       gender,
       region,
-    }
+    };
   }
 
-  useImperativeHandle(ref, () => {
-    return {
-      getUserAddInfo,
-    }
-  }, [age, gender])
-
-  return (
-      <>
-        // ...
-      </>
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        getUserAddInfo,
+      };
+    },
+    [age, gender]
   );
+
+  return <>// ...</>;
 });
 
 export default UserAddInfoForm;
@@ -529,15 +576,15 @@ export default function BasicForm() {
     console.log({
       ...userInfoFormRef.current?.getUserInfo(),
       ...userAddInfoFormRef.current?.getUserAddInfo(),
-    })
+    });
   }
 
   return (
-      <form className="basic-form" onSubmit={handleSubmit}>
-        <UserInfoForm ref={userInfoFormRef} />
-        <UserAddInfoForm ref={userAddInfoFormRef} />
-        <button type="submit">저장하기</button>
-      </form>
+    <form className="basic-form" onSubmit={handleSubmit}>
+      <UserInfoForm ref={userInfoFormRef} />
+      <UserAddInfoForm ref={userAddInfoFormRef} />
+      <button type="submit">저장하기</button>
+    </form>
   );
 }
 ```
@@ -545,9 +592,13 @@ export default function BasicForm() {
 ![분리_후_저장하기_결과](https://github.com/thewoowon/dentium.tech/assets/84620459/5cf25071-fa6f-4b39-8710-a9e2b511605c)
 
 저장하기 버튼을 누르면 자식 컴포넌트에서 넘겨준 입력값을 잘 가져오는 것을 볼 수 있어요.
-부모 컴포넌트의 코드를 보면 사용자 정보와 추가 정보에 대한 코드는 볼 수 없어요.  
-이는 부모 컴포넌트에서는 자식 컴포넌트에서 관리하는 상세 정보들을 알 필요가 없고 오로지 저장하는 기능에 관해서만 관심을 가졌음을 의미해요.  
-타입스크립트를 사용하여 코드를 작성하셨다면 자식 컴포넌트에서 어떤 값을 부모(상위)로 제공하고 있는지 미리 선언하여 제공할 수 있어요.
+부모 컴포넌트의 코드를 보면 사용자 정보와 추가 정보에 대한 코드는 볼 수 없어요.
+
+이는 부모 컴포넌트에서는 자식 컴포넌트에서 관리하는 상세 정보들을
+알 필요가 없고 오로지 저장하는 기능에 관해서만 관심을 가졌음을 의미해요.
+
+타입스크립트를 사용하여 코드를 작성하셨다면 자식 컴포넌트에서
+어떤 값을 부모(상위)로 제공하고 있는지 미리 선언하여 제공할 수 있어요.
 
 ### 자식 컴포넌트에서 타입 제공하기
 
@@ -594,7 +645,9 @@ export default function BasicForm() {
 ## 공유되는 상태가 존재하는 경우
 
 기획이 변경되어 사용자의 성별을 사용자 정보 입력 타이틀에 함께 보여줘야 해요.
-지금까지는 각 컴포넌트의 관심사가 완전히 분리되어 있어, 상관이 없었지만, 특정 상태가 공유되어야 하는 경우에는 어떻게 처리할 수 있을까요?  
+지금까지는 각 컴포넌트의 관심사가 완전히 분리되어 있어 상관이 없었지만,
+특정 상태가 공유되어야 하는 경우에는 어떻게 처리할 수 있을까요?
+
 리액트에서는 공유되는 상태가 존재한다면 [상태 끌어올리기 방식](https://react.dev/learn/sharing-state-between-components)을 사용하라고 안내하고 있어요.
 안내와 같이 상태 끌어올리기 방식으로 구현해 볼게요.
 
@@ -654,7 +707,8 @@ export default function BasicForm() {
 }
 ```
 
-이처럼 상태 끌어올리기를 통해 공용으로 관심 있는 상태를 부모 컴포넌트로 위치시키며 분리된 컴포넌트에서 동일한 상태를 볼 수 있어요.
+이처럼 상태 끌어올리기를 통해 공용으로 관심 있는 상태를 부모 컴포넌트로 위치시키며
+분리된 컴포넌트에서 동일한 상태를 볼 수 있어요.
 
 ## 초기화 기능 추가하기
 
@@ -669,7 +723,7 @@ export type UserInfoFormRef = {
 }
 
 const UserInfoForm = forwardRef<UserInfoFormRef, UserInfoFormProps>(function({ gender }, ref) {
-  function resetUserInfo() { // 초기화 함수 구현  
+  function resetUserInfo() { // 초기화 함수 구현
     nameInputRef.current!.value = '';
     setUserId('')
     setPassword('');
@@ -733,8 +787,14 @@ export default function BasicForm() {
 # 마치며
 
 지금까지 여러 경우의 사용자 입력을 관리하는 방법에 대해 함께 알아봤는데요.
-이번 포스팅에서는 관심사에 맞게 컴포넌트를 적절히 분리할 방법들을 소개해 드렸어요.  
-웹을 개발하다 보면 사용자 입력을 받는 경우를 흔히 마주할 수 있어요. 다양한 입력값이 하나의 페이지, 팝업 등에서 입력되기도 하고요. 우리는 입력값을 받아 적절한 비즈니스 로직을 녹여내야 하는 역할도 함께 가지고 있어요. 이러한 상황 속에서 관심사에 맞게 컴포넌트를 분리하는 것은 선택이 아닌 필수라고 생각해요.  
-이번 포스팅에서는 언급되지 않았지만, 입력 상태를 쉽게 관리할 수 있는 라이브러리인 [react-hook-form](https://react-hook-form.com/)을 마지막으로 소개해드리며 포스팅을 마무리하도록 할게요.
+이번 포스팅에서는 관심사에 맞게 컴포넌트를 적절히 분리할 방법들을 소개해 드렸어요.
+
+웹을 개발하다 보면 사용자 입력을 받는 경우를 흔히 마주할 수 있어요.
+다양한 입력값이 하나의 페이지, 팝업 등에서 입력되기도 하고요.
+우리는 입력값을 받아 적절한 비즈니스 로직을 녹여내야 하는 역할도 함께 가지고 있어요.
+이러한 상황 속에서 관심사에 맞게 컴포넌트를 분리하는 것은 선택이 아닌 필수라고 생각해요.
+
+이번 포스팅에서는 언급되지 않았지만,
+입력 상태를 쉽게 관리할 수 있는 라이브러리인 [react-hook-form](https://react-hook-form.com/)을 마지막으로 소개해드리며 포스팅을 마무리하도록 할게요.
 
 감사합니다👋
