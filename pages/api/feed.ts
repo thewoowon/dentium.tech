@@ -14,13 +14,16 @@ export default async (req: any, res: any) => {
   const allPosts = getSortedPostsData();
 
   allPosts.forEach((post) => {
-    feed.addItem({
-      id: `https://dentium.tech/posts/${post.id}`,
-      link: `https://dentium.tech/posts/${post.id}`,
-      title: post.title,
-      description: post.description,
-      date: new Date(post.date),
-    });
+    if (!post.id) return;
+    if (post.category === 'tech') {
+      feed.addItem({
+        id: `https://dentium.tech/posts/${post.id}`,
+        link: `https://dentium.tech/posts/${post.id}`,
+        title: post.title,
+        description: post.description,
+        date: new Date(post.date),
+      });
+    }
   });
 
   // Generate RSS feed
