@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { getAllPosts } from '../lib/api';
 import { PostType } from '../types/post';
 import Rolling from '@/components/Rolling';
+import generateRSSFeed from '@/utils/generateRSSFeed';
 
 type IndexProps = {
   posts: PostType[];
@@ -33,6 +34,7 @@ export const Index = ({ posts }: IndexProps): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  await generateRSSFeed();
   const posts = getAllPosts([
     'date',
     'description',
