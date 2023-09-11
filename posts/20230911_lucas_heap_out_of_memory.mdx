@@ -1,0 +1,174 @@
+---
+title: 힙 메모리 부족 문제 해결하기
+description: 메모리 부족 문제를 해결한 과정을 공유합니다.
+date: '2023-09-11'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/44950d26-de55-43ea-3be5-0da3b612e400/public'
+writer: '루카스'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/75661ff5-2f0f-44ad-039d-a465fb4da000/public'
+category: 'tech'
+tag: 'DENTECH TALK'
+---
+
+안녕하세요. ICT 사업부 IT팀 루카스입니다.
+
+이번 시간에 개발 과정에서 생겼던 이슈를 해결하기 위한 과정에 대해 작성해보고자 합니다.
+
+## 이슈
+
+Next.js와 함께 평화로운(?) 개발을 하는 나날을 보내던 중 다음과 같은 이슈가 발생하였습니다.
+
+> 새로고침 시, 간헐적으로 Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory로 서버가 다운되는 이슈
+
+위 문제는 JS의 힙(heap) 메모리 부족으로 발생하는 것을 알 수 있습니다. node.js를 사용하는 모든 프론트엔드 프레임워크라면 발생할 수 있는 이슈입니다.
+
+이 글에서는 힙 메모리가 무엇이고, 힙 메모리 사용량을 어떻게 측정할 수 있으며, 힙 메모리 부족 이슈를 해결하는 방법을 설명하겠습니다.
+
+## 배경지식
+
+### 힙(heap) 메모리
+
+우선 힙 메모리는 프로그램에 동적으로 할당 되는 메모리 영역 중 하나입니다. 힙 메모리는 프로그램에서 필요한 만큼의 메모리를 동적으로 할당하여 사용합니다.
+C언어와 같은 저수준 언어에서는 프로그래머가 `molloc()`, `calloc()`과 같은 함수를 사용하여 메모리를 할당하고,
+`free()`와 같은 함수로 메모리를 해제할 수 있습니다. 저수준 언어에서 이는 프로그래머의 몫입니다.
+
+<Image src={'/images/v8_scheme.png'} width={1440} height={960} />
+
+### 가비지 컬렉터(Garbage Collector)
+
+하지만 JS에서는 이러한 함수가 없습니다. 이러한 함수가 없어도 JS는 메모리 부족 문제가 생기지 않습니다.
+이는 v8 엔진 덕분입니다. v8 엔진에는 가비지 컬렉터가 존재하여 사용하지 않는 메모리는 자동으로 메모리를 해제하기 때문에, 일반적으로 메모리 누수가 발생하지 않습니다.
+
+하지만, 객체 간 참조를 해제하지 못하는 상황이 지속되면, 메모리가 부족해질 수 있습니다. 이를 메모리 누수라고 부릅니다.
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    가비지 컬렉션 방식은 reference-counting 방식과 mark-and-sweep 방식이
+    있습니다. 최신 브라우저에서는 mark-and-sweep 방식을 사용합니다. 자세한
+    내용은 [자바스크립트의 메모리
+    관리](https://developer.mozilla.org/ko/docs/Web/JavaScript/Memory_management)를
+    참고해주세요.
+  </div>
+</div>
+
+## 이슈
+
+힙 메모리가 무엇이고 힙 메모리고 어떻게 관리되는지 알아봤습니다. 그러면 힙 메모리는 어떻게 확인할 수 있을까요?
+터미널 환경에서도 힙 메모리를 측정할 수 있지만, 브라우저에서도 메모리 탭을 이용하여 node의 힙메모리를 확인할 수 있습니다.
+지금부터 nextjs(node)에서 메모리 탭을 이용하여 힙 메모리 부족 문제를 어떻게 해결했는지 공유해보고자 합니다.
+
+### 사전 준비
+
+우선 개발과정에서 문제가 발생했기 때문에 `next dev` 명령어를 다음과 같이 변경하였습니다.
+
+```json
+// package.json
+...
+"script": {
+	"dev": "cross-env NODE_OPTIONS='$NODE_OPTIONS --inspect' next dev"
+}
+```
+
+`cross-env`로 활용하여 해당 스크립트를 실행할 때, `--inspect` 옵션을 설정할 수 있습니다. 이 옵션은 인스펙터를 활성화 화여 디버깅 클라이언트에서 정보를 수신할 수 있게 합니다.
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    `cross-env`는 플랫폼별로 환경변수를 설정할 수 있게 해주는 패키지입니다.
+    `NODE_OPTIONS` 환경변수를 설정할 때, `cross-env`를 사용하지 않으면,
+    윈도우에서는 `NODE_OPTIONS` 환경변수를 설정할 수 없습니다.
+  </div>
+</div>
+
+그리고 `yarn dev`를 통해 해당 스크립트를 실행하고, nextjs앱을 실행합니다.
+
+```bash
+$ yarn dev
+```
+
+### Chrome Inspector
+
+앱을 실행한 후, 크롬 주소창에 chrome://inspect/#devices 에 들어가 보면, nextjs 앱을 디버깅할 수 있는 클라이언트로 연결해 줍니다.
+
+<Image src={'/images/inspector.png'} width={1440} height={960} />
+<div className="text-center">inspector 화면</div>
+<Image src={'/images/devtool.png'} width={1440} height={960} />
+<div className="text-center">devtool 화면</div>
+<Image src={'/images/memory_tab.png'} width={1440} height={960} />
+<div className="text-center">memory 탭 화면</div>
+
+힙메모리 부족 이슈를 해결하기 위해 사용한 **메모리 탭**입니다.
+프로파일링 유형에 따라 다른 관점으로 메모리를 확인해볼 수 있습니다.
+
+- 힙 스냅샷
+- 타임라인의 할당 계측
+- 할당 샘플링
+
+### 힙 스냅샷
+
+측정하고자 하는 페이지에 자바스크립트 객체 혹은 DOM 노드 메모리를 확인할 수 있습니다. 이 유형은 페이지에서 사용 중인 객체들의 메모리 분포를 파악하는데 사용합니다.
+
+<Image src={'/images/heap_snapshot.png'} width={1440} height={960} />
+
+위 사진에서 눈 여겨 봐야 할 부분이 빨간색 박스 부분입니다. 해당 부분이 **메모리 부족 문제를 해결하기 위한 열쇠** 입니다.
+
+- 얕은 크기(shallow size): 얕은 크기는 해당 객체가 갖고 있는 본연의 크기를 의미합니다.
+- 유지된 크기(retained size): 유지된 크기는 객체의 크기와 그 객체를 참조하고 있는 모든 메모리의 집합입니다.
+
+shallow size와 retained size를 단순하게 나타내면 아래 그림과 같습니다.
+
+<Image src={'/images/memory_block.png'} width={1440} height={960} />
+
+원은 객체 자체의 메모리를 뜻하고, 화살표는 해당 객체의 참조를 뜻합니다.
+위 그림을 기준으로 shallow size는 4번 자체의 메모리를 말하고, retained size는 4번을 참조하고 있는 모든 메모리를 말하기 때문에 shallow size에 비해 retained size가 크게 표현됩니다.
+즉, shallow size에 비해 retained size의 크기가 크다면 **많은 참조에 의해 GC에 의해 수거되지 않을 가능성이 크고 이로 인해, 메모리 부족이 발생**할 수 있습니다.
+
+### 타임라인의 할당 계측
+
+타임라인의 할당 계측 프로파일링 방식은 시간에 따라 자바스크립트 메모리 할당을 보여주는 방식입니다.
+먼저 메모리 누수를 발생시키는 행위에 대한 가설을 세워두고 녹화를 시작합니다.
+그리고 가설에 따라 행위를 반복하고, 녹화를 중지합니다.
+시작부터 끝날 때까지의 메모리 할당을 보여주기 때문에 **사용하는 과정에서 메모리 누수를 찾기에 좋은 방식**입니다.
+
+<Image src={'/images/timeline.png'} width={1440} height={960} />
+
+이 방식은 파란색 막대와 회색막대를 통해서 확인할 수 있습니다.
+
+- 파란색 막대: 자바스크립트 객체에 대한 메모리 할당을 나타냅니다.
+- 회색 막대: GC에 수거된 메모리를 뜻합니다.
+
+만약 메모리 누수를 찾으려고 한다면, 위 그래프에서 특히 **파란색 막대가 큰 곳**을 집중적으로 확인해야 합니다.
+파란색 막대는 GC에 의해 수거되지 않는 메모리를 뜻하고 이 부분을 클로즈업 하여 얕은 크기와 유지된 크기를 비교하여 메모리 누수를 찾을 수 있습니다.
+
+### 할당 샘플링
+
+메모리 공간의 할당한 자바스크립트 함수를 보여줍니다.
+
+<Image src={'/images/sampling.png'} width={1440} height={960} />
+
+> 샘플링
+> **샘플링**(sampling)은 어떤 자료에서 일부 값을 추출하는 것을 의미한다.
+
+메모리 공간 할당을 특정 시간 간격으로 측정합니다. 그렇기 때문에 타임라인 방법에 비해 부담이 적어 **오랫동안 측정할 때 유리**합니다.
+
+## 이슈 해결
+
+힙 메모리 부족 이슈가 새로고침 시에 일어나는 것을 확인하였습니다.
+그 말은 지속적으로 GC되지 않는 메모리에 의한 누수가 아니라, 특정 페이지의 할당된 메모리 자체가 많은 양을 차지하고 있는 건 아닐까?
+생각하게 되었고, 메모리의 **힙 스냅샷을 활용**하여 할당된 메모리를 확인하였습니다.
+
+<Image src={'/images/heap_snapshot.png'} width={1440} height={960} />
+
+위 사진은 실제 제가 측정한 힙 스냅샷입니다. 유지된 크기를 기준으로 정렬하여 확인 해보면, 가장 상단에 있는 항목은 얕은 크기에 비해 유지된 크기가 엄청 많은 메모리를 차지하고 있었습니다.
+
+해당 코드는 ninja-console이라는 vscode extension이었고, 이 항목이 메모리 부족 문제를 일으키고 있었습니다. 다른 팀원들과 이 이슈에 대해 얘기해보니,
+역시나 위 extension을 사용하지 않는 다른 팀원들은 발생하지 않는 문제였습니다.
+
+현재 Ninja-console은 개발과정에서 사용하지 않고 있는 extension이었고, 이를 제거한 후에는 더 이상 힙 메모리 부족문제가 발생하지 않았습니다.
+
+## 결론
+
+힙 메모리 부족 이슈 발생 시, 노드의 최대 힙 메모리를 증가시킴으로서 이슈를 해결하는 것이 쉬울 수 있습니다.
+하지만 메모리를 증가시키기 전에 메모리 누수나 필요하지 않은 메모리 할당이 있지는 않을까 생각 해본다면,
+조금 더 나은 방향으로 이슈를 해결할 수 있을지 않을까 생각해보는 계기가 되었습니다. 감사합니다.

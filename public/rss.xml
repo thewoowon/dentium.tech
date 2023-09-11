@@ -4,16 +4,16 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Sun, 10 Sep 2023 13:34:26 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 11 Sep 2023 09:36:46 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
         <item>
-            <title><![CDATA[메모리 부족]]></title>
-            <link>https://dentium.tech/posts/20230915_lucas_heap_out_of_memory</link>
-            <guid>https://dentium.tech/posts/20230915_lucas_heap_out_of_memory</guid>
-            <pubDate>Sat, 09 Sep 2023 00:00:00 GMT</pubDate>
+            <title><![CDATA[힙 메모리 부족 문제 해결하기]]></title>
+            <link>https://dentium.tech/posts/20230911_lucas_heap_out_of_memory</link>
+            <guid>https://dentium.tech/posts/20230911_lucas_heap_out_of_memory</guid>
+            <pubDate>Mon, 11 Sep 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[메모리 부족 문제를 해결한 과정을 공유합니다.]]></description>
         </item>
         <item>
