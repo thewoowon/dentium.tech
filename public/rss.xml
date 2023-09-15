@@ -4,11 +4,18 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Sun, 10 Sep 2023 12:30:02 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 14 Sep 2023 06:17:46 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
+        <item>
+            <title><![CDATA[힙 메모리 부족 문제 해결하기]]></title>
+            <link>https://dentium.tech/posts/20230911_lucas_heap_out_of_memory</link>
+            <guid>https://dentium.tech/posts/20230911_lucas_heap_out_of_memory</guid>
+            <pubDate>Mon, 11 Sep 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[메모리 부족 문제를 해결한 과정을 공유합니다.]]></description>
+        </item>
         <item>
             <title><![CDATA[XState, Finite State Machine]]></title>
             <link>https://dentium.tech/posts/20230910_george_xstate</link>
@@ -52,13 +59,6 @@
             <description><![CDATA[React에 SOLID 원칙을 적용해보자.]]></description>
         </item>
         <item>
-            <title><![CDATA[기원]]></title>
-            <link>https://dentium.tech/posts/20230607_kw_interview</link>
-            <guid>https://dentium.tech/posts/20230607_kw_interview</guid>
-            <pubDate>Wed, 07 Jun 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[IT팀의 FE Developer 기원의 인터뷰입니다. 환영합니다!]]></description>
-        </item>
-        <item>
             <title><![CDATA[당신의 GraphQL은 안전한가요?]]></title>
             <link>https://dentium.tech/posts/20230606_ryan_graphql2</link>
             <guid>https://dentium.tech/posts/20230606_ryan_graphql2</guid>
@@ -73,25 +73,11 @@
             <description><![CDATA[3 가지 토큰을 운용하는 인증/인가 프로세스를 구현하는 과정에서 고민한 내용을 공유합니다.]]></description>
         </item>
         <item>
-            <title><![CDATA[덴티움 뉴진스 토끼]]></title>
-            <link>https://dentium.tech/posts/20230603_george_jeans</link>
-            <guid>https://dentium.tech/posts/20230603_george_jeans</guid>
-            <pubDate>Sat, 03 Jun 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[덴티움 뉴진스 토끼를 만들어 보았습니다.]]></description>
-        </item>
-        <item>
             <title><![CDATA[우리가 GraphQL을 선택한 이유]]></title>
             <link>https://dentium.tech/posts/20230520_lucas_graphql</link>
             <guid>https://dentium.tech/posts/20230520_lucas_graphql</guid>
             <pubDate>Sat, 20 May 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[GraphQL을 도입하게 된 배경과 특징을 소개하고, 효과적인 협업을 위해 어떤 방식으로 활용하고 있는지 공유합니다.]]></description>
-        </item>
-        <item>
-            <title><![CDATA[새로운 굿즈를 소개합니다!]]></title>
-            <link>https://dentium.tech/posts/20230512_george_goods</link>
-            <guid>https://dentium.tech/posts/20230512_george_goods</guid>
-            <pubDate>Fri, 12 May 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[DENTECH의 새로운 일원을 위한 굿즈를 준비했습니다.]]></description>
         </item>
         <item>
             <title><![CDATA[Webpack, 어디까지 알고 계신가요?]]></title>
@@ -101,13 +87,6 @@
             <description><![CDATA[Webpack에 대해 좀 더 깊게 알아보고, 실제로 사용해보는 시간을 갖도록 하겠습니다.]]></description>
         </item>
         <item>
-            <title><![CDATA[데브렐, 긴 여정의 시작]]></title>
-            <link>https://dentium.tech/posts/20230501_george_devrel</link>
-            <guid>https://dentium.tech/posts/20230501_george_devrel</guid>
-            <pubDate>Mon, 01 May 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[기업과 개발자의 관계는 어떻게 형성되고, 어떻게 발전해야 할까요?]]></description>
-        </item>
-        <item>
             <title><![CDATA[Clean Architecture를 적용한 API 서비스 개발]]></title>
             <link>https://dentium.tech/posts/20230430_ryan_architecture</link>
             <guid>https://dentium.tech/posts/20230430_ryan_architecture</guid>
@@ -115,39 +94,11 @@
             <description><![CDATA[Clean Architecture를 적용한 API 서비스를 개발해보며 느낀 점을 공유하고자 합니다]]></description>
         </item>
         <item>
-            <title><![CDATA[제이엠]]></title>
-            <link>https://dentium.tech/posts/20230426_jm_interview</link>
-            <guid>https://dentium.tech/posts/20230426_jm_interview</guid>
-            <pubDate>Wed, 26 Apr 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[IT팀의 든든한 BE Developer 제이엠의 인터뷰입니다.]]></description>
-        </item>
-        <item>
             <title><![CDATA[덴티움은 상태관리를 어떻게 하고 있을까요?]]></title>
             <link>https://dentium.tech/posts/20230425_lucas_mobx</link>
             <guid>https://dentium.tech/posts/20230425_lucas_mobx</guid>
             <pubDate>Tue, 25 Apr 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[덴티움의 상태관리는 MobX를 활용하고 있습니다. 한 번 살펴보시죠!]]></description>
-        </item>
-        <item>
-            <title><![CDATA[라이언]]></title>
-            <link>https://dentium.tech/posts/20230411_ryan_interview</link>
-            <guid>https://dentium.tech/posts/20230411_ryan_interview</guid>
-            <pubDate>Tue, 11 Apr 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[IT팀의 열정 넘치는 DevOps Developer 라이언의 인터뷰, 두려움은 무엇인가요?]]></description>
-        </item>
-        <item>
-            <title><![CDATA[루카스]]></title>
-            <link>https://dentium.tech/posts/20230410_lucas_interview</link>
-            <guid>https://dentium.tech/posts/20230410_lucas_interview</guid>
-            <pubDate>Mon, 10 Apr 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[IT팀의 환한 미소, FE Developer 루카스의 인터뷰입니다. 스펀지 같은 매력을 확인해보세요!]]></description>
-        </item>
-        <item>
-            <title><![CDATA[죠지]]></title>
-            <link>https://dentium.tech/posts/20230402_george_interview</link>
-            <guid>https://dentium.tech/posts/20230402_george_interview</guid>
-            <pubDate>Mon, 03 Apr 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[IT팀의 FE Developer 죠지의 인터뷰, 지금 바로 시작합니다!]]></description>
         </item>
     </channel>
 </rss>

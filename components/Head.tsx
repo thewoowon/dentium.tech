@@ -9,9 +9,8 @@ const Head = ({ customMeta }: { customMeta?: MetaProps }): JSX.Element => {
   const router = useRouter();
   const meta: MetaProps = {
     title: 'DENTECH - HOME',
-    description:
-      '덴티움 기술블로그',
-    image: `${WEBSITE_HOST_URL}/images/index.jpeg`,
+    description: '덴티움 기술블로그',
+    image: `${WEBSITE_HOST_URL}/images/DENTECH_BG.png`,
     type: 'website',
     ...customMeta,
   };

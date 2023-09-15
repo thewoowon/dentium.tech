@@ -33,7 +33,11 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
           </div>
         </div>
       </header>
-      <main>
+      <main
+        style={{
+          backgroundColor: router.pathname === '/' ? 'inherit' : '#fff',
+        }}
+      >
         {router.pathname === '/' && <Notice />}
         <div className="flex flex-col max-w-[1920px] justify-center items-center relative mx-auto">
           {router.pathname === '/' && <Banner />}
