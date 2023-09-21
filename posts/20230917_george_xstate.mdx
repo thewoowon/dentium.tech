@@ -1,0 +1,681 @@
+---
+title: XState, Finite State Machine
+description: 진료 단계를 관리하는 유한 상태 머신
+date: '2023-09-17'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/c925782b-b7b5-4c54-81a5-8345b02a9200/public'
+writer: '죠지'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
+category: 'tech'
+tag: 'DENTECH TALK'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/c925782b-b7b5-4c54-81a5-8345b02a9200/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+
+<p className="text-center text-gray-500">
+  David Jamin's xstate imagined as Midjourney
+</p>
+
+> ...무한한 저장공간은 무한한 길이의 테이프로 나타나는데,
+> 이 테이프는 하나의 기호를 인쇄할 수 있는 크기의 정사각형들로 쪼개져있다.
+> 언제든지 기계속에는 하나의 기호가 들어가있고 이를 "읽힌 기호"라고 한다.
+> 이 기계는 "읽힌 기호"를 바꿀 수 있는데 그 기계의 행동은 오직 읽힌 기호만이 결정한다.
+> 테이프는 앞뒤로 움직일 수 있어서 모든 기호들은 적어도 한번씩은 기계에게 읽힐 것이다.
+
+안녕하세요. IT팀의 FE Developer 죠지입니다.
+
+시작은 앨런 튜링이 1936년에 발표한 자신의 논문 "**계산 가능한 수와 결정성 문제에의 응용**"을
+언급하며 튜링기계를 설명한 내용을 인용했습니다.
+
+제목에서도 알 수 있듯이 이번 주제는 FSM(Finite State Machine)의
+자바스크립트 구현체인 XState에 대한 내용입니다.
+XState를 이용하여 진료 단계를 관리하는 유한 상태 머신을 구현해보고,
+효용성에 대한 고민을 해보겠습니다.
+
+이 글은 XState에 대해서 전파하기 위한 목표로 작성되었으며,
+XState의 모든 기능을 다루지는 않습니다.
+
+## 조금 심오한 XState
+
+앞서 말씀드렸듯이 XState는 유한 상태 머신(Finite State Machine)의
+자바스크립트 구현체입니다.
+물론 사용해보신 경험이 있다면 더욱 이해가 빠르실 것입니다.
+
+### 유한 상태 머신(Finite State Machine)
+
+일반적으로 임베디드 시스템에서 사용되는 유한 상태 머신은
+상태와 상태 사이의 전이를 정의하는 방법입니다.
+주로 순차 회로 시스템이 동작하는 형식을 모델링하는데 사용됩니다.
+
+본격적으로 XState에 대해 이야기하기 전에
+가장 쉬운 자판기를 예시로 몸을 풀어보겠습니다.
+더 많은 기능을 가진 자판기라면 더욱 복잡한 상태를 가지고 있겠지만,
+현재는 4가지 상태만 가지는 Regular Vending Machine을 예시로 들겠습니다.
+
+- 동작 대기 상태(Operation Standby - idle)
+- 동전 투입 상태(Coin Inserted)
+- 음료 선택 상태(Beverage Selectable)
+- 음료 제공 상태(Beverage Providing)
+
+위의 4가지 상태를 가지는 자판기는 다음과 같은 상태 전이를 가집니다.
+
+| 상태                                | 전이 가능한 상태                                                                                                                          | 전이 불가능한 상태                                                      |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 동작 대기 상태(Operation Standby)   | 동작 대기 상태(Operation Standby), 동전 투입 상태(Coin Inserted)                                                                          | 음료 선택 상태(Beverage Selectable), 음료 제공 상태(Beverage Providing) |
+| 동전 투입 상태(Coin Inserted)       | 동전 투입 상태(Coin Inserted), 음료 선택 상태(Beverage Selectable), 동작 대기 상태(Operation Standby)                                     | 음료 제공 상태(Beverage Providing)                                      |
+| 음료 선택 상태(Beverage Selectable) | 음료 선택 상태(Beverage Selectable), 음료 제공 상태(Beverage Providing), 동작 대기 상태(Operation Standby)                                | 동전 투입 상태(Coin Inserted)                                           |
+| 음료 제공 상태(Beverage Providing)  | 음료 제공 상태(Beverage Providing), 동전 투입 상태(Coin Inserted), 음료 선택 상태(Beverage Selectable), 동작 대기 상태(Operation Standby) |                                                                         |
+
+이제 필요한 것은 각 상태 사이에 발생하는 액션과 가드를 정의하고
+상태 전이를 정의하는 것입니다.
+먼저 간단한 FSM Notation을 보시겠습니다.
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/663a5518-e011-423f-e431-426f5001a000/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">FSM Notation</p>
+
+이제 FSM Notation을 활용해서 Regular Vending Machine FSM을 도식화해보겠습니다.
+
+<Image
+  alt={`Thumbnail`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/10d06ad3-3eb5-464f-84b3-3f5eeeda0400/public`}
+  width={1440}
+  height={960}
+  priority
+/>
+<p className="text-center text-gray-500">Regular Vending Machine FSM</p>
+
+조금 복잡한 도식이 도출되긴 했지만, 현재 상태로는 한계가 있습니다.
+타이머가 없기 때문에 음료 제공 상태에서 동작 대기 상태로 전이되지 않습니다.
+이를 해결하기 위해서는 타이머를 추가한 EFSM(Extended Finite State Machine)을 사용해야 합니다.
+
+### Basic XState
+
+이제 본격적으로 XState에 대해 이야기해보겠습니다.
+물론 조금 더 심화된 내용은 [XState 공식 문서](https://xstate.js.org/docs/)를 참고하시면 됩니다.
+앞서 정의한 Regular Vending Machine을 활용해 XState의 기본적인 사용법을 알아보겠습니다.
+
+```typescript
+import { Machine } from 'xstate';
+
+const vendingMachine = Machine({
+  id: 'vendingMachine',
+  initial: 'idle',
+  states: {
+    // operation standby, idle로 정의합니다.
+    idle: {
+      on: {
+        INSERT_COIN: 'coinInserted',
+      },
+    },
+    coinInserted: {
+      on: {
+        INSERT_COIN: {
+          target: 'beverageSelectable',
+          actions: 'setBeverage',
+          cond: 'isBeverageAvailable',
+        },
+        REFUND: 'idle',
+      },
+    },
+    beverageSelectable: {
+      on: {
+        SELECT_BEVERAGE: {
+          target: 'beverageProviding',
+          actions: ['calculateChange', 'provideBeverage'],
+          cond: 'isBeverageAvailable',
+        },
+        REFUND: 'idle',
+      },
+    },
+    beverageProviding: {
+      on: {
+        RESET: 'idle',
+        REFUND: 'idle',
+      },
+    },
+  },
+});
+```
+
+Machine function을 사용해서 Regular Vending Machine을 정의했습니다.
+
+#### states / on
+
+states라는 key에는 Regular Vending Machine의 상태를 정의합니다.
+총 4가지 상태를 나타내고 있다는 것을 알 수 있습니다.
+그리고 눈치채셨겠지만, 각 상태에서 발생할 수 있는 이벤트는 on이라는 key에 정의합니다.
+
+#### actions / guards
+
+on에 정의한 이벤트가 발생했을 때, 해당 상태에서 실행할 액션과 가드를 정의합니다.
+액션은 actions라는 key에 정의하고, 가드는 cond라는 key에 정의합니다.
+
+이제 Context와 Events, Services를 추가해보겠습니다.
+
+```typescript
+type Beverage = {
+  name: string;
+  price: number;
+  quantity: number;
+};
+
+type Events =
+  | {
+      type: 'INSERT_COIN';
+      data: number;
+    }
+  | { type: 'REFUND' | 'RESET' }
+  | { type: 'SELECT_BEVERAGE'; data: number };
+
+interface Context {
+  currentCoin: number; // 현재 투입된 돈
+  enableSelectBeverage: boolean[]; // 음료 선택 가능 여부
+  beverage: Beverage[]; // [음료 이름, 음료 가격, 음료 수량]
+  change: number; // 현재 남은 잔돈
+}
+
+type Services = {
+  // 현재 남은 음료의 수량을 업데이트합니다.
+  // 본사에 음료의 수량을 업데이트하는 API를 호출합니다.
+  sendSalesRecords: {
+    data: { message: string };
+  };
+};
+
+const initialContext = {
+  currentCoin: 0,
+  beverage: [
+    { name: '콜라', price: 1000, quantity: 10 },
+    { name: '사이다', price: 1000, quantity: 10 },
+    { name: '환타', price: 1000, quantity: 10 },
+    { name: '포카리스웨트', price: 1500, quantity: 10 },
+    { name: '게토레이', price: 1500, quantity: 10 },
+    { name: '파워에이드', price: 1500, quantity: 10 },
+    { name: '데자와', price: 1500, quantity: 10 },
+    { name: '밀키스', price: 1500, quantity: 10 },
+    { name: '코코팜', price: 1500, quantity: 10 },
+    { name: '토레타', price: 1500, quantity: 10 },
+  ],
+  change: 0,
+  enableSelectBeverage: [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ],
+};
+```
+
+제가 정의한 Context, Events, Services는 위와 같습니다.
+이제 전체 코드에 추가해서 Regular Vending Machine을 완성해보겠습니다.
+
+```typescript
+import { assign, createMachine } from 'xstate';
+type Beverage = {
+  name: string;
+  price: number;
+  quantity: number;
+};
+
+type Events =
+  | {
+      type: 'INSERT_COIN';
+      data: number;
+    }
+  | { type: 'REFUND' | 'RESET' }
+  | { type: 'SELECT_BEVERAGE'; data: number };
+
+interface Context {
+  currentCoin: number; // 현재 투입된 돈
+  enableSelectBeverage: boolean[]; // 음료 선택 가능 여부
+  beverage: Beverage[]; // [음료 이름, 음료 가격, 음료 수량]
+  change: number; // 현재 남은 잔돈
+}
+
+type Services = {
+  // 현재 남은 음료의 수량을 업데이트합니다.
+  // 본사에 음료의 수량을 업데이트하는 API를 호출합니다.
+  sendSalesRecords: {
+    data: { message: string };
+  };
+};
+
+const initialContext = {
+  currentCoin: 0,
+  beverage: [
+    { name: '콜라', price: 1000, quantity: 10 },
+    { name: '사이다', price: 1000, quantity: 10 },
+    { name: '환타', price: 1000, quantity: 10 },
+    { name: '포카리스웨트', price: 1500, quantity: 10 },
+    { name: '게토레이', price: 1500, quantity: 10 },
+    { name: '파워에이드', price: 1500, quantity: 10 },
+    { name: '데자와', price: 1500, quantity: 10 },
+    { name: '밀키스', price: 1500, quantity: 10 },
+    { name: '코코팜', price: 1500, quantity: 10 },
+    { name: '토레타', price: 1500, quantity: 10 },
+  ],
+  change: 0,
+  enableSelectBeverage: [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ],
+};
+
+const vendingMachine = createMachine(
+  {
+    id: 'vendingMachine',
+    initial: 'idle',
+    predictableActionArguments: true,
+    context: initialContext,
+    schema: {
+      context: {} as Context,
+      events: {} as Events,
+      services: {} as Services,
+    },
+    tsTypes: {} as import('./vendingMachineMachine.typegen').Typegen0,
+    states: {
+      // operation standby, idle로 정의합니다.
+      idle: {
+        entry: ['resetAll'],
+        on: {
+          INSERT_COIN: {
+            target: 'coinInserted',
+            actions: 'setCoin',
+          },
+        },
+      },
+      coinInserted: {
+        on: {
+          INSERT_COIN: {
+            target: 'beverageSelectable',
+            actions: ['setCoin', 'setBeverage'],
+            cond: 'isBeverageAvailable',
+          },
+          REFUND: 'idle',
+        },
+      },
+      beverageSelectable: {
+        on: {
+          SELECT_BEVERAGE: {
+            target: 'beverageProviding',
+            actions: ['calculateChange', 'provideBeverage'],
+            cond: 'isBeverageAvailable',
+          },
+          REFUND: 'idle',
+        },
+      },
+      beverageProviding: {
+        invoke: {
+          src: 'sendSalesRecords',
+          onDone: {
+            target: 'idle',
+            actions: ['resetAll'],
+          },
+          onError: {
+            target: 'idle',
+            actions: ['resetAll'],
+          },
+        },
+        on: {
+          RESET: 'idle',
+          REFUND: 'idle',
+        },
+      },
+    },
+  },
+  {
+    actions: {
+      resetAll: assign({ ...initialContext }),
+      setCoin: assign({
+        currentCoin: (context, event) => {
+          return context.currentCoin + event.data;
+        },
+      }),
+      // 돈을 입력 받을 때마다, 음료의 최소 가격보다 크거나 같은지 체크합니다.
+      setBeverage: assign({
+        enableSelectBeverage: (context, event) => {
+          const enableSelectBeverageList = [
+            ...initialContext.enableSelectBeverage,
+          ];
+          context.beverage.forEach((beverage, index) => {
+            context.currentCoin >= beverage.price
+              ? (enableSelectBeverageList[index] = true)
+              : (enableSelectBeverageList[index] = false);
+          });
+          return enableSelectBeverageList;
+        },
+      }),
+      calculateChange: assign({
+        change: (context, event) => {
+          return context.currentCoin - context.beverage[event.data].price;
+        },
+      }),
+      provideBeverage: assign({
+        beverage: (context, event) => {
+          const beverage = [...context.beverage];
+          beverage[event.data].quantity -= 1;
+          return beverage;
+        },
+      }),
+    },
+  }
+);
+```
+
+vending machine을 관리하는 FSM을 정의했지만, 서비스가 없다는 것을 알 수 있습니다.
+이제 머신이 필요한 컴포넌트에서 머신을 사용하는 동시에 서비스를 정의해보겠습니다.
+
+```typescript
+import { useMachine } from '@xstate/react';
+import { vendingMachine } from './vendingMachine';
+
+const VendingMachine = () => {
+  const [current, send] = useMachine(vendingMachine, {
+    services: {
+      sendSalesRecords: async (context, event) => {
+        const response = await fetch(
+          'https://vendingmachine.island.com/posts',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              beverage: context.beverage[event.data].name,
+              price: context.beverage[event.data].price,
+              // 물론 해당 자판기를 구분할 수 있는 코드가 필요합니다.
+              // 이 예제에서는 자판기의 id를 1로 가정합니다.
+              vendingMachineId: 1,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }
+        );
+        return response.json();
+      },
+    },
+    guards: {
+      isBeverageAvailable: (context, event) => {
+        // beverage 중에 최소 하나 이상의 음료가 현재 금액으로 구매 가능한지 확인합니다.
+        return context.beverage.some(
+          (item) => item.price <= context.currentCoin
+        );
+      },
+    },
+  });
+  const { currentCoin, beverage, change, enableSelectBeverage } =
+    current.context;
+
+  return (
+    <div>
+      <h1>자판기</h1>
+      <h2>현재 투입된 금액: {currentCoin}원</h2>
+      <h2>남은 잔돈: {change}원</h2>
+      <h2>음료</h2>
+      <ul>
+        {beverage.map((item, index) => (
+          <li key={index}>
+            {item.name}: {item.price}원
+            <button
+              onClick={() => {
+                send({ type: 'SELECT_BEVERAGE', data: index });
+              }}
+              disabled={!enableSelectBeverage[index]}
+            >
+              구매
+            </button>
+          </li>
+        ))}
+      </ul>
+      <button
+        onClick={() => {
+          send({ type: 'INSERT_COIN', data: 1000 });
+        }}
+      >
+        1000원
+      </button>
+      <button
+        onClick={() => {
+          send({ type: 'INSERT_COIN', data: 500 });
+        }}
+      >
+        500원
+      </button>
+      <button
+        onClick={() => {
+          send({ type: 'REFUND' });
+        }}
+      >
+        환불
+      </button>
+    </div>
+  );
+};
+
+export default VendingMachine;
+```
+
+이제 사용할 준비가 되었습니다.
+자판기를 실행해보겠습니다.
+
+<div className="flex justify-center">
+  <Image
+    alt={`Thumbnail`}
+    src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/36a3d740-bfa2-41a5-3d3f-df5581b6b900/public`}
+    width={360}
+    height={240}
+    priority
+  />
+</div>
+
+<p className="text-center text-gray-500">vending machine in react</p>
+
+## Reception State Management FSM
+
+자판기를 구현해보면서 익숙해지셨나요?
+이제는 본격적으로 저희 프로젝트의 큰 흐름을 정리해보겠습니다.
+
+먼저 존재하는 5 가지의 상태는 아래와 같습니다.
+
+```typescript
+const RECEPTION_STATE_LIST = {
+  Registration: '접수',
+  PreparationComplete: '준비완료',
+  UndergoingTreatment: '진료중',
+  TreatmentComplete: '진료완료',
+  PaymentComplete: '수납완료',
+};
+```
+
+그리고 이것을 개략적으로 FSM으로 표현하면 아래와 같습니다.
+
+<div className="flex justify-center">
+  <Image
+    alt={`Thumbnail`}
+    src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/1cf9fca3-f1c3-4820-af7b-0a5f938e6e00/public`}
+    width={1440}
+    height={960}
+    priority
+  />
+</div>
+
+<p className="text-center text-gray-500">Reception Machine FSM</p>
+
+### Main Stream
+
+앞서 소개한 5가지 상태는 메인 스트림을 구성합니다.
+그리고 큰 강줄기에는 작은 강의 지류들이 뻗어 나가듯이
+각각의 상태는 다시 많은 상태를 가지고 복잡한 흐름을 형성합니다.
+
+### Sub Stream
+
+메인 스트림의 구성이 완료 되었으니 작은 강의 지류를 생성해야 할 것 같습니다.
+하지만 그 양은 너무나 방대하기 때문에 지금 당장 이 글에 모두 담지 못합니다.
+
+xstate를 활용해서 프로젝트 흐름을 분리하고 코드로 구체화한 다음,
+제어 가능한 상태로 만드는 것을 가장 큰 목표로 한번 코드를 작성해보겠습니다.
+
+물론 진행은 앞서 구현했던 자판기의 상태 관리와 동일합니다.
+머신을 생성하고 5 가지 상태를 정의해보겠습니다.
+
+<div className="flex justify-center">
+  <Image
+    alt={`Thumbnail`}
+    src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/376f95de-d5b5-4ef9-752f-080f27265100/public`}
+    width={360}
+    height={240}
+    priority
+  />
+</div>
+
+<p className="text-center text-gray-500">Main Stream & Sub Stream</p>
+
+```typescript
+const receptionMachine = createMachine({
+  id: 'receptionMachine',
+  initial: 'idle',
+  predictableActionArguments: true,
+  states: {
+    idle: {
+      entry: ['resetAll'],
+      on: {
+        START: {
+          actions: ['setDoctor', 'setStaff'],
+          target: 'reception_completed',
+        },
+      },
+    },
+    reception_completed: {
+      entry: ['setColor'],
+      invoke: {
+        src: 'createReception',
+        onDone: {
+          actions: 'startWaitingTime',
+        },
+        onError: {
+          target: 'idle',
+        },
+      },
+      on: {
+        CANCEL: { target: 'idle' },
+      },
+    },
+    ready: {
+      entry: ['setColor'],
+      on: {
+        CANCEL: { target: 'idle' },
+      },
+    },
+    in_treatment: {
+      entry: ['setColor'],
+      on: {
+        CANCEL: { target: 'idle' },
+        NEXT_STEP: {
+          actions: ['someFunction'],
+          target: 'treatment_completed',
+          cond: 'validation',
+        },
+      },
+      states: {
+        step_1: {
+          on: {
+            CANCEL: { target: 'idle', actions: ['deleteHistory'] },
+          },
+        },
+        //...too complicated
+      },
+    },
+    treatment_completed: {
+      entry: ['setColor'],
+      on: {
+        CANCEL: { target: 'idle' },
+        NEXT_STEP: {
+          actions: ['someFunction'],
+          target: 'payment_completed',
+          cond: 'validation',
+        },
+      },
+      states: {
+        step_1: {
+          on: {
+            CANCEL: { target: 'idle', actions: ['deleteHistory'] },
+          },
+        },
+        //...too complicated
+      },
+    },
+    payment_completed: {
+      entry: ['setColor'],
+      on: {},
+    },
+  },
+});
+
+export default receptionMachine;
+```
+
+메인 스트림이 구성하는 상태의 흐름을 코드로 구체화했습니다.
+비록 in treatment, treatment completed 상태의 Sub Stream 상태가
+step_1, ... 등으로 명명되었지만, 실제는 더 직관적이고 구체적일 것입니다.
+
+머신에 필요한 Context와 Service 그리고 Events 등은 프로젝트가 완료된 후에
+따로 정리해서 공유하도록 하겠습니다.
+
+## 효용성
+
+효용성 측면에서 xstate를 활용한 방법이 어떤 장점을 가지고 있는지 평가해보겠습니다.
+큰 강의 줄기, 파생되는 강의 지류 등의 비유로 보았을 때는 굉장히 많은 개발적인
+부수효과가 따라올 것 같지만, 완벽한 흐름이 정의되지 않은 현재 상황에서는
+드라마틱한 변화를 기대하기는 어려울 것 같습니다.
+
+> 드라마틱한 변화 가능성 ⭐️⭐️⭐️
+
+다섯 가지의 큰 상태 정의가 있지만, 상태 간의 전이 사이에는 어느정도 시간이 소요되며
+사용자의 행동과 서비스의 주체인 환자의 선택에 따라 결과가 천차만별로 변하는 스케일 때문에
+지류들의 구성도 만만치 않아 보입니다.
+
+> 복잡한 설계 난이도로 인한 접근성 ⭐️⭐️⭐️
+
+하지만 분명한 것은 모든 과정은 산출이 가능하고 중복이 굉장히 빈번하기 때문에
+적절한 분석과 정량적인 산출을 통해 효율적으로 개발할 수 있다는 것입니다.
+
+> 실질 효율성 ⭐️⭐️⭐️⭐️
+
+또한 장기적인 측면에서는 정리된 상태가 인수인계에 용이하고
+상태의 흐름을 한눈에 파악할 수 있기 때문에 유지보수에도 용이할 것입니다.
+
+> 장기적인 효율성 ⭐️⭐️⭐️⭐️⭐️
+
+## 결론
+
+별점을 매기는 것은 굉장히 주관적인 일이기 때문에, 이 글을 읽는 분들이
+각자의 상황에 맞게 별점을 매기시면 좋을 것 같습니다.(저는 평균 4점 정도 주고 싶네요)
+
+xstate를 활용한 상태 관리는 프로젝트의 규모가 커질수록 효율성이 더욱 높아질 것이라고
+생각합니다. 또한 상태 관리를 통해 얻을 수 있는 효율성은 개발자의 능력에 따라
+다르기 때문에, 이 글을 읽는 분들이 xstate를 활용한 상태 관리를 고려하고 계신다면
+적극 추천드리고 싶습니다.

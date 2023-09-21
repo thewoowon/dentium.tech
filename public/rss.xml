@@ -4,24 +4,24 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Thu, 14 Sep 2023 06:17:46 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 21 Sep 2023 09:08:47 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
+        <item>
+            <title><![CDATA[XState, Finite State Machine]]></title>
+            <link>https://dentium.tech/posts/20230917_george_xstate</link>
+            <guid>https://dentium.tech/posts/20230917_george_xstate</guid>
+            <pubDate>Sun, 17 Sep 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[진료 단계를 관리하는 유한 상태 머신]]></description>
+        </item>
         <item>
             <title><![CDATA[힙 메모리 부족 문제 해결하기]]></title>
             <link>https://dentium.tech/posts/20230911_lucas_heap_out_of_memory</link>
             <guid>https://dentium.tech/posts/20230911_lucas_heap_out_of_memory</guid>
             <pubDate>Mon, 11 Sep 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[메모리 부족 문제를 해결한 과정을 공유합니다.]]></description>
-        </item>
-        <item>
-            <title><![CDATA[XState, Finite State Machine]]></title>
-            <link>https://dentium.tech/posts/20230910_george_xstate</link>
-            <guid>https://dentium.tech/posts/20230910_george_xstate</guid>
-            <pubDate>Sun, 10 Sep 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[진료 단계를 관리하는 유한 상태 머신]]></description>
         </item>
         <item>
             <title><![CDATA[쏟아지는 사용자 입력 관리하기]]></title>
