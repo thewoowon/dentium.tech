@@ -19,6 +19,7 @@ import { PostType } from '../../types/post';
 import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import GPT from '@/components/GPT';
 
 const components = {
   Head,
@@ -27,11 +28,16 @@ const components = {
 };
 
 type PostPageProps = {
+  rawSource: string;
   source: MDXRemoteSerializeResult;
   frontMatter: PostType;
 };
 
-const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
+const PostPage = ({
+  rawSource,
+  source,
+  frontMatter,
+}: PostPageProps): JSX.Element => {
   const customMeta: MetaProps = {
     title: `${frontMatter.title} - ${frontMatter.writer}`,
     description: frontMatter.description,
@@ -112,6 +118,7 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
           </div>
         </header>
         <div className="prose dark:prose-dark m-auto">
+          <GPT article={rawSource} />
           <MDXRemote {...source} components={components} />
         </div>
         <div className="prose m-auto pt-16 pb-10 flex items-center">
@@ -163,8 +170,67 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     scope: data,
   });
 
+  // 코드는 삭제한다.
+  let rawSource = content.replace(/```[\s\S]*?```/g, '');
+  // 이미지는 삭제한다.
+  const images = rawSource.match(/!\[[\s\S]*?\]\([\s\S]*?\)/g);
+  if (images) {
+    images.forEach((image) => {
+      rawSource = rawSource.replace(image, '');
+    });
+  }
+  // 이미지 태그는 삭제한다.
+  const imageTags = rawSource.match(/<img[\s\S]*?>/g);
+  if (imageTags) {
+    imageTags.forEach((imageTag) => {
+      rawSource = rawSource.replace(imageTag, '');
+    });
+  }
+  // <Image/> 태그는 삭제한다.
+  const nextImageTags = rawSource.match(/<Image[\s\S]*?>/g);
+  if (nextImageTags) {
+    nextImageTags.forEach((imageTag) => {
+      rawSource = rawSource.replace(imageTag, '');
+    });
+  }
+  // div 태그로 감싼 내용은 삭제한다.
+  const divTags = rawSource.match(/<div[\s\S]*?>[\s\S]*?<\/div>/g);
+  if (divTags) {
+    divTags.forEach((divTag) => {
+      rawSource = rawSource.replace(divTag, '');
+    });
+  }
+
+  // p 태그로 감싼 내용은 삭제한다.
+  const pTags = rawSource.match(/<p[\s\S]*?>[\s\S]*?<\/p>/g);
+  if (pTags) {
+    pTags.forEach((pTag) => {
+      rawSource = rawSource.replace(pTag, '');
+    });
+  }
+  // span 태그로 감싼 내용은 삭제한다.
+  const spanTags = rawSource.match(/<span[\s\S]*?>[\s\S]*?<\/span>/g);
+  if (spanTags) {
+    spanTags.forEach((spanTag) => {
+      rawSource = rawSource.replace(spanTag, '');
+    });
+  }
+
+  // 띄어쓰기가 2번 이상인 경우는 삭제한다.
+  rawSource = rawSource.replace(/\s{2,}/g, ' ');
+
+  // 하이퍼링크는 삭제한다.
+  rawSource = rawSource.replace(/\[.*?\]\(.*?\)/g, '');
+
+  // https 링크는 삭제한다.
+  rawSource = rawSource.replace(/https?:\/\/.*?\s/g, '');
+
+  // <br/> 태그는 삭제한다.
+  rawSource = rawSource.replace(/<br\/>/g, '');
+
   return {
     props: {
+      rawSource,
       source: mdxSource,
       frontMatter: data,
     },
