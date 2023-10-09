@@ -34,6 +34,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               height={300}
               alt="dentium tech"
               src={'/images/dentech_typo.png'}
+              priority
             />
           </div>
         </div>
