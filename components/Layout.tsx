@@ -27,6 +27,16 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
     <>
       <Head customMeta={customMeta} />
       <header>
+        <div>
+          <div className="bg-black dark:bg-zinc-50 h-64 flex justify-center items-center">
+            <Image
+              width={500}
+              height={300}
+              alt="dentium tech"
+              src={'/images/dentech_typo.png'}
+            />
+          </div>
+        </div>
         <div className="max-w-[1024px] mx-auto">
           <div className="flex items-center justify-between py-3">
             <Navigation />
