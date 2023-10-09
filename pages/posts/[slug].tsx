@@ -228,6 +228,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // <br/> 태그는 삭제한다.
   rawSource = rawSource.replace(/<br\/>/g, '');
 
+  // 백틱을 삭제한다.
+  rawSource = rawSource.replace(/`/g, '');
+
+  // 4097자를 넘지 않게 한다.
+  rawSource = rawSource.substring(0, 3000);
+
   return {
     props: {
       rawSource,

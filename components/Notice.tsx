@@ -22,6 +22,10 @@ const Notice = () => {
         centeredSlides={true}
       >
         <SwiperSlide className="noticeSwiperSlide">
+          GPT 요약 기능이 추가되었어요! 🤩 이제 더욱 편하게 글을 이해할 수
+          있어요!
+        </SwiperSlide>
+        <SwiperSlide className="noticeSwiperSlide">
           새로운 글이 작성되었어요! 만나러 가볼까요? 😆
         </SwiperSlide>
         <SwiperSlide className="noticeSwiperSlide">
