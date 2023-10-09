@@ -1,4 +1,4 @@
-![index_1](https://user-images.githubusercontent.com/60413257/224629073-eb6f66a4-3308-4c91-b4fb-28a6339a8af6.jpeg)
+![dentech_typo_3](https://github.com/thewoowon/dentium.tech/assets/60413257/55cdb497-b0bd-4495-9a01-912b90038c30)
 
 # DENTIUM TECH BLOG
 
