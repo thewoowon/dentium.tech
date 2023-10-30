@@ -4,11 +4,18 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Tue, 26 Sep 2023 05:32:42 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 30 Oct 2023 15:44:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
+        <item>
+            <title><![CDATA[Multi-tenancy Architecture]]></title>
+            <link>https://dentium.tech/posts/20230923_ryan_multi_tenancy</link>
+            <guid>https://dentium.tech/posts/20230923_ryan_multi_tenancy</guid>
+            <pubDate>Sat, 23 Sep 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[IT팀은 어떠한 아키텍처를 사용하고 있는지 공유합니다.]]></description>
+        </item>
         <item>
             <title><![CDATA[XState, Finite State Machine]]></title>
             <link>https://dentium.tech/posts/20230917_george_xstate</link>

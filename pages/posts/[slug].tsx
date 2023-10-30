@@ -20,11 +20,15 @@ import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import GPT from '@/components/GPT';
+import { Line, Radar, Bar } from 'react-chartjs-2';
 
 const components = {
   Head,
   Image,
   Link,
+  Line,
+  Radar,
+  Bar,
 };
 
 type PostPageProps = {

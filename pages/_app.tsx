@@ -5,6 +5,32 @@ import React from 'react';
 import '../styles/globals.css';
 import { RecoilRoot } from 'recoil';
 import Head from 'next/head';
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Filler,
+  Tooltip,
+  Legend,
+  BarElement,
+} from 'chart.js';
+
+ChartJS.register(
+  RadialLinearScale,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Filler,
+  Tooltip,
+  Legend
+);
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (

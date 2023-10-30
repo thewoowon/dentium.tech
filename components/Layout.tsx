@@ -78,6 +78,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
           <div>
             <div className="font-bold py-2">에니그마(ENIGMA)</div>
             <div>덴티움 기술 블로그 운영진</div>
+            <div>운영 리더: 우원</div>
             <div>mail to: wwoo@dentium.com</div>
           </div>
           <div className="font-bold text-md pt-6">(주)덴티움</div>
