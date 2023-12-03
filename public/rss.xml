@@ -4,11 +4,18 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Thu, 16 Nov 2023 13:52:28 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 03 Dec 2023 11:00:41 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
+        <item>
+            <title><![CDATA[좀 더 들여다 보는 데이터베이스]]></title>
+            <link>https://dentium.tech/posts/20231202_george_database</link>
+            <guid>https://dentium.tech/posts/20231202_george_database</guid>
+            <pubDate>Sat, 02 Dec 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[지난 시간에 이어서 데이터베이스에 대해 좀 더 자세히 알아보겠습니다.]]></description>
+        </item>
         <item>
             <title><![CDATA[너도 알아야 한다, SQL과 데이터베이스]]></title>
             <link>https://dentium.tech/posts/20231116_george_sql</link>
