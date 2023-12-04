@@ -4,11 +4,18 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Sun, 03 Dec 2023 11:00:41 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 04 Dec 2023 09:06:16 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
+        <item>
+            <title><![CDATA[나는 생각한다, Go로 나는 분산 로깅을 개발한다.]]></title>
+            <link>https://dentium.tech/posts/20231204_ryan_distributed_logging</link>
+            <guid>https://dentium.tech/posts/20231204_ryan_distributed_logging</guid>
+            <pubDate>Mon, 04 Dec 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[IT팀은 어떠한 분산 로그 시스템를 구축하고 있는지 공유합니다.]]></description>
+        </item>
         <item>
             <title><![CDATA[좀 더 들여다 보는 데이터베이스]]></title>
             <link>https://dentium.tech/posts/20231202_george_database</link>
