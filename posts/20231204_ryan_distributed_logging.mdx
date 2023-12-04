@@ -1,0 +1,467 @@
+---
+title: 나는 생각한다, Go로 나는 분산 로깅을 개발한다.
+description: IT팀은 어떠한 분산 로그 시스템를 구축하고 있는지 공유합니다.
+date: '2023-12-04'
+image: '/images/distributed_system.png'
+writer: '라이언'
+position: 'BE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/1c046df5-9262-4c5f-412b-1b8c49a3af00/public'
+category: 'tech'
+tag: 'DENTECH TALK'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={
+    'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/73be41b8-7815-4b89-8706-a818b7aee200/public'
+  }
+  width={896}
+  height={895}
+  priority
+/>
+
+안녕하세요. <br/>
+덴티움 IT팀의 BE Developer 라이언입니다.
+
+오늘은 저희 IT팀에서 어떠한 도구를 사용하여 분산 로깅 시스템을 구현하였는지 공유하고자 합니다.
+
+먼저 분산 로깅이 무엇인지 간단하게 살펴보겠습니다.
+
+## 분산 로깅이 무엇인가?
+
+분산 로깅은 대규모 시스템이나 마이크로서비스 아키텍처와 같이 여러 구성 요소로 구성된 환경에서
+로그를 효과적으로 수집, 저장, 분석하고 시각화하는 것을 의미합니다.
+
+<div className="px-4 py-2 my-4 bg-orange-100 border-l-4 border-orange-500">
+  <div className="text-lg font-bold">Warning</div>
+  <div>
+    **분산 로깅**(Distributed Logging)과 **분산 추적**(Distributed Tracing)을
+    혼동하시면 안됩니다. 혼동이 되시는 분들은 [Distributed Tracing vs
+    Logging](https://www.linkedin.com/pulse/distributed-tracing-vs-logging-understanding-roles-kedar-kamthe)를
+    참고하시면 좋을 것 같습니다.
+  </div>
+</div>
+
+**_그렇다면 분산 로깅이 필요한 이유는 무엇일까요?_**
+
+## 분산 로깅이 필요한 이유?
+
+요즘 테크 블로그, 너튜브 등에서 분산 로깅이 자주 언급되곤 합니다.
+
+분산 로깅에서 로깅은 개발자라면 이미 흔하게 사용하고 계실 것입니다.
+하지만, 분산이라는 단어가 앞에 붙게 되면서 살짝? 조심스럽게 다가 가야 할 것 같은 느낌이 듭니다.
+
+분산 로깅이 등장하게 된 가장 큰 이유는 분산 시스템에서 여러 서비스와 컴포넌트가 서로 다른 위치에 분산되어
+시스템 전체의 상태를 이해하고 문제의 원인을 찾기 어렵기 때문이라고 생각됩니다.
+
+그래서 각 구성 요소에서 발생한 이벤트와 로그를 중앙에서 수집하고 분석함으로써
+문제를 빠르게 식별하고 해결하기 위해 분산 로깅이 필요하게 된 것입니다.
+
+**_이렇게 분산 로깅이 필요한 이유를 간단하게 살펴보았습니다.
+그렇다면, 분산 로깅을 구현하기 위해서 무엇이 필요할까요?_**
+
+## 분산 로그 시스템을 구현하기 위한 도구는?
+
+분산 로그 시스템을 구현하기 위해서 흔히 Java 진영에서는 Kafka와 Zookeeper를 사용합니다.
+
+하지만, 이번에 저희 팀에서는 Golang 진영에서 자주 사용되고 CNCF에 의해 관리되는 NATS라는 시스템을 사용하게 되었습니다.
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    **Kafka**(Apache Kafka)는 분산형 스트리밍 플랫폼으로, 
+    대량의 데이터 스트림을 안정적으로 처리하고 분산환경에서 확장 가능한 메시지 큐 시스템입니다.
+
+    **ZooKeeper**(Apache ZooKeeper)는 분산 응용 프로그램을 위한 코디네이션 서비스를 제공하는 오픈 소스 프로젝트로,
+    주로 Apache Kafka와 Apache HBase와 같은 다른 분산 시스템에서 코디네이션 및 관리 작업에 사용되며,
+    안정적이고 일관된 분산 시스템을 구축하는 데 사용됩니다.
+
+    **Golang**은 "Go 언어"를 부르는 일종의 별칭으로, "Go"라는 이름을 검색 엔진에서 찾기 어려울 수 있기 때문에,
+    개발자들은 Golang이라는 용어를 사용하여 구글의 Go 언어를 검색 및 식별하기 쉽게 하였습니다.
+
+    **CNCF**(Cloud Native Computing Foundation)는 클라우드 네이티브 컴퓨팅을 촉진하고 지원하기 위한 오픈 소스 기술의 개발, 유지 보수, 커뮤니티 지원을 위한 비영리 단체입니다.
+
+  </div>
+</div>
+
+**NATS**은 경량의 오픈소스 메시징 시스템으로, 다양한 플랫폼 간에 안정적으고 빠르게 메시지를 전달하는 데 중점을 둔 분산 메시징 시스템입니다.
+[이미 AT&T, mastercard, Tesla, VMware 등의 해외 웅장한 기업에서 성능과 안정성을 인정받아 사용되고 있습니다.](https://nats.io/#who-uses-nats)
+
+그렇다면, NATS은 어떠한 특성을 가지고 있는지 좀 더 자세하게 알아보겠습니다.
+
+1. `간결하고 경량` 간결한 디자인과 경량 아키텍처를 갖추고 있어서 빠르고 효율적인 메시지 전달을 제공합니다.
+2. `구독/발행 모델` 토픽을 기반으로 한 구독/발행(Pub/Sub) 모델을 사용하여 메시지를 전달합니다.
+3. `분산 시스템 연결` 클러스터링을 통해 여러 서버를 연결하여 메시지를 분산하고 확장성을 제공합니다.
+4. `요구사항에 따라 다양한 모델 지원` 요구에 따라 토픽 기반 메시징 외에도 요청/응답, 큐잉, 스트리밍과 같은 다양한 메시징 패턴을 지원합니다.
+5. `보안 기능` TLS/SSL을 통한 암호화와 인증을 지원하여 보안을 강화할 수 있습니다.
+
+위와 같은 특성으로 얼핏 보면 Kafka와 비슷한데?라고 생각하실 수 있습니다.
+그래서 아래와 같이 몇 가지 키워드를 통해 Kafka와 NATS의 특성을 비교해 보았습니다.
+
+1. `용도와 목적`
+   - **Kafka:** 대용량 데이터 스트리밍 및 이벤트 처리에 강점이 있습니다. 데이터의 내구성, 정렬, 복제 등을 중요시하는 경우에 적합합니다.
+   - **NATS:** 경량 메시징 시스템으로 빠른 메시지 전달이 중요한 경우에 적합합니다. 간단하고 빠른 메시지 전송이 필요한 환경에서 사용됩니다.
+2. `내구성과 복구`
+   - **Kafka:** 메시지는 디스크에 저장되어 내구성이 보장됩니다. 메시지의 상태를 영속적으로 유지하고 장애 발생 시 복구가 중요한 경우에 유리합니다.
+   - **NATS:** 기본적으로 메시지는 메모리에서만 유지되어 있으며, 내구성이 필요한 경우 옵션으로 클러스터링과 스트리밍을 사용할 수 있습니다.
+3. `확장성`
+   - **Kafka:** 수평 확장이 가능하며, 대규모 데이터 처리에 적합합니다.
+   - **NATS:** 경량하면서도 여러 노드로 확장 가능하며, 분산 시스템에서 빠른 메시지 전달이 필요한 경우에 적합합니다.
+4. `복잡성과 유지보수`
+   - **Kafka:** 설정 및 운영이 상대적으로 복잡할 수 있습니다. 메시지의 내구성과 복제 등을 구성해야 하는데, 이는 관리 및 유지보수에 영향을 미칠 수 있습니다.
+   - **NATS:** 간단하고 가볍게 사용할 수 있어서 초기 설정이나 유지보수 측면에서 편리합니다.
+
+이 처럼 Kafka와 비슷하지만 다른 NATS을 간단하게 알아보았습니다.
+
+이 시점에서 분산 로깅 시스템을 이미 구현해 보셨거나 운영하고 계신 개발자 분들께서는 위 특성 차이를 보시면서
+
+> "NATS는 메모리 기반의 메시지 저장소를 사용하므로, 내구성이나 장애 복구가 중요한 분산 로깅 시나리오에는 적합하지 않는거 아니야?"
+
+라고 생각하실 수 있습니다.
+
+맞습니다! NATS만 사용한다면 그렇습니다.
+그래서 [memphis.dev](https://memphis.dev/)라는 친구의 도움을 받으면 위와 같은 문제가 해결됩니다.
+
+## memphis.dev가 무엇인가?
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Overview`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/33f39c46-0021-4a33-f532-29efc1402400/public`}
+  width={1406}
+  height={850}
+  priority
+/>
+<a
+  className="text-center text-gray-500"
+  href="https://docs.memphis.dev/memphis/getting-started/readme#so-what-is-memphis.dev"
+>
+  ref. Memphis Overview GUI
+</a>
+
+memphis.dev(이하 memphis)는 NATS 프로젝트를 기반으로 Golang으로 작성된 새로운 프로젝트입니다.
+
+분산 로그 서버를 구현하려면 GUI 모니터링 도구, 인증/인가 구현, CDC 등의 여러 부수 도구 또는 작업이 필요합니다.
+하지만 memphis는 초기 구현에 필요한 여러 부수 구성 요소들이 이미 갖춰져 있기 때문에 빠르게 구축 가능합니다.
+
+memphis에 대해 더 자세한 정보를 원하시면 [Memphis Introduction](https://docs.memphis.dev/memphis/getting-started/readme)를 참고하시면 됩니다.
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    **CDC**(Change data capture)는 데이터 소스(데이터베이스, 데이터 웨어하우스
+    등)의 모든 변경 사항을 추적하여 대상 시스템에서 캡처할 수 있도록 하는 것을
+    의미합니다.
+  </div>
+</div>
+
+**_그렇다면, 빠르게 Memphis를 구축해서 체험해 보겠습니다._**
+
+## Memphis 체험해보기
+
+### memphis 사용 환경 구축
+
+_Docker Desktop 등과 같은 컨테이너화 소프트웨어가 사전에 설치되어 있어야 합니다._
+
+```bash
+$ curl -s https://memphisdev.github.io/memphis-docker/docker-compose-latest.yml -o docker-compose-latest.yml && \
+docker compose -f docker-compose-latest.yml -p memphis up
+```
+
+제대로 구축이 되었는지 http://localhost:9000/login 으로 접속해 보겠습니다.
+해당 URL로 접속하면 아래와 같이 로그인 화면이 나옵니다.
+Username에 `root`, Password에 `memphis`라고 입력하여
+초기 기본값으로 설정되어 있는 관리자 계정으로 로그인하겠습니다.
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Login`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/557466f1-13d2-416d-ddc0-5eec1a486800/public`}
+  width={958}
+  height={655}
+  priority
+/>
+### Client 생성 정상적으로 로그인이 이루어 졌다면 좌측 메뉴 하단에 `Users` 메뉴 선택
+또는 http://localhost:9000/users 로 접속하여 User 페이지로 이동하겠습니다.
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Users Page`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0e514856-3d1b-462a-bbe7-13177ef2d100/public`}
+  width={1170}
+  height={726}
+  priority
+/>
+
+해당 페이지에서 Producer와 Consumer를 위한 접속 사용자(Client)을 만들어 주도록 하겠습니다.
+
+우측 상단에 `Add a new user` 버튼을 선택하고 아래와 같이 2개(Producer 1개, Consumer 1개)의 사용자를 만들어 주겠습니다.
+
+1. Producer 접속용 Client
+   - **Username:** producer_1
+   - **Password:** #B8T2oA-mZ
+2. Consumer 접속용 Client
+   - **Username:** consumer_1
+   - **Password:** 587#h%@lW#
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Add New User`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/065f3ee1-05d4-45d2-ddfb-554db4dd0500/public`}
+  width={997}
+  height={848}
+  priority
+/>
+
+### Schema 생성
+
+이번에는 Producer와 Consumer 간에 주고 받을 메시지의 포멧을 설정해 보겠습니다.
+
+memphis에서는 `Protobuf`, `JSON`, `GraphQL`, `Avro`와 같이 다양한 메시지 포멧을 지원하고 있습니다.
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    **Avro**는 Apache의 Hadoop 프로젝트에서 개발된 원격 프로시저 호출(RPC) 및
+    데이터 직렬화 프레임워크이다. 자료형과 프로토콜 정의를 위해 JSON을 사용하며
+    콤팩트 바이너리 포맷으로 데이터를 직렬화한다.
+  </div>
+</div>
+
+좌측 메뉴에 `schemaverse` 메뉴 선택 또는 http://localhost:9000/schemaverse/list 로 접속하여
+schemaverse 페이지로 이동하겠습니다.
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Schemaverse`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/27fdd145-4d0f-4ddf-06b5-d11d542d1200/public`}
+  width={1386}
+  height={749}
+  priority
+/>
+
+기본적으로 `domo-schema`가 생성되어 있습니다.
+이 schema를 선택하여 아래와 같이 조금 더 간단하게 수정해 보겠습니다.
+
+```json
+{
+  "$id": "https://example.com/address.schema.json",
+  "description": "An address similar to http://microformats.org/wiki/h-card",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": ["message"]
+}
+```
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Schema New Version`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/1dbe992d-af72-403e-89b7-6d2f3eba5e00/public`}
+  width={1388}
+  height={826}
+  priority
+/>
+
+### 간단한 Producer와 Consumer 구현
+
+테스트를 위한 마지막 단계로 Producer와 Consumer 생성해 보겠습니다.
+간단한 테스트이기 때문에 Producer 1개, Consumer 1개로 소소하게 코드를 작성하겠습니다.
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    memphis는 Golang 외에도 REST(Webhook), TypeScript, Python, Kotlin, .NET,
+    Java, Rust 등 Client 라이브러리를 제공하고 있습니다.
+  </div>
+</div>
+
+테스트 시나리오는 Producer 1개가 1000000개의 간단한 메시지를 생산(produce)하고
+Consumer 1개가 생산된 메시지를 소비(consume)하는 방식으로 진행하겠습니다.
+
+먼저 Producer 생성을 위해 아래와 같이 코드를 작성해 주시면 됩니다.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/memphisdev/memphis.go"
+	"os"
+)
+
+type Message struct {
+	Message string `json:"message"`
+}
+
+func main() {
+	conn, err := memphis.Connect("localhost", "producer_1", memphis.Password("#B8T2oA-mZ"), memphis.AccountId(1))
+	if err != nil {
+		os.Exit(1)
+	}
+	defer conn.Close()
+
+	p, err := conn.CreateProducer("default", "pro-1")
+	if err != nil {
+		fmt.Printf("Producer failed: %v", err)
+		os.Exit(1)
+	}
+
+	for i := 0; i < 1000000; i++ {
+		message := Message{
+			Message: fmt.Sprintf("msg - %d", i),
+		}
+
+		binary, err := json.Marshal(message)
+		if err != nil {
+			panic(err)
+		}
+
+		err = p.Produce(binary, memphis.AsyncProduce())
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("[Produce] %s\n", message.Message)
+	}
+}
+```
+
+다음은 Consumer 생성을 위해 아래와 같이 코드를 작성해 주시면 됩니다.
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/memphisdev/memphis.go"
+)
+
+func main() {
+	conn, err := memphis.Connect("localhost", "consumer_1", memphis.Password("587#h%@lW#"), memphis.AccountId(1))
+	if err != nil {
+		os.Exit(1)
+	}
+	defer conn.Close()
+
+	consumer, err := conn.CreateConsumer("default", "con-1", memphis.ConsumerGroup("con"), memphis.PullInterval(1*time.Nanosecond), memphis.BatchSize(100))
+	if err != nil {
+		fmt.Printf("Consumer creation failed: %v", err)
+		os.Exit(1)
+	}
+
+	handler := func(msgs []*memphis.Msg, err error, ctx context.Context) {
+		if err != nil {
+			panic(err)
+		}
+
+		for _, msg := range msgs {
+			fmt.Printf("[Consume] %s\n", string(msg.Data()))
+			msg.Ack()
+		}
+	}
+
+	ctx := context.Background()
+	consumer.SetContext(ctx)
+	consumer.Consume(handler)
+	time.Sleep(30 * time.Minute)
+}
+```
+
+### 동작 테스트 및 모니터링
+
+이제 작성된 Producer와 Consumer 코드를 실행시켜 보겠습니다.
+
+먼저 Producer를 실행시켜 보면 아래와 같이 메시지를 생산을 시작하게 됩니다.
+
+```shell
+PS ...\producer> go run .
+
+[Produce] msg - 1
+[Produce] msg - 2
+[Produce] msg - 3
+[Produce] msg - 4
+[Produce] msg - 5
+[Produce] msg - 6
+[Produce] msg - 7
+[Produce] msg - 7
+[Produce] msg - 8
+[Produce] msg - 9
+[Produce] msg - 10
+
+...
+```
+
+위와 같이 메시지 생산이 정상적으로 이루어지는 것을 확인하고,
+아래와 같이 Consumer를 실행시켜 보겠습니다.
+
+```shell
+PS ...\consumer> go run .
+
+[Consume] {"message":"msg - 1"}
+[Consume] {"message":"msg - 2"}
+[Consume] {"message":"msg - 3"}
+[Consume] {"message":"msg - 4"}
+[Consume] {"message":"msg - 5"}
+[Consume] {"message":"msg - 6"}
+[Consume] {"message":"msg - 7"}
+[Consume] {"message":"msg - 8"}
+[Consume] {"message":"msg - 9"}
+[Consume] {"message":"msg - 10"}
+
+...
+```
+
+정상적으로 Consumer까지 동작되는 것을 확인했으면
+바로 http://localhost:9000/stations/default 에 접속하여
+memphis에서 제공해 주는 모니터링 페이지로 이동해 보겠습니다.
+
+해당 페이지에서는 현재 연결되어 있는 Producer(좌측)과 Consumer Group(우측),
+생산/소비되는 대략적인 메시지(중앙)를 모니터링할 수 있습니다.
+
+<Image
+  className="drop-shadow-md"
+  alt={`Memphis Monitoring`}
+  src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/5ddb0a77-db37-4052-46d0-1b01f845d400/public`}
+  width={1388}
+  height={826}
+  priority
+/>
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    [Datadog과의 모니터링 연동](https://docs.memphis.dev/memphis/integrations-center/monitoring/datadog), 
+    [Slack 알림 기능 연동](https://docs.memphis.dev/memphis/integrations-center/notifications/slack) 등과 
+    같이 다양한 외부 소프트웨어와 통합할 수 있는 기능을 제공합니다. - [Memphis Integrations 페이지 접속](http://localhost:9000/administration/integrations)
+
+    <Image
+      className="drop-shadow-md"
+      alt={`Memphis Monitoring`}
+      src={`https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/4961c1bd-8199-4bb5-e5bf-ed64dcc16100/public`}
+      width={1388}
+      height={826}
+      priority
+    />
+
+  </div>
+</div>
+
+## 마치며
+
+memphis는 앞서 소개한 기능 외에도 분산 로그 시스템을 도입하기 위해 필요한 다양한 기능을 제공하고 있습니다.
+따라서, 초기에 적은 자원과 시간을 들여 안정적이고 빠르게 분산 로그 시스템을 구축할 수 있습니다.
+
+끝으로 Memphis와 Kakfa를 좀 더 심층적으로 비교 분석하고 싶으신 분들은
+[Apache Kafka vs Memphis](https://docs.memphis.dev/memphis/memphis-broker/comparisons/apache-kafka-vs-memphis)를
+참고하시면 될 것 같습니다.
+
+#Distributed Logging #NATS #memphis.dev #Golang
