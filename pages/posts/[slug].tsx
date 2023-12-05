@@ -22,6 +22,18 @@ import { useEffect } from 'react';
 import GPT from '@/components/GPT';
 import { Line, Radar, Bar } from 'react-chartjs-2';
 
+const linkCategory = ['github', 'blog', 'instagram'];
+
+const linkArrage: {
+  [key: string]: string[];
+} = {
+  죠지: [
+    'https://github.com/thewoowon',
+    'https://www.thewoowon.com/',
+    'https://www.instagram.com/',
+  ],
+};
+
 const components = {
   Head,
   Image,
@@ -140,6 +152,20 @@ const PostPage = ({
             {frontMatter.position}{' '}
             <span className="font-bold">{frontMatter.writer}</span>입니다.
             <br />
+            <div className="w-fit pt-2 flex gap-2 items-center">
+              {frontMatter.writer &&
+                linkArrage[frontMatter.writer] &&
+                linkArrage[frontMatter.writer].map((link, index) => (
+                  <Link href={link} target="_blank" key={index}>
+                    <Image
+                      src={`/images/${linkCategory[index]}.png`}
+                      alt="github"
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
+                ))}
+            </div>
           </div>
         </div>
       </article>
