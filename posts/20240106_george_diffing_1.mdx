@@ -1,0 +1,524 @@
+---
+title: Virtual DOM - Diffing 알고리즘을 구현하고 이해하기 - (1)
+description: Virtual DOM에서 가장 중요한 알고리즘인 Diffing 알고리즘을 구현하고 이해해보겠습니다.
+date: '2024-01-06'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/05eb1f63-3a42-4c18-7dc7-a9ee7d7a7700/public'
+writer: '죠지'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
+category: 'tech'
+tag: 'DENTECH TALK'
+---
+
+안녕하세요. 죠지입니다.
+
+오늘은 Virtual DOM에서 가장 중요한 알고리즘인 Diffing 알고리즘을 구현하고 이해해보겠습니다
+이미 Virtual DOM의 동작 원리를 이해하고 계신 분도 계시지만,
+실제로 어떤 알고리즘이 사용되는지는 잘 모르는 분들이 많으실 것 같아서 이번 포스팅을 작성하게 되었습니다.
+
+# Diffing 알고리즘 완벽 이해하기
+
+## 들어가며
+
+Virtual DOM의 동작 원리를 설명하는 이미지나 포스팅은 많습니다.
+그리고 충분히 공식 문서를 읽어 보셨다면 Virtual DOM의 동작 원리를 이해하셨을 것입니다.
+하지만 해결되지 않는 의문이 남아 있다면, 그것은 Diffing 알고리즘에 대한 의문일 것으로 감히 짐작해봅니다.
+
+## Diffing 알고리즘이란?
+
+Virtual DOM에서는 실제 DOM과 Virtual DOM을 비교하여 변경된 부분만을 실제 DOM에 반영하는데,
+이때 변경된 부분을 찾아내는 알고리즘이 Diffing 알고리즘입니다.
+
+## 기초적인 지식
+
+알고리즘을 이해하기 전에 알고리즘을 이해하는데 필요한 기초적인 지식을 알아보겠습니다.
+노드, 노드의 타입, 노드의 속성, 노드의 자식 노드 등을 알아야 합니다.
+
+### 노드
+
+> DOM 맥락에서는, 노드(node) 는 노드 트리의 단일 지점입니다. 노드가 되는 요소는 문서 자체, 요소, 텍스트, 주석 등입니다. — MDN
+
+노드는 HTML 문서의 요소를 의미합니다.
+노드는 크게 세 가지로 나뉩니다.
+
+- 요소 노드
+- 텍스트 노드
+- 주석 노드
+
+<div className="px-4 py-2 my-4 bg-blue-100 border-l-4 border-blue-500">
+  <div className="text-lg font-bold">Tip</div>
+  <div>
+    [MDN 공식문서](https://developer.mozilla.org)를 참고하시면 더욱 자세하게 알
+    수 있습니다.
+  </div>
+</div>
+
+### nodeType
+
+노드의 타입을 알아내기 위해서는 `nodeType`을 사용합니다.
+
+```js
+const node = document.createElement('div');
+console.log(node.nodeType); // 1
+```
+
+그리고 다음은 알고리즘에서 다룰 노드의 타입입니다.
+
+**ELEMENT_NODE** (1): <br/>
+
+- 용도: HTML 요소를 나타냅니다 (예: div, p, span 등).<br/>
+- 구분: 문서의 구조적 요소를 구성하며, 속성과 자식 노드(텍스트, 다른 엘리먼트 등)를 가질 수 있습니다.
+
+**TEXT_NODE** (3):<br/>
+
+- 용도: 요소의 텍스트 콘텐츠를 나타냅니다.<br/>
+- 구분: 순수한 텍스트를 가지며, 자식 노드를 가질 수 없습니다.
+
+**COMMENT_NODE** (8):<br/>
+
+- 용도: 주석을 나타냅니다 (예: \<!-- 주석 내용 --\>).<br/>
+- 구분: 주석 텍스트를 담고 있으며, 렌더링되지 않습니다.
+
+**DOCUMENT_NODE** (9):<br/>
+
+- 용도: 전체 문서를 나타내며, DOM 트리의 최상위에 존재합니다.<br/>
+- 구분: document 객체를 통해 참조되며, 요소, 텍스트, 주석 등 다양한 자식 노드를 가질 수 있습니다.
+
+이제 노드의 타입을 추출해주는 함수를 만들어보겠습니다.
+
+```js
+function getNodeType(node: Element) {
+  // 일반 ELEMENT_NODE의 경우 tagName을 반환 ex) div, p, span
+  if (node.nodeType === 1) return node.tagName.toLowerCase();
+  // 그 외의 경우 nodeType을 반환
+  else return node.nodeType;
+}
+```
+
+### 노드의 속성
+
+노드의 속성을 알아내기 위해서는 `node.attributes`를 사용합니다.
+여기서 `attributes`는 NamedNodeMap이라는 객체입니다.
+
+```js
+const node = document.createElement('div');
+node.setAttribute('id', 'app');
+console.log(node.attributes); // NamedNodeMap {0: id, id: id, length: 1}
+```
+
+### 노드의 자식 노드
+
+노드의 자식 노드를 알아내기 위해서는 `node.childNodes`를 사용합니다.
+
+```js
+const node = document.createElement('div');
+const textNode = document.createTextNode('hello');
+node.appendChild(textNode);
+console.log(node.childNodes); // NodeList [text]
+```
+
+외전이지만 `childNodes`를 추출하면 중간에 빈 문자열이나 줄바꿈(\n)이 포함되어 있습니다.
+그렇기 때문에 자식 노드 중 주석 노드면 삭제하고 텍스트 노드이면서
+빈 문자열이거나 줄바꿈(\n)이면 삭제하는 함수를 만들어보겠습니다.
+
+```js
+function removeEmptyTextNode(node: Element) {
+  const children = node.childNodes;
+  for (let i = 0; i < children.length; i++) {
+    if (
+      children[i].nodeType === 8 ||
+      (children[i].nodeType === 3 && !children[i].textContent.trim())
+    ) {
+      node.removeChild(children[i]);
+    }
+  }
+
+  return node;
+}
+```
+
+이제 깔끔하게 정리된 자식 노드를 추출할 수 있어 보입니다.
+하지만 노드의 자식 요소에 대해 함수를 재귀적으로 수행하지 않았기 때문에,
+자식 노드의 자식 노드는 정리되지 않았습니다.
+
+재귀적으로 정리하는 처리를 추가해보겠습니다.
+
+```js
+function removeEmptyNode(node: Element) {
+  const children = node.childNodes;
+  for (let i = 0; i < children.length; i++) {
+    if (
+      children[i].nodeType === 8 ||
+      (children[i].nodeType === 3 && !children[i].textContent.trim())
+    ) {
+      node.removeChild(children[i]);
+      i--;
+    }
+    // 재귀적으로 자식 노드를 정리
+    else if (children[i].nodeType === 1) {
+      removeEmptyTextNode(children[i] as Element);
+    }
+  }
+}
+```
+
+## 빌드업
+
+코어 함수를 제외하고 기능적으로 분리할 수 있는 함수들을 빌드업 해보겠습니다.
+
+### 노드의 속성을 추출하는 함수
+
+```js
+function getAttributes(node: Element) {
+  const attributes = node.attributes;
+  const attrs: {
+    [key: string]: string,
+  } = {};
+  for (let i = 0; i < attributes.length; i++) {
+    attrs[attributes[i].name] = attributes[i].value;
+  }
+
+  return attrs;
+}
+```
+
+### Virtual DOM과 DOM을 비교하여 DOM을 업데이트하는 함수
+
+```js
+function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
+  const virtualDOMAttributes = attributesObject(virtualDOM);
+  const DOMAttributes = attributesObject(DOM);
+
+  const attributes = Object.keys(virtualDOMAttributes);
+  for (let i = 0; i < attributes.length; i++) {
+    const attr = attributes[i];
+    // virtualDOM의 속성이 DOM에 없다면 추가
+    if (!DOMAttributes[attr]) {
+      DOM.setAttribute(attr, virtualDOMAttributes[attr]);
+    }
+    // virtualDOM의 속성이 DOM에 있다면 값이 다르면 수정
+    else if (DOMAttributes[attr] !== virtualDOMAttributes[attr]) {
+      DOM.setAttribute(attr, virtualDOMAttributes[attr]);
+    }
+  }
+
+  // DOM의 속성이 virtualDOM에 없다면 삭제
+  const DOMAttributesKeys = Object.keys(DOMAttributes);
+  for (let i = 0; i < DOMAttributesKeys.length; i++) {
+    const attr = DOMAttributesKeys[i];
+    if (!virtualDOMAttributes[attr]) {
+      DOM.removeAttribute(attr);
+    }
+  }
+}
+```
+
+혹시나 DOM의 속성을 비교하는 과정에서 문제가 발생할 수 있습니다.
+예를 들어, `style` 속성을 비교하는 과정에서 문제가 발생할 수 있습니다.
+`style` 속성은 문자열로 이루어져 있기 때문에,
+문자열을 비교하는 과정에서 문제가 발생할 수 있습니다.
+이런 문제를 해결하기 위해서는 `style` 속성을 객체로 변환하여 비교해야 합니다.
+
+```js
+function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
+  const virtualDOMAttributes = attributesObject(virtualDOM);
+  const DOMAttributes = attributesObject(DOM);
+
+  const attributes = Object.keys(virtualDOMAttributes);
+  for (let i = 0; i < attributes.length; i++) {
+    const attr = attributes[i];
+    // virtualDOM의 속성이 DOM에 없다면 추가
+    if (!DOMAttributes[attr]) {
+      DOM.setAttribute(attr, virtualDOMAttributes[attr]);
+    }
+    // virtualDOM의 속성이 DOM에 있다면 값이 다르면 수정
+    else if (DOMAttributes[attr] !== virtualDOMAttributes[attr]) {
+      // style 속성은 객체로 변환하여 비교
+      if (attr === 'style') {
+        const virtualDOMStyle = virtualDOMAttributes[attr];
+        const DOMStyle = DOMAttributes[attr];
+        const virtualDOMStyleKeys = Object.keys(virtualDOMStyle);
+        const DOMStyleKeys = Object.keys(DOMStyle);
+
+        // virtualDOM에는 있지만 DOM에는 없는 속성은 삭제
+        for (let i = 0; i < DOMStyleKeys.length; i++) {
+          const styleKey = DOMStyleKeys[i];
+          if (!virtualDOMStyle[styleKey]) {
+            DOM.style[styleKey] = '';
+          }
+        }
+
+        // virtualDOM에는 없지만 DOM에는 있는 속성은 추가
+        for (let i = 0; i < virtualDOMStyleKeys.length; i++) {
+          const styleKey = virtualDOMStyleKeys[i];
+          if (!DOMStyle[styleKey]) {
+            DOM.style[styleKey] = virtualDOMStyle[styleKey];
+          }
+        }
+
+        // virtualDOM과 DOM의 속성을 비교하여 다른 속성만 수정
+        for (let i = 0; i < virtualDOMStyleKeys.length; i++) {
+          const styleKey = virtualDOMStyleKeys[i];
+          if (DOMStyle[styleKey] !== virtualDOMStyle[styleKey]) {
+            DOM.style[styleKey] = virtualDOMStyle[styleKey];
+          }
+        }
+      } else {
+        DOM.setAttribute(attr, virtualDOMAttributes[attr]);
+      }
+    }
+  }
+
+  // DOM의 속성이 virtualDOM에 없다면 삭제
+  const DOMAttributesKeys = Object.keys(DOMAttributes);
+  for (let i = 0; i < DOMAttributesKeys.length; i++) {
+    const attr = DOMAttributesKeys[i];
+    if (!virtualDOMAttributes[attr]) {
+      DOM.removeAttribute(attr);
+    }
+  }
+}
+```
+
+## 코어 함수
+
+이제 코어 함수를 만들어보겠습니다.
+코어 함수는 Virtual DOM과 DOM을 비교하여 변경된 부분만을
+실제 DOM에 반영하는 함수입니다.
+
+### 유용한 메소드
+
+#### isEqualNode
+
+`isEqualNode` 메소드는 두 노드가 같은지 비교하는 메소드입니다.
+
+```js
+const node1 = document.createElement('div');
+const node2 = document.createElement('div');
+console.log(node1.isEqualNode(node2)); // true
+```
+
+#### cloneNode
+
+`cloneNode` 메소드는 노드를 복사하는 메소드입니다.
+
+```js
+const node = document.createElement('div');
+const cloneNode = node.cloneNode(true);
+console.log(node.isEqualNode(cloneNode)); // true
+```
+
+#### hasChildNodes
+
+`hasChildNodes` 메소드는 노드가 자식 노드를 가지고 있는지 확인하는 메소드입니다.
+
+```js
+const node = document.createElement('div');
+const textNode = document.createTextNode('hello');
+node.appendChild(textNode);
+console.log(node.hasChildNodes()); // true
+```
+
+### diffing 함수
+
+```js
+function diffing(virtualDOM: any, DOM: any) {
+  // DOM이 비어있고, virtualDOM이 비어있지 않다면
+  if (!DOM.hasChildNodes() && virtualDOM.hasChildNodes()) {
+    // virtualDOM의 자식 노드를 순회하며 DOM에 추가
+    for (var i = 0; i < virtualDOM.childNodes.length; i++) {
+      // 추가
+      DOM.append(virtualDOM.childNodes[i].cloneNode(true));
+    }
+  } else {
+    // 만약 두 노드가 같다면 return -> 변경이 필요없다.
+    if (virtualDOM.isEqualNode(DOM)) return;
+    // 만약 두 노드가 가지는 자식 노드의 개수가 다르다면 -> 노드를 추가하거나 제거했다는 의미
+    if (DOM.childNodes.length > virtualDOM.childNodes.length) {
+      let count = DOM.childNodes.length - virtualDOM.childNodes.length;
+      if (count > 0) {
+        // 순서에 상관없이 뒤에서부터 제거
+        for (; count > 0; count--) {
+          DOM.childNodes[DOM.childNodes.length - count].remove();
+        }
+      }
+    }
+
+    // DOM의 길이를 virtualDOM의 길이로 맞춘 상태에서 순회
+    for (let i = 0; i < virtualDOM.childNodes.length; i++) {
+      // 만약 DOM의 자식 노드가 없다면
+      if (DOM.childNodes[i] === undefined) {
+        // 추가
+        DOM.append(virtualDOM.childNodes[i].cloneNode(true));
+      } else if (
+        getNodeType(virtualDOM.childNodes[i] as Element) ===
+        getNodeType(DOM.childNodes[i] as Element)
+      ) {
+        // 만약 텍스트 노드라면
+        if (virtualDOM.childNodes[i].nodeType === 3) {
+          // 텍스트 노드의 값이 다르다면 변경
+          if (
+            virtualDOM.childNodes[i].textContent !==
+            DOM.childNodes[i].textContent
+          ) {
+            DOM.childNodes[i].textContent =
+              virtualDOM.childNodes[i].textContent;
+          }
+        } else {
+          patchAttributes(
+            virtualDOM.childNodes[i] as Element,
+            DOM.childNodes[i] as Element
+          );
+        }
+      } else {
+        // 다른 노드 타입이라면
+        DOM.childNodes[i].replaceWith(virtualDOM.childNodes[i].cloneNode(true));
+      }
+      // 3은 텍스트 노드이므로 제외 후 재귀적으로 수행
+      if (virtualDOM.childNodes[i].nodeType !== 3) {
+        diffing(
+          virtualDOM.childNodes[i] as Element,
+          DOM.childNodes[i] as Element
+        );
+      }
+    }
+  }
+}
+```
+
+## 테스트
+
+이제 테스트를 해보겠습니다.
+테스트는 직접 리액트 코드 상에서 진행하셔도 되고 jest를 사용하셔도 됩니다.
+만약 jest를 사용하신다면 `jest`와 `jsdom`을 설치해야 합니다.
+
+```bash
+npm i -D jest jsdom
+```
+
+그리고 `package.json`에 다음과 같이 스크립트를 추가합니다.
+
+```json
+{
+  "scripts": {
+    "test": "jest --watchAll"
+  }
+}
+```
+
+그리고 `__tests__` 폴더를 생성하고 `diffing.test.ts` 파일을 생성합니다.
+
+```js
+import { diffing } from '../src';
+
+describe('diffing', () => {
+  test('diffing', () => {
+    const virtualDOM = document.createElement('div');
+    virtualDOM.setAttribute('id', 'app');
+    virtualDOM.setAttribute('class', 'container');
+    const textNode = document.createTextNode('hello');
+    virtualDOM.appendChild(textNode);
+
+    const DOM = document.createElement('div');
+    DOM.setAttribute('id', 'app');
+    const textNode2 = document.createTextNode('hello');
+    DOM.appendChild(textNode2);
+
+    diffing(virtualDOM, DOM);
+
+    expect(virtualDOM.isEqualNode(DOM)).toBe(true);
+  });
+});
+```
+
+저는 실제 리액트 코드 상에서 테스트를 진행했습니다.
+
+```js
+const fragment = `
+<div style="color:green">Virtual DOM의 헤드</div>
+<h3 style="color:red">Virtual DOM의 h3</h3>
+<p>몇 자 끄적여봅니다.</p>
+<div style="color:blue;font-size:20px;display:flex; justify-content:center; align-items:center; flex-direction:column;">
+    <span>넘버링 1</span>
+    <span>넘버링 2</span>
+    <span>넘버링 3</span>
+</div>`;
+```
+
+위의 fragment를 Virtual DOM으로 사용하고, root 요소는 <div id="node"></div>로 설정했습니다.
+버튼을 클릭하면 diffing 함수가 실행되도록 <button>click</button>을 추가했습니다.
+
+```js
+function App() {
+  useEffect(() => {
+    // fragment를 Virtual DOM 파싱한 상태
+    if (!virtualDOM) return;
+    let DOM = document.getElementById("node");
+    if (!DOM) return;
+    // 정리된 DOM
+    clean(DOM);
+
+    // 버튼 클릭 시 diffing 함수 실행
+    document.querySelector("button")?.addEventListener("click", function () {
+      console.log("diffing 알고리즘을 실행합니다.");
+      diffing(virtualDOM, DOM as HTMLElement);
+    });
+  }, []);
+  return (
+    <div className="App" style={{
+        padding: "20px",
+    }}>
+      <div id="node"></div>
+      <button>click</button>
+    </div>
+  );
+}
+```
+
+### 테스트 결과
+
+<div className="flex justify-center items-center">
+  ![result](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/90300314-f40f-4ab9-12f5-b8bdc170bc00/public)
+</div>
+
+처음 버튼을 클릭하면 Virtual DOM을 DOM에 반영합니다.
+그리고 추가로 버튼을 클릭하면 더이상 변경할 부분이 없기 때문에
+Virtual DOM과 DOM이 같다는 것을 확인할 수 있습니다.
+
+## 끝나지 않은 이야기
+
+<div className="flex justify-center items-center">
+  <Image
+    alt={`Thumbnail`}
+    src={
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/2732b267-5c2e-476a-7ddb-a2b2e65fdf00/public'
+    }
+    width={360}
+    height={240}
+    priority
+  />
+</div>
+
+테스트 결과를 확인하니 속이 시원합니다.
+하지만 아직 끝나지 않은 이야기가 있습니다.
+바로 Virtual DOM의 특징 중 하나인 키(key)입니다.
+
+키는 Virtual DOM에서 사용하는 고유 식별자입니다.
+키가 없다면 Virtual DOM의 순서가 변경되어도
+실제 DOM에는 변경이 일어나지 않습니다.
+하지만 키가 있다면 Virtual DOM의 순서가 변경되어도
+실제 DOM에도 변경이 일어납니다.
+
+이 부분을 추가로 구현해야 완벽한 Diffing 알고리즘을 구현할 수 있습니다.
+(들어오는 것은 쉽지만 나가는 것은 어렵다는 말이 있듯이..)
+이 말은 즉, 포스팅이 끝나지 않았다는 말입니다...ㅎㅎ
+
+## 마치며
+
+이번 포스팅에서는 Virtual DOM에서 가장 중요한 알고리즘인 Diffing 알고리즘을 구현하고 이해해보았습니다.
+다음 포스팅을 기대해주세요!
+
+## 참고
+
+- [MDN](https://developer.mozilla.org)
+- [React 공식 문서](https://ko.reactjs.org/docs/reconciliation.html)

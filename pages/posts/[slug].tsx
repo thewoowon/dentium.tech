@@ -29,8 +29,8 @@ const linkArrage: {
 } = {
   죠지: [
     'https://github.com/thewoowon',
-    'https://www.thewoowon.com/',
-    'https://www.instagram.com/',
+    'https://www.thewoowon.com',
+    'https://www.instagram.com/thejobyouhate',
   ],
 };
 
