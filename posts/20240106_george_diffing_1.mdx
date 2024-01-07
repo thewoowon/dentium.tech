@@ -185,7 +185,7 @@ function getAttributes(node: Element) {
 ### Virtual DOM과 DOM을 비교하여 DOM을 업데이트하는 함수
 
 ```js
-function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
+function compareAndPatchAttributes(virtualDOM: Element, DOM: Element) {
   const virtualDOMAttributes = attributesObject(virtualDOM);
   const DOMAttributes = attributesObject(DOM);
 
@@ -220,7 +220,7 @@ function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
 이런 문제를 해결하기 위해서는 `style` 속성을 객체로 변환하여 비교해야 합니다.
 
 ```js
-function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
+function compareAndPatchAttributes(virtualDOM: Element, DOM: Element) {
   const virtualDOMAttributes = attributesObject(virtualDOM);
   const DOMAttributes = attributesObject(DOM);
 
@@ -322,7 +322,7 @@ console.log(node.hasChildNodes()); // true
 ### diffing 함수
 
 ```js
-function diffing(virtualDOM: any, DOM: any) {
+function diffing(virtualDOM: Element, DOM: Element) {
   // DOM이 비어있고, virtualDOM이 비어있지 않다면
   if (!DOM.hasChildNodes() && virtualDOM.hasChildNodes()) {
     // virtualDOM의 자식 노드를 순회하며 DOM에 추가
