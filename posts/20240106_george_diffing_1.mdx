@@ -185,7 +185,7 @@ function getAttributes(node: Element) {
 ### Virtual DOM과 DOM을 비교하여 DOM을 업데이트하는 함수
 
 ```js
-function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
+function compareAndPatchAttributes(virtualDOM: Element, DOM: Element) {
   const virtualDOMAttributes = attributesObject(virtualDOM);
   const DOMAttributes = attributesObject(DOM);
 
@@ -220,7 +220,7 @@ function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
 이런 문제를 해결하기 위해서는 `style` 속성을 객체로 변환하여 비교해야 합니다.
 
 ```js
-function compareAndPatchAttributes(virtualDOM: any, DOM: any) {
+function compareAndPatchAttributes(virtualDOM: Element, DOM: Element) {
   const virtualDOMAttributes = attributesObject(virtualDOM);
   const DOMAttributes = attributesObject(DOM);
 
@@ -322,7 +322,7 @@ console.log(node.hasChildNodes()); // true
 ### diffing 함수
 
 ```js
-function diffing(virtualDOM: any, DOM: any) {
+function diffing(virtualDOM: Element, DOM: Element) {
   // DOM이 비어있고, virtualDOM이 비어있지 않다면
   if (!DOM.hasChildNodes() && virtualDOM.hasChildNodes()) {
     // virtualDOM의 자식 노드를 순회하며 DOM에 추가
@@ -365,7 +365,7 @@ function diffing(virtualDOM: any, DOM: any) {
               virtualDOM.childNodes[i].textContent;
           }
         } else {
-          patchAttributes(
+          compareAndPatchAttributes(
             virtualDOM.childNodes[i] as Element,
             DOM.childNodes[i] as Element
           );
@@ -445,8 +445,8 @@ const fragment = `
 </div>`;
 ```
 
-위의 fragment를 Virtual DOM으로 사용하고, root 요소는 <div id="node"></div>로 설정했습니다.
-버튼을 클릭하면 diffing 함수가 실행되도록 <button>click</button>을 추가했습니다.
+위의 fragment를 Virtual DOM으로 사용하고, root 요소는 \<div id="node">\</div>로 설정했습니다.
+버튼을 클릭하면 diffing 함수가 실행되도록 \<button>click\</button>을 추가했습니다.
 
 ```js
 function App() {
