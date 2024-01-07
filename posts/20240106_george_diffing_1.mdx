@@ -365,7 +365,7 @@ function diffing(virtualDOM: any, DOM: any) {
               virtualDOM.childNodes[i].textContent;
           }
         } else {
-          patchAttributes(
+          compareAndPatchAttributes(
             virtualDOM.childNodes[i] as Element,
             DOM.childNodes[i] as Element
           );
