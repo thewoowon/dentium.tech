@@ -4,17 +4,17 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Sun, 07 Jan 2024 10:40:18 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 14 Jan 2024 11:15:22 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
         <item>
-            <title><![CDATA[코딩 테스트를 위한 완벽한 준비]]></title>
-            <link>https://dentium.tech/posts/20240107_george_diffing_2</link>
-            <guid>https://dentium.tech/posts/20240107_george_diffing_2</guid>
-            <pubDate>Sun, 07 Jan 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[코딩 테스트를 위한 용어 정리 및 스킬셋 정리]]></description>
+            <title><![CDATA[Virtual DOM - Diffing 알고리즘을 구현하고 이해하기 - (2)]]></title>
+            <link>https://dentium.tech/posts/20240115_george_diffing_2</link>
+            <guid>https://dentium.tech/posts/20240115_george_diffing_2</guid>
+            <pubDate>Mon, 15 Jan 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[지난번에 이어서 Key를 통해 DOM을 비교하는 알고리즘을 구현해보겠습니다.]]></description>
         </item>
         <item>
             <title><![CDATA[Virtual DOM - Diffing 알고리즘을 구현하고 이해하기 - (1)]]></title>

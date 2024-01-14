@@ -154,7 +154,7 @@ function removeEmptyTextNode(node: Element) {
 재귀적으로 정리하는 처리를 추가해보겠습니다.
 
 ```js
-function removeEmptyNode(node: Element) {
+function removeEmptyTextNode(node: Element) {
   const children = node.childNodes;
   for (let i = 0; i < children.length; i++) {
     if (
@@ -466,7 +466,7 @@ function App() {
     let DOM = document.getElementById("node");
     if (!DOM) return;
     // 정리된 DOM
-    clean(DOM);
+    removeEmptyTextNode(DOM);
 
     // 버튼 클릭 시 diffing 함수 실행
     document.querySelector("button")?.addEventListener("click", function () {
