@@ -1,0 +1,394 @@
+---
+title: Virtual DOM - Diffing 알고리즘을 구현하고 이해하기 - (2)
+description: 지난번에 이어서 Key를 통해 DOM을 비교하는 알고리즘을 구현해보겠습니다.
+date: '2024-01-15'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b18e56bb-e211-4037-9d26-5629e773cd00/public'
+writer: '죠지'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/0f1e87ce-400b-40bf-787d-ea3f2fc20900/public'
+category: 'tech'
+tag: 'DENTECH TALK'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={
+    'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b18e56bb-e211-4037-9d26-5629e773cd00/public'
+  }
+  width={896}
+  height={895}
+  priority
+/>
+
+안녕하세요. 죠지입니다.
+
+지난 시간에는 Virtual DOM의 Diffing 알고리즘을 구현하고 이해하는 것에 대해 이야기를 나누었습니다.
+이번 시간에는 Key가 실제로 어떻게 동작하는지 알아보고, Key를 통해 DOM을 비교하는 알고리즘을 구현해보겠습니다.
+
+> 지난번 글: [Virtual DOM - Diffing 알고리즘을 구현하고 이해하기 - (1)](https://www.dentium.tech/posts/20240106_george_diffing_1)
+
+## Key
+
+`Key`는 `Virtual DOM`에서 `DOM`을 비교할 때 사용하는 값입니다.
+흔히 `Key`는 `map`을 사용할 때 `index`를 사용하곤 합니다.
+
+```jsx
+const list = [1, 2, 3, 4, 5];
+
+const App = () => {
+  return (
+    <ul>
+      {list.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+## Why Key?
+
+왜 키가 필요할까요?
+실제 예를 통해서 그 이유를 알아보겠습니다.
+
+### 예시 1
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/69b7b728-d82b-4c60-04c1-b0a360546000/public)
+
+위와 같은 예를 보면, `Virtual DOM`에서는 "three"라는 value를 가진 노드가 맨 뒤에 추가되었습니다.
+그리고 Diffing 알고리즘을 실행한다면 코어 로직은 DOM의 맨 뒤에 신규 노드를 추가할 것입니다.
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/29db8447-b7dc-4633-87e7-1fe50dd07d00/public)
+
+### 예시 2
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/e1c566dd-e4f4-4ca4-b0ea-9c562ea0e400/public)
+
+그럼 순서가 다르게 바뀌었을 때는 어떻게 될까요?
+위의 예시에서는 "three"라는 value를 가진 노드가 맨 앞에 추가되었습니다.
+여기서 키가 없이 Diffing 알고리즘을 실행한다면, 코어 로직은 모든 노드를 순회하면서 신규 노드를 찾고
+속성을 업데이트하고, 맨 뒤에 추가할 것입니다.
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b01c1b54-14d5-485a-f8c3-680323f70400/public)
+
+### solution
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9b05e9db-b347-4247-b3a6-db7670ec5300/public)
+
+두 번째 예시에서 알 수 있듯이, 순서가 다르게 들어 온 경우에 모든 노드를 순회하면서
+진행하는 일련의 작업들은 비효율적입니다.
+
+간단하게 인간의 직관으로 생각해보면, "three"라는 value를 가진 노드가 맨 앞에 추가되었으니
+"three"라는 value를 가진 노드를 맨 앞에 추가하면 되지 않을까요?
+
+이것이 바로 `Key`가 필요한 이유입니다.
+
+## 그 전에 잠깐
+
+## attribute VS property
+
+둘 다 직역하면 속성이라는 뜻을 가지고 있습니다.
+하지만 `attribute`는 `HTML`에서 사용하는 속성을 의미하고, `property`는 `DOM`에서 사용하는 속성을 의미합니다.
+
+```html
+<input type="text" value="Hello" />
+```
+
+HTML이 위와 같다면, 이것은 value라는 attribute를 가집니다.
+이 input 요소가 DOM에 로드되면, JavaScript를 통해
+해당 요소의 value property에 접근할 수 있습니다.
+사용자가 필드에 새로운 값을 입력하면, property 값이 변경되지만,
+attribute 값은 초기에 설정된 값으로 그대로 남아 있습니다.
+
+추가로 key는 React의 내부 메커니즘을 위한 것으로,
+실제 DOM 요소의 property로 취급되지 않습니다.
+따라서 key는 React 요소나 컴포넌트를 정의할 때
+JSX 내부에서만 지정되며, DOM에는 별도로 표시되지 않습니다.
+
+## 빌드업
+
+코어 로직을 구현하기 위해 몇 가지 함수를 추가하고 리팩토링을 진행하겠습니다.
+
+### refactoring 'removeEmptyTextNode function'
+
+기존 'removeEmptyTextNode' 함수의 명칭을 'clean'으로 변경하고, 코드를 리팩토링하겠습니다.
+
+```js
+function clean(node: Element) {
+  const children = node.childNodes;
+  for (let i = 0; i < children.length; i++) {
+    if (
+      children[i].nodeType === 8 ||
+      (children[i].nodeType === 3 && !children[i].textContent.trim())
+    ) {
+      node.removeChild(children[i]);
+      i--;
+    }
+    // 재귀적으로 자식 노드를 정리
+    else if (children[i].nodeType === 1) {
+      if (children[i].hasAttribute('key')) {
+        children[i].key = children[i].getAttribute('key');
+        children[i].removeAttribute('key');
+      }
+      clean(children[i] as Element);
+    }
+  }
+}
+```
+
+### DOM과 Virtual DOM의 key를 비교하고 업데이트하는 함수
+
+```js
+function indexOfGeneric<T>(arr: ArrayLike<T>, item: T): number {
+  return Array.prototype.indexOf.call(arr, item);
+}
+
+function hasTheKey(DOM: Element, key: string) {
+  let isKeyPresent = false;
+  for (let i = 0; i < DOM.children.length; i++) {
+    if (key === DOM.children[i].key) {
+      isKeyPresent = true;
+      break;
+    }
+  }
+  return isKeyPresent;
+}
+
+function compareAndPatchKeys(virtualDOM: Element, DOM: Element) {
+  for (let i = 0; i < DOM.children.length; i++) {
+    // 주의: DOM.children[i]에서 key property는 접근할 수 없습니다.
+    // DOM.children[i].key는 undefined입니다.
+    if (DOM.children[i].key) {
+      if (!hasTheKey(virtualDOM, DOM.children[i].key)) {
+        DOM.children[i].remove();
+      }
+    }
+  }
+
+  for (let i = 0; i < vdom.children.length; i++) {
+    let vnode = vdom.children[i];
+    let key = vnode.key;
+    if (key) {
+      if (!hasTheKey(dom, key)) {
+        let nthIndex = [].indexOf.call(vnode.parentNode.children, vnode);
+        if (dom.children[nthIndex]) {
+          dom.children[nthIndex].before(vnode.cloneNode(true));
+        } else {
+          dom.append(vnode.cloneNode(true));
+        }
+      }
+    }
+  }
+}
+```
+
+## 코어 함수
+
+빌드업이 끝났으니, 이제 코어 함수를 새롭게(?) 구현해보겠습니다.
+지난 시간에 구현한 코어 함수를 다시 한 번 보겠습니다.
+
+```js
+function diffing(virtualDOM: Element, DOM: Element) {
+  // DOM이 비어있고, virtualDOM이 비어있지 않다면
+  if (!DOM.hasChildNodes() && virtualDOM.hasChildNodes()) {
+    // ... 많은 코드들
+  } else {
+    // ... 많은 코드들
+  }
+}
+```
+
+이제 여기에 compareAndPatchKeys만 추가하면 됩니다.
+
+```js
+function diffing(virtualDOM: Element, DOM: Element) {
+  // DOM이 비어있고, virtualDOM이 비어있지 않다면
+  if (!DOM.hasChildNodes() && virtualDOM.hasChildNodes()) {
+    // ... 많은 코드들
+  } else {
+    compareAndPatchKeys(virtualDOM, DOM);
+    // ... 많은 코드들
+  }
+}
+```
+
+전체 코드는 아래와 같습니다.
+
+```js
+function indexOfGeneric<T>(arr: ArrayLike<T>, item: T): number {
+  return Array.prototype.indexOf.call(arr, item);
+}
+
+function hasTheKey(DOM: Element, key: string) {
+  let isKeyPresent = false;
+  for (let i = 0; i < DOM.children.length; i++) {
+    if (key === DOM.children[i].key) {
+      isKeyPresent = true;
+      break;
+    }
+  }
+  return isKeyPresent;
+}
+
+function compareAndPatchKeys(virtualDOM: Element, DOM: Element) {
+  for (let i = 0; i < DOM.children.length; i++) {
+    // 주의: DOM.children[i]에서 key property는 접근할 수 없습니다.
+    if (DOM.children[i].key) {
+      if (!hasTheKey(virtualDOM, DOM.children[i].key)) {
+        DOM.children[i].remove();
+      }
+    }
+  }
+
+  for (let i = 0; i < vdom.children.length; i++) {
+    let vnode = vdom.children[i];
+    let key = vnode.key;
+    if (key) {
+      if (!hasTheKey(dom, key)) {
+        let nthIndex = [].indexOf.call(vnode.parentNode.children, vnode);
+        if (dom.children[nthIndex]) {
+          dom.children[nthIndex].before(vnode.cloneNode(true));
+        } else {
+          dom.append(vnode.cloneNode(true));
+        }
+      }
+    }
+  }
+}
+
+function diffing(virtualDOM: Element, DOM: Element) {
+  // DOM이 비어있고, virtualDOM이 비어있지 않다면
+  if (!DOM.hasChildNodes() && virtualDOM.hasChildNodes()) {
+    // virtualDOM의 자식 노드를 순회하며 DOM에 추가
+    for (var i = 0; i < virtualDOM.childNodes.length; i++) {
+      // 추가
+      DOM.append(virtualDOM.childNodes[i].cloneNode(true));
+    }
+  } else {
+    compareAndPatchKeys(virtualDOM, DOM);
+    // 만약 두 노드가 같다면 return -> 변경이 필요없다.
+    if (virtualDOM.isEqualNode(DOM)) return;
+    // 만약 두 노드가 가지는 자식 노드의 개수가 다르다면 -> 노드를 추가하거나 제거했다는 의미
+    if (DOM.childNodes.length > virtualDOM.childNodes.length) {
+      let count = DOM.childNodes.length - virtualDOM.childNodes.length;
+      if (count > 0) {
+        // 순서에 상관없이 뒤에서부터 제거
+        for (; count > 0; count--) {
+          DOM.childNodes[DOM.childNodes.length - count].remove();
+        }
+      }
+    }
+
+    // DOM의 길이를 virtualDOM의 길이로 맞춘 상태에서 순회
+    for (let i = 0; i < virtualDOM.childNodes.length; i++) {
+      // 만약 DOM의 자식 노드가 없다면
+      if (DOM.childNodes[i] === undefined) {
+        // 추가
+        DOM.append(virtualDOM.childNodes[i].cloneNode(true));
+      } else if (
+        getNodeType(virtualDOM.childNodes[i] as Element) ===
+        getNodeType(DOM.childNodes[i] as Element)
+      ) {
+        // 만약 텍스트 노드라면
+        if (virtualDOM.childNodes[i].nodeType === 3) {
+          // 텍스트 노드의 값이 다르다면 변경
+          if (
+            virtualDOM.childNodes[i].textContent !==
+            DOM.childNodes[i].textContent
+          ) {
+            DOM.childNodes[i].textContent =
+              virtualDOM.childNodes[i].textContent;
+          }
+        } else {
+          compareAndPatchAttributes(
+            virtualDOM.childNodes[i] as Element,
+            DOM.childNodes[i] as Element
+          );
+        }
+      } else {
+        // 다른 노드 타입이라면
+        DOM.childNodes[i].replaceWith(virtualDOM.childNodes[i].cloneNode(true));
+      }
+      // 3은 텍스트 노드이므로 제외 후 재귀적으로 수행
+      if (virtualDOM.childNodes[i].nodeType !== 3) {
+        diffing(
+          virtualDOM.childNodes[i] as Element,
+          DOM.childNodes[i] as Element
+        );
+      }
+    }
+  }
+}
+```
+
+## 테스트
+
+```js
+fragment = `
+    <ul>
+      <li key="hello">hello</li>
+      <li key="im">im</li>
+      <li key="diffing">diffing</li>
+      <li key="algorithm">algorithm</li>
+    </ul>
+`;
+```
+
+```js
+function App() {
+  useEffect(() => {
+    // codes...
+  }, []);
+  return (
+    <div
+      className="App"
+      style={{
+        padding: '20px',
+      }}
+    >
+      <div id="node">
+        <ul>
+          {['hello', 'diffing', 'algorithm'].map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+      <button>click</button>
+    </div>
+  );
+}
+```
+
+### 테스트 결과
+
+<div className="flex justify-center items-center">
+  ![result](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/ab129257-2602-46b8-7ed7-0c07e210d900/public)
+</div>
+
+사실 이렇게 테스트를 해보면, key를 사용하지 않았을 때와 사용했을 때의 차이를 알기 어렵습니다.
+그래서 개발자 도구를 통해 확인해보겠습니다.
+
+<div className="flex justify-center items-center">
+  ![result](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/89cee061-b038-4117-187a-f34a6cd24c00/public)
+</div>
+
+위의 이미지를 보면, key를 사용하지 않았을 때는 모든 노드를 순회하면서 변경을 진행했지만,
+key를 사용했을 때는 변경이 필요한 노드만 추가된 것을 확인할 수 있습니다.
+
+<div className="px-4 py-2 my-4 bg-red-100 border-l-4 border-red-500">
+  <div className="text-lg font-bold">Sorry</div>
+  <div>
+    이렇게 구현한 코드는 실제로 동작하지 않습니다. 그 이유는 React의 내부
+    메커니즘을 위한 것으로, 실제 DOM 요소의 property로 취급되지 않기 때문입니다
+  </div>
+</div>
+
+## 마치며
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/418f85df-3c39-4c8e-5461-b02ce6dd3300/public)
+
+이번 글에서는 Key를 통해 DOM을 비교하는 알고리즘을 구현해보았습니다.
+실제로 동작하지 않는다는 것에 대해서 전제를 두고 진행했지만,
+이번 글을 통해 Key가 어떻게 동작하는지 이해할 수 있었으면 좋겠습니다.
+
+읽어주셔서 감사합니다.
