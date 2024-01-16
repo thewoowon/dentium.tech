@@ -29,22 +29,31 @@ tag: 'DENTECH TALK'
 
 ## Key
 
-`Key`는 `Virtual DOM`에서 `DOM`을 비교할 때 사용하는 값입니다.
-흔히 `Key`는 `map`을 사용할 때 `index`를 사용하곤 합니다.
+key는 map과 같은 함수를 사용할 때, 입력하지 않으면 리액트로부터 경고 메세지를 받은 적이 있을 것입니다.
 
 ```jsx
 const list = [1, 2, 3, 4, 5];
 
+// Warning: Each child in a list should have a unique "key" prop.
 const App = () => {
   return (
     <ul>
       {list.map((item, index) => (
-        <li key={index}>{item}</li>
+        <li>{item}</li>
       ))}
     </ul>
   );
 };
 ```
+
+`Key`는 Virtual DOM에서 DOM을 비교할 때 사용하는 값입니다.
+좀 더 정확하게 말하면 두 개의 Virtual DOM이 비교될 때,
+좀 더 빠르고 효율적으로 수행될 수 있도록 도와주는 값입니다.
+
+(두 개의 Virtual DOM에 대한 이해를 위해 이미지를 첨부합니다.
+그리고 지난 글과 이어서 이전 상태의 Virtual DOM을 `DOM`이라고 부르겠습니다.)
+
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/72a0ea2c-2388-44f2-2c1a-46ff95ae4400/public)
 
 ## Why Key?
 
@@ -66,29 +75,33 @@ const App = () => {
 
 그럼 순서가 다르게 바뀌었을 때는 어떻게 될까요?
 위의 예시에서는 "three"라는 value를 가진 노드가 맨 앞에 추가되었습니다.
-여기서 키가 없이 Diffing 알고리즘을 실행한다면, 코어 로직은 모든 노드를 순회하면서 신규 노드를 찾고
-속성을 업데이트하고, 맨 뒤에 추가할 것입니다.
+이제 Diffing 알고리즘을 실행한다면, 코어 로직은 Virtual DOM의 노드를 순회하면서
+DOM의 속성을 업데이트하고, 맨 뒤에 추가할 것입니다.
+최악의 경우, 모든 노드를 순회하면서 업데이트를 진행해야 합니다.
 
 ![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b01c1b54-14d5-485a-f8c3-680323f70400/public)
 
 ### solution
 
-![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9b05e9db-b347-4247-b3a6-db7670ec5300/public)
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/6b5dd819-5c38-4b53-42c2-02b8c0cdfa00/public)
 
-두 번째 예시에서 알 수 있듯이, 순서가 다르게 들어 온 경우에 모든 노드를 순회하면서
-진행하는 일련의 작업들은 비효율적입니다.
+두 번째 예시에서 알 수 있듯이, 순서가 다르게 들어온 경우
+모든 노드에 대해서 작업이 수행되어야 합니다.
+이는 성능에 좋지 않은 영향을 미칩니다.
 
-간단하게 인간의 직관으로 생각해보면, "three"라는 value를 가진 노드가 맨 앞에 추가되었으니
-"three"라는 value를 가진 노드를 맨 앞에 추가하면 되지 않을까요?
+이를 해결하기 위해 인간의 시점에서 직관적으로 생각해보겠습니다.
+"three"라는 value를 가진 노드가 맨 앞에 추가되었으니
+"three"라는 value를 가진 노드만 맨 앞에 추가하면 되지 않을까요?
 
 이것이 바로 `Key`가 필요한 이유입니다.
 
 ## 그 전에 잠깐
 
-## attribute VS property
+### attribute VS property
 
 둘 다 직역하면 속성이라는 뜻을 가지고 있습니다.
-하지만 `attribute`는 `HTML`에서 사용하는 속성을 의미하고, `property`는 `DOM`에서 사용하는 속성을 의미합니다.
+하지만 `attribute`는 `HTML`에서 사용하는 속성을 의미하고,
+`property`는 `DOM`에서 사용하는 속성을 의미합니다.
 
 ```html
 <input type="text" value="Hello" />
@@ -107,11 +120,21 @@ JSX 내부에서만 지정되며, DOM에는 별도로 표시되지 않습니다.
 
 ## 빌드업
 
-코어 로직을 구현하기 위해 몇 가지 함수를 추가하고 리팩토링을 진행하겠습니다.
+<div className="px-4 py-2 my-4 bg-orange-100 border-l-4 border-orange-500">
+  <div className="text-lg font-bold">Warning</div>
+  <div>
+    몇몇 함수는 실제로 동작하지 않습니다(js ok, ts no...). 그 이유는 key가
+    React의 내부 메커니즘을 위한 것이고, 실제 DOM 요소의 property로 취급되지
+    않는다는 것에 기인합니다. <br />
+    하지만 여기서는 key가 마치 실제 DOM 요소의 property인 것으로 간주하고 작성하겠습니다.
+  </div>
+</div>
+
+코어 로직을 구현하기 위해 몇 가지 함수를 추가하고 수정하겠습니다.
 
 ### refactoring 'removeEmptyTextNode function'
 
-기존 'removeEmptyTextNode' 함수의 명칭을 'clean'으로 변경하고, 코드를 리팩토링하겠습니다.
+기존 'removeEmptyTextNode' 함수의 명칭을 'clean'으로 변경하고, 코드를 일부 수정하겠습니다.
 
 ```js
 function clean(node: Element) {
@@ -241,11 +264,11 @@ function compareAndPatchKeys(virtualDOM: Element, DOM: Element) {
   }
 
   for (let i = 0; i < vdom.children.length; i++) {
-    let vnode = vdom.children[i];
-    let key = vnode.key;
+    const vnode = vdom.children[i];
+    const key = vnode.key;
     if (key) {
       if (!hasTheKey(dom, key)) {
-        let nthIndex = [].indexOf.call(vnode.parentNode.children, vnode);
+        const nthIndex = [].indexOf.call(vnode.parentNode.children, vnode);
         if (dom.children[nthIndex]) {
           dom.children[nthIndex].before(vnode.cloneNode(true));
         } else {
@@ -372,23 +395,14 @@ function App() {
   ![result](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/89cee061-b038-4117-187a-f34a6cd24c00/public)
 </div>
 
-위의 이미지를 보면, key를 사용하지 않았을 때는 모든 노드를 순회하면서 변경을 진행했지만,
 key를 사용했을 때는 변경이 필요한 노드만 추가된 것을 확인할 수 있습니다.
-
-<div className="px-4 py-2 my-4 bg-red-100 border-l-4 border-red-500">
-  <div className="text-lg font-bold">Sorry</div>
-  <div>
-    이렇게 구현한 코드는 실제로 동작하지 않습니다. 그 이유는 React의 내부
-    메커니즘을 위한 것으로, 실제 DOM 요소의 property로 취급되지 않기 때문입니다
-  </div>
-</div>
 
 ## 마치며
 
-![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/418f85df-3c39-4c8e-5461-b02ce6dd3300/public)
+![](https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/310aabe6-89c1-47d7-6c60-09f3acd44c00/public)
 
 이번 글에서는 Key를 통해 DOM을 비교하는 알고리즘을 구현해보았습니다.
-실제로 동작하지 않는다는 것에 대해서 전제를 두고 진행했지만,
-이번 글을 통해 Key가 어떻게 동작하는지 이해할 수 있었으면 좋겠습니다.
+실제로 동작하지 않는다는 것에 전제를 두고 진행했지만, 그럼에도 불구하고
+이번 글을 통해 Key가 어떻게 동작하는지 잘 이해하셨다면 좋겠습니다.
 
 읽어주셔서 감사합니다.
