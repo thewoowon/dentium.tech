@@ -2,7 +2,6 @@ import React from 'react';
 import { MetaProps } from '../types/layout';
 import Head from './Head';
 import Navigation from './Navigation';
-import Image from 'next/image';
 import {
   IconBrandInstagram,
   IconBrandYoutube,
@@ -11,8 +10,9 @@ import {
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Banner from './Banner';
 import Notice from './Notice';
+import SimpleBanner from './SimpleBanner';
+import toast from 'react-hot-toast';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -26,8 +26,8 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
   return (
     <>
       <Head customMeta={customMeta} />
-      <header>
-        <div>
+      <header className="fixed w-full bg-white z-50">
+        {/* <div>
           <div className="bg-black dark:bg-zinc-50 h-64 flex justify-center items-center">
             <Image
               width={500}
@@ -37,25 +37,47 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               priority
             />
           </div>
-        </div>
-        <div className="max-w-[1024px] mx-auto">
-          <div className="flex items-center justify-between py-3">
+        </div> */}
+        <div className="max-w-[1140px] mx-auto h-[60px] max-h-[60px] flex items-center justify-between">
+          <div className="flex items-center justify-start py-3 gap-8">
             <Navigation />
+            <Link
+              href={'/'}
+              aria-label="article"
+              className="text-black hover:text-zinc-700 font-semibold"
+              style={{ fontSize: '1rem' }}
+            >
+              아티클
+            </Link>
+            <Link
+              href={'/interviews'}
+              aria-label="article"
+              className="text-black hover:text-zinc-700 font-semibold"
+              style={{ fontSize: '1rem' }}
+              onClick={(e) => {
+                toast.success('조금만 기다려주세요! 준비중입니다.');
+                e.preventDefault();
+              }}
+            >
+              인터뷰
+            </Link>
           </div>
         </div>
       </header>
       <main
+        className="pt-[60px]"
         style={{
           backgroundColor: router.pathname === '/' ? 'inherit' : '#fff',
         }}
       >
         {router.pathname === '/' && <Notice />}
+        {router.pathname === '/' && <SimpleBanner />}
         <div className="flex flex-col max-w-[1920px] justify-center items-center relative mx-auto">
-          {router.pathname === '/' && <Banner />}
-          {children}
+          {/* {router.pathname === '/' && <Banner />} */}
         </div>
+        {children}
       </main>
-      <div className="bg-zinc-50 dark:bg-zinc-50 h-56 ">
+      {/* <div className="bg-zinc-50 dark:bg-zinc-50 h-56 ">
         <div className="max-w-5xl h-full px-8 py-4 mx-auto flex justify-center">
           <div className="p-5 flex justify-center items-center">
             <div className="relative w-[75px] h-[75px]">
@@ -72,8 +94,8 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
             {`덴티움 기술 블로그`}
           </div>
         </div>
-      </div>
-      <footer className="py-8">
+      </div> */}
+      <footer className="py-8 bg-white">
         <div className="max-w-5xl px-8 mx-auto">
           <div>
             <div className="font-bold py-2">에니그마(ENIGMA)</div>

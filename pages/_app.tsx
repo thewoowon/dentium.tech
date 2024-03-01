@@ -18,6 +18,7 @@ import {
   Legend,
   BarElement,
 } from 'chart.js';
+import { Toaster } from 'react-hot-toast';
 
 ChartJS.register(
   RadialLinearScale,
@@ -41,6 +42,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       <GoogleAnalytics />
       <NaverAnalytics />
       <Component {...pageProps} />
+      <Toaster />
     </RecoilRoot>
   );
 };
