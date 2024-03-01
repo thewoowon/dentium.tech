@@ -58,5 +58,4 @@ const NoticeContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #ffffff;
 `;

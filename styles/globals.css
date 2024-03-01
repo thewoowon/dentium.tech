@@ -223,7 +223,7 @@ pre {
 }
 
 .noticeSwiper {
-  max-width: 1024px;
+  max-width: 1140px;
   height: 100% !important;
 }
 
@@ -288,8 +288,8 @@ pre {
 
 .cube-container {
   perspective: 800px;
-  width: 100px;
-  height: 100px;
+  width: 40px;
+  height: 40px;
   display: flex;
 }
 
@@ -311,34 +311,34 @@ pre {
 
 .cube-face {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 40px;
+  height: 40px;
   background-color: rgba(0, 128, 255, 0.8);
   border: 1px solid #fff;
 }
 
 .cube-front {
-  transform: translateZ(50px);
+  transform: translateZ(20px);
   background-color: #cbff37;
 }
 .cube-back {
-  transform: translateZ(-50px) rotateY(180deg);
+  transform: translateZ(-20px) rotateY(180deg);
   background-color: #cbff37;
 }
 .cube-right {
-  transform: rotateY(-90deg) translateZ(50px);
+  transform: rotateY(-90deg) translateZ(20px);
   background-color: #cbff37;
 }
 .cube-left {
-  transform: rotateY(90deg) translateZ(50px);
+  transform: rotateY(90deg) translateZ(20px);
   background-color: #cbff37;
 }
 .cube-top {
-  transform: rotateX(-90deg) translateZ(-50px);
+  transform: rotateX(-90deg) translateZ(-20px);
   background-color: #cbff37;
 }
 .cube-bottom {
-  transform: rotateX(-90deg) translateZ(50px);
+  transform: rotateX(-90deg) translateZ(20px);
   background-color: #cbff37;
 }
 
