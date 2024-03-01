@@ -65,7 +65,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
         </div>
       </header>
       <main
-        className="pt-[60px]"
+        className="pt-[60px] px-[20px]"
         style={{
           backgroundColor: router.pathname === '/' ? 'inherit' : '#fff',
         }}

@@ -11,7 +11,11 @@ const Element = ({ post }: { post: PostType }) => {
         router.push(`/posts/${post.slug}`);
       }}
     >
-      <div>
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
         <Tag>{`# ${post.tag}`}</Tag>
         <Title>{post.title}</Title>
         <Description>{post.description}</Description>
@@ -33,7 +37,12 @@ const Element = ({ post }: { post: PostType }) => {
               marginRight: '10px',
             }}
           >
-            <Image src={post.profile ?? ''} alt={post.writer ?? ''} fill />
+            <Image
+              src={post.profile ?? ''}
+              alt={post.writer ?? ''}
+              fill
+              sizes="100% 100%"
+            />
           </div>
           <div
             style={{
@@ -63,15 +72,7 @@ const Element = ({ post }: { post: PostType }) => {
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          height: '100%',
-        }}
-      >
+      <ImageContainer>
         <div
           style={{
             display: 'flex',
@@ -85,9 +86,14 @@ const Element = ({ post }: { post: PostType }) => {
             borderRadius: '12px',
           }}
         >
-          <Image src={post.image ?? ''} fill alt="post_image" priority />
+          <Image
+            src={post.image ?? ''}
+            fill
+            alt="post_image"
+            sizes="100% 100%"
+          />
         </div>
-      </div>
+      </ImageContainer>
     </Container>
   );
 };
@@ -106,6 +112,7 @@ const Container = styled.div`
   margin-bottom: 20px;
   position: relative;
   justify-content: space-between;
+  gap: 20px;
   &:hover {
     cursor: pointer;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
@@ -113,7 +120,6 @@ const Container = styled.div`
   }
 
   @media (max-width: 1140px) {
-    
   }
 `;
 
@@ -122,6 +128,8 @@ const Tag = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  font-weight: 600;
+  color: #666;
 `;
 
 const Title = styled.div`
@@ -134,4 +142,16 @@ const Title = styled.div`
 const Description = styled.div`
   font-size: 1rem;
   margin-bottom: 10px;
+  color: #666;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  @media (max-width: 1140px) {
+    display: none;
+  }
 `;
