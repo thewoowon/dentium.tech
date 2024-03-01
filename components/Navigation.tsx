@@ -7,12 +7,20 @@ const Navigation = () => {
   return (
     <nav className="flex justify-between items-center">
       <div className="relative w-[203px] h-[28px]">
-        <Link href={'/'}>
+        <Link
+          href={'/'}
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+          }}
+        >
           <Image
             className="cursor-pointer"
             fill
             alt="dentium tech"
             src={'/images/logo.svg'}
+            sizes="100% 100%"
           />
         </Link>
       </div>
