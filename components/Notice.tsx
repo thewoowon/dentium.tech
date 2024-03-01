@@ -35,7 +35,7 @@ const Notice = () => {
           </Link>
         </SwiperSlide>
         <SwiperSlide className="noticeSwiperSlide">
-          새로운 모습으로 돌아올 덴데크를 기다려주세요! 🤗 ~2024.02
+          덴테크가 기술블로그가 달라졌어요! 🎉 미니멀리즘이 좋아요~
         </SwiperSlide>
         <SwiperSlide className="noticeSwiperSlide">
           GPT 요약 기능이 추가되었어요! 🤩 이제 더욱 편하게 글을 이해할 수
