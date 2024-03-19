@@ -12,7 +12,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Notice from './Notice';
 import SimpleBanner from './SimpleBanner';
-import toast from 'react-hot-toast';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -54,10 +53,6 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               aria-label="article"
               className="text-black hover:text-zinc-700 font-semibold"
               style={{ fontSize: '1rem' }}
-              onClick={(e) => {
-                toast.success('조금만 기다려주세요! 준비중입니다.');
-                e.preventDefault();
-              }}
             >
               인터뷰
             </Link>
