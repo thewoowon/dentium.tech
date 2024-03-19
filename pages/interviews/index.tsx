@@ -119,7 +119,7 @@ const Container = styled.div`
   height: 100vh;
   max-width: 1140px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px 20px;
   gap: 40px;
 `;
 
@@ -129,6 +129,18 @@ const Grid = styled.div`
   gap: 20px;
   width: 790px;
   height: 790px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(1, 1fr);
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 // Item을 클릭하면 뱅그그그 도는거 추가하기
@@ -139,7 +151,7 @@ const Item = styled.div<{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 250px;
+  width: 100%;
   height: 250px;
   background-color: ${({ backgroundColor }) =>
     backgroundColor ?? rainbow[Math.floor(Math.random() * rainbow.length)]};
