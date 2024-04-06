@@ -21,6 +21,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import GPT from '@/components/GPT';
 import { Line, Radar, Bar } from 'react-chartjs-2';
+import { LeftSpeechBubble, RightSpeechBubble } from '@/components/SpeechBubble';
+import { LabeledTags, Tags } from '@/components/Tags';
 
 const linkCategory = ['github', 'blog', 'instagram'];
 
@@ -41,6 +43,10 @@ const components = {
   Line,
   Radar,
   Bar,
+  LeftSpeechBubble,
+  RightSpeechBubble,
+  Tags,
+  LabeledTags,
 };
 
 type PostPageProps = {

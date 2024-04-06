@@ -126,7 +126,7 @@ const Container = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 40px;
   width: 790px;
   height: 790px;
 
@@ -158,6 +158,7 @@ const Item = styled.div<{
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: 0.3s ease-in-out all 0s;
+  gap: 10px;
 
   animation: fadeIn 0.5s ease-in-out;
   @keyframes fadeIn {

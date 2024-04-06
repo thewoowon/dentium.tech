@@ -4,11 +4,17 @@
         <title>DenTium Tech Blog</title>
         <link>https://dentium.tech</link>
         <description>DenTium Tech Blog RSS feed</description>
-        <lastBuildDate>Tue, 19 Mar 2024 14:29:29 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 06 Apr 2024 11:33:04 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ko-KR</language>
         <copyright>ENIGMA</copyright>
+        <item>
+            <title><![CDATA[선택의 이유 같은 소리]]></title>
+            <link>https://dentium.tech/posts/20240407_george_selection</link>
+            <guid>https://dentium.tech/posts/20240407_george_selection</guid>
+            <pubDate>Sun, 07 Apr 2024 00:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Virtual DOM - Diffing 알고리즘을 구현하고 이해하기 - (2)]]></title>
             <link>https://dentium.tech/posts/20240115_george_diffing_2</link>
