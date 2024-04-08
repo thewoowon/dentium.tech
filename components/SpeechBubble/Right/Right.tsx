@@ -22,7 +22,7 @@ const RightSpeechBubble = ({
         <Title>{title}</Title>
         <Description>
           {description.split('\n').map((line, index) => (
-            <div key={index}>{line}</div>
+            <div key={index}>{line ? line : <br />}</div>
           ))}
         </Description>
       </SpeechBubble>
