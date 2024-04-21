@@ -56,6 +56,14 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
             >
               인터뷰
             </Link>
+            <Link
+              href={'/infographics'}
+              aria-label="article"
+              className="text-black hover:text-zinc-700 font-semibold"
+              style={{ fontSize: '1rem' }}
+            >
+              인포그래픽
+            </Link>
           </div>
         </div>
       </header>
