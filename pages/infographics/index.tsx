@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { dispose, init } from '../interviews/utils';
+import { dispose, init } from '../../utils/storm';
 
 const Infographics = () => {
   useEffect(() => {
