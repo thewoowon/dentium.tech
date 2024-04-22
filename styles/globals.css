@@ -263,6 +263,18 @@ pre {
   display: flex !important;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: small;
+  }
+
+  @media screen and (max-width: 640px) {
+    font-size: x-small;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: xx-small;
+  }
 }
 
 .defaultSwiper {

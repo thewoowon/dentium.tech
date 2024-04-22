@@ -22,6 +22,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@gsap/react": "^2.1.0",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
     "@react-three/fiber": "^8.16.2",
     "@tabler/icons": "^2.10.0",
     "@tabler/icons-react": "^2.10.0",
