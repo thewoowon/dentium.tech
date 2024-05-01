@@ -239,7 +239,7 @@ const NavigationContainer = styled.div`
 // 태블릿 이하에서 보여지는 메뉴
 const LinkContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   @media (max-width: 768px) {
     display: none;
   }

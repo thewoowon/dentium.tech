@@ -1,8 +1,8 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css');
 
 body {
   font-family: 'Pretendard Variable', Pretendard, -apple-system,
@@ -370,4 +370,11 @@ pre {
   100% {
     transform: rotate3d(0, 1, 1, 360deg);
   }
+}
+
+#gradient-canvas {
+  --gradient-color-1: #000033;
+  --gradient-color-2: #8a2be2;
+  --gradient-color-3: #483d8b;
+  --gradient-color-4: #ececec;
 }
