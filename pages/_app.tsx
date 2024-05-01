@@ -38,6 +38,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
     <RecoilRoot>
       <Head>
         <title>덴티움 기술블로그</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <GoogleAnalytics />
       <NaverAnalytics />
