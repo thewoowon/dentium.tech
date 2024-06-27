@@ -62,17 +62,6 @@ const Interviews = ({ posts }: IndexProps) => {
             </Item>
           );
         })}
-        <Item backgroundColor={rainbow[7]}>
-          <div
-            style={{
-              fontSize: 100,
-              fontWeight: 700,
-              color: 'white',
-            }}
-          >
-            {'?'}
-          </div>
-        </Item>
         <Item backgroundColor={rainbow[8]}>
           <div
             style={{

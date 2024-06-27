@@ -7,6 +7,7 @@ import {
   IconHome,
   IconNetwork,
   IconMenu2,
+  IconBrandYoutube,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -199,7 +200,14 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
               href={'https://www.youtube.com/@dentiumworld'}
               className="bg-black w-10 h-10 rounded-full flex justify-center items-center mr-3 cursor-pointer hover:bg-zinc-700 transition duration-200 ease-in-out"
               aria-label="youtube"
-            ></Link>
+            >
+              <IconBrandYoutube
+                color="white"
+                size={30}
+                stroke={1}
+                opacity={1}
+              />
+            </Link>
             <Link
               target="_blank"
               href={'https://www.instagram.com/dentium_korea'}

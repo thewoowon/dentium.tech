@@ -1,0 +1,570 @@
+---
+title: DENTECH 토이프로젝트 - 너드플래닛
+description:
+date: '2024-06-27'
+image: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/e5ebb1e7-b0ee-45ca-a430-fff685633f00/public'
+writer: '죠지'
+position: 'FE Developer'
+profile: 'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/61bfd7b6-4020-4d1a-5dce-d05d7872fb00/public'
+category: 'tech'
+tag: 'DENTECH TALK'
+---
+
+<Image
+  alt={`Thumbnail`}
+  src={
+    'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/e5ebb1e7-b0ee-45ca-a430-fff685633f00/public'
+  }
+  width={896}
+  height={895}
+  priority
+/>
+
+안녕하세요. 저는 개발자 죠지입니다.
+이번 글에서는 저희 운영진 내부에서
+진행한 토이 프로젝트에 대해 소개하려고 합니다.
+
+막상 이렇게 회고 글을 작성하려고 하다보니 뭔가 떨리는 마음이 드네요.
+대단한 작업을 한 것이 아니지만, 저희에게는 의미 있는 경험이었습니다.
+운영진 내부에서도 관심을 가져주셔서 굉장히 감사했습니다.
+
+그럼 이제 시작하겠습니다.
+
+# 계기
+
+프로젝트 시작의 계기는 크고 거창한 이유가 있었던 것은 아닙니다.
+저는 평소에도 스터디나 개인 프로젝트를 진행하곤 했습니다.
+그렇기 때문에 뭔가 운영진 내에서도 프로젝트를 진행해보고 싶다는 욕망이 있었습니다.
+그래서 적극적으로 의견을 내고 설득을 시도한 끝에 프로젝트를 진행하게 되었습니다.
+
+# 팀 빌딩
+
+스탠딩 미팅이나 점심 시간을 활용하여 팀 빌딩을 진행하였습니다.
+체계적인 접근이 아니라 자연스러운 대화 뒤에
+"혹시 이런 아이디어가 어떨까?"라는 식의 제안이 오고 가며 시작되었습니다.
+
+그렇게 저의 의견에 '동의'의 뜻을 표하신 분이 두 분 계셨고,
+저 포함 3인의 팀이 결성되었습니다.
+
+## 팀원 소개
+
+팀원을 우선 한 분씩 소개하도록 하겠습니다.
+
+### 라이언
+
+팀의 강력한 정신적 지주이자! 든든한 백엔드 개발자입니다.
+
+> 좀 더 자세히 라이언에 대해서 알고싶다면 [여기](https://www.dentium.tech/posts/20230411_ryan_interview)를 클릭해주세요.
+
+### 기원
+
+섬세함이 마치 그물망 같은 프론트엔드 개발자입니다.(a.k.a. 미스터 네트)
+
+> 좀 더 자세히 기원에 대해서 알고싶다면 [여기](https://www.dentium.tech/posts/20230607_kw_interview)를 클릭해주세요.
+
+### 죠지
+
+여전히 배우고 있는 프론트엔드 개발자입니다.
+
+이 글을 쓰고 있는 사람이기도 합니다.
+
+# 프로젝트 소개
+
+프로젝트의 이름은 '너드플래닛'입니다.
+너드라는 단어가 꼭 들어가면 좋겠다고 생각했던 차에
+'너드'와 '플래닛'을 합쳐 너드플래닛이라는 이름을 지었습니다.
+
+프로젝트의 처음 아이디어는 간단한 뉴스레터 서비스였습니다.
+기술 블로그의 글을 수집하여 매일 아침 이메일로 발송하는 서비스였죠.
+대부분 기술 블로그의 글을 보시는 사용자들은 자신이 원하는
+카테고리의 글을 찾아보는 것이 번거로운 경우가 많습니다.
+그래서 이러한 문제를 해결하기 위해 카테고라이징 뉴스레터 서비스를 기획하게 되었습니다.
+
+단순히 뉴스레터 서비스만으로는 사용자들에게 부족할 것 같아
+추가적으로 글을 볼 수 있는 뷰도 추가로 제공하고,
+구독 서비스로 원하는 카테고리의 글을 구독할 수 있도록 구현하였습니다.
+
+<a href="https://www.nerdplanet.app" target="_blank">
+  너드플래닛 바로가기
+</a>
+
+또한 여기에 그치지 않고, 너드플래닛은 새로운 서비스를 준비하고 있는데,
+그것은 바로 `러쉬`입니다.
+러쉬의 아이디어는 기원이 제안한 것으로,
+숏폼 형태로 요약된 기술 블로그 글을 리딩할 수 있는 서비스입니다.
+현재 디자인은 완료되어, 개발 착수에 들어 갔으며
+빠른 시일 내에 서비스를 오픈할 예정입니다.
+
+> RUSH HOUR to be continued...
+
+# 프로젝트 회고
+
+프로젝트를 진행하면서 겪었던 어려움과 해결 방법,
+그리고 중점을 둔 부분에 대해 각자의 관점에서 회고를 진행하기로 했습니다.
+각각 생각하는 부분이 다르기 때문에, 글의 구성을 획일화 하는 것보다는
+옴니버스 형식으로 작성하기로 했습니다.
+(중간에 글의 형식이 바뀌는 것에 대해 양해 부탁드립니다.)
+
+## 죠지의 회고
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'/profile/george.png'}
+    width={150}
+    height={150}
+    priority
+  />
+</div>
+
+### 기획
+
+기획의 초기 단계를 담당하면서
+이전에 진행했던 프로젝트를 돌아보게 되었습니다.
+그리고 당시 PM이 어떻게 문서를 작성했는지,
+어떤 형식으로 전개 했는지를 카피캣처럼 막상 따라한 것 같습니다.
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/a3edd5ff-e364-4e5b-1044-8916fd87fe00/public'}
+    width={1440}
+    height={150}
+    priority
+  />
+</div>
+
+가설, 기능제안 이렇게 두 가지로 나누어서 문서를 작성하였습니다.
+그리고 기능제안의 부분에서는 각 기능에 대한 상세한 설명과
+기능을 구현하기 위한 기술적인 부분, 구체적인 목표를 작성하였습니다.
+
+#### 가설
+
+일단 초기 기획의 가설은 크게 두 가지였습니다.
+
+> 1. 기술 블로그 글을 내가 원하는 것만 필터링해서 뉴스레터로 받아 볼 수 없을까?
+> 2. 핵심만 요약된 내용으로 빠르게 리딩만 원하는 유저의 니즈가 있지 않을까?
+
+지금 봐도 1번은 핵심을 잘 짚은 것 같습니다.
+그리고 2번은 2차 개발에서 진행할 숏폼을 염두해 둔 것 같습니다.
+
+#### 목표
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/5617edaa-37fc-4fd8-8790-77438ccaba00/public'}
+    width={300}
+    height={300}
+    priority
+  />
+</div>
+
+단기적인 목표도 포함되어 있는데,
+측정 같은 경우는 GA, GTM을 사용하여 데이터를 수집하고 분석하는 것으로 작성하였습니다.
+그리고 성공 기준은 MAU 월 1만명, DAU 1천명을 목표로 설정하였습니다.
+(제발...!)
+
+### 디자인
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/2fdbd11c-a75a-42d1-9c6c-a3af7921fa00/public'}
+    width={300}
+    height={300}
+    priority
+  />
+</div>
+
+디자인은 처음에 에셋을 구성하는 것에 좀 애를 먹었습니다.
+그리고 디자인 시스템을 구축하는 것이 중요하다는 것을 깨달았습니다.
+(새삼 이전에 함께했던 디자이너분들이 그리웠습니다...)
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/e2fda598-42db-41df-a849-a885d51c9300/public'}
+    width={600}
+    height={600}
+    priority
+  />
+</div>
+
+일단 저는 레퍼런스를 모으기 시작했습니다.
+그리고 저희와 비슷한 카드형식의 디자인을 찾아
+컴포넌트 단위로 좋은 디자인의 장점을 가져가려고 노력했습니다.
+물론 레퍼런스를 찾는 것만으로는 부족했습니다.
+그래서 이전 프로젝트에서 아껴두었던 커스텀 디자인이나
+저 개인적인 작업물을 참고하여 보완했습니다.
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/22506122-61e7-415b-2bef-cf150fa32100/public'}
+    width={1440}
+    height={600}
+    priority
+  />
+</div>
+
+에셋을 구성하니 위와 같았습니다.
+그리고 시그니쳐 컬러(#93EBFF)가 나오니
+디자인이 뭔가 개성있고 방향이 잡히는 느낌이었습니다.
+(디자인 속도도 빨라지고...)
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/7d37b9ea-0c9c-4e5a-a347-1025a3036600/public'}
+    width={1440}
+    height={600}
+    priority
+  />
+</div>
+
+최종 디자인은 위와 같았습니다.
+개발을 진행하면서 애니메이션이나
+인터랙션이 추가된 것을 제외하면
+디자인은 거의 그대로 구현되었습니다.
+(기원(kw) 감사합니다.)
+
+#### 플라(Plaa)
+
+그리고 저희 메인 캐릭터 '플라(Plaa)' 이야기를 안 할 수가 없습니다.
+지인에게 부탁하여 캐릭터를 디자인해주었는데,
+이렇게 귀여운 캐릭터가 나올 줄은 몰랐습니다.
+(플라는 너드플래닛의 대표 캐릭터입니다.)
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/c128208d-c3ff-488f-93d7-4ba3ce866c00/public'}
+    width={300}
+    height={300}
+    priority
+  />
+</div>
+
+### 개발
+
+개발 이야기를 안할 수 없겠죠.
+개발은 처음부터 끝까지 저의 손을 떠나지 않았습니다.
+이번 프로젝트에서는 프론트엔드부터 백엔드 피드서버까지 모두 담당하였습니다.
+
+기본적인 레이아웃과 카드 출력은 기원이 담당하였고,
+저는 부수적인 애니메이션, 그리고 인터랙션, 바텀시트 등을 담당하였습니다.
+프론트엔드 관련해서는 크게 어려움이 없었지만,
+피드서버 개발에서 모델 개발에 애를 먹었습니다.
+
+#### 피드서버
+
+메인 서버는 Nest.js로 개발되었고, 이는 라이언이 담당하였습니다.
+그러나 RSS 피드를 처리하고 적재하는 피드 서버는 파이썬으로
+구축해야 했기 때문에 FastAPI를 활용해 개발하였습니다.
+
+FastAPI를 처음 사용해보았는데, 사용법이나 문법이
+비교적 쉬웠기 때문에 빠르게 개발을 진행할 수 있었습니다.
+(저는 파이썬과 R을 따로 사용하기 때문에 쉽게 적응할 수 있었습니다.)
+
+### 어려웠던 점
+
+```python
+# 일부 코드만 발췌
+# 데이터 로드
+data = pd.read_csv("train.csv")
+
+# 학습 데이터와 테스트 데이터 분리
+X_train, X_test, y_train, y_test = train_test_split(
+    data["title"], data[["job", "language"]], test_size=0.2, random_state=42
+)
+
+# 파이프라인 생성
+model = make_pipeline(TfidfVectorizer(), MultiOutputClassifier(LogisticRegression()))
+```
+
+피드를 가져오고, 파싱하고 전처리 후 DB에 적재하는 과정은
+비교적 쉽게 진행할 수 있었습니다.
+그러나 job과 skill 카테고라이징 과정에서 어려움을 겪었습니다.
+
+처음에 모델을 설계할 때, 군집 정도로 끝내려고 했지만
+자연어를 기반으로 하는 카테고리를 구현하려니 결국 토크나이저를 사용해야 했습니다.
+그리고 벡터화된 title을 활용해 KMeans로 군집화를 진행하였습니다.
+그런데 군집화 자체가 군집을 형성하는 것은 문제가 없었지만,
+군집화된 결과를 보고, 이를 어떻게 해석할 것인가에 대한 문제가 있었습니다.
+
+인덱싱이 안되다보니, 군집 활용 자체가 불가능했고,
+결국에는 회귀 모델을 활용해야 했습니다.
+종속변수가 범주형이기 때문에 로지스틱 회귀를 사용하였고,
+이를 통해 카테고리를 예측할 수 있었습니다.
+(레이블링은 팀원들과 함께 진행하였습니다. 그리고 GPT의 도움도 한 스푼..)
+
+성능은 그리 좋지 않았지만, 이를 통해 어떻게 하면
+자연어 처리를 활용해 카테고리를 예측할 수 있는지에 대해 배울 수 있었습니다.
+그리고 현재는 랜덤 포레스트를 활용해 성능을 개선하고 있습니다.
+
+### 중점을 둔 부분
+
+> 메인은 뭐니뭐니해도 카테고라이징이다!
+
+프로젝트의 중점을 둔 부분은 카테고라이징이었습니다.
+카테고라이징이 없다면 다른 서비스와 차별화를 두기 어려웠기 때문입니다.
+그리고 이를 통해 사용자가 원하는 카테고리를 설정하고
+이에 맞는 뉴스레터를 받을 수 있도록 구현하였습니다.
+
+## 라이언의 회고
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'/profile/ryan.png'}
+    width={250}
+    height={250}
+    priority
+  />
+</div>
+
+안녕하세요, 너드플래닛 백엔드 개발을 담당하고 있는 라이언입니다.
+저는 글의 내용을 크게 이슈, 중점을 둔 부분, 어려웠던 점으로 구분하고 회고하겠습니다.
+
+### 이슈
+
+> "구글 스팸 메일 식별 이슈"
+
+구독자에게 발송하는 이메일이 구글 스팸 메일로 분류되는 이슈가 발생했습니다.
+이를 해결하기 위해 구글 스팸 메일 필터 프로세스를 분석을 1차적으로 진행했습니다.
+
+구체적으로는 이메일 인증 토큰을 담고 있는 인증 메일을 구글 메일에서 스팸으로 처리하는 문제가 있었습니다.
+이를 해결하기 위해 구글 스팸 메일 필터 프로세스를 분석하여
+token이라는 키워드를 메일 내부 내용에 포함하면 스팸으로 간주하는 것을 확인할 수 있었습니다.
+그리고 일부 부적절한 내용도 스팸처리 되는 것을 추가로 확인한 후에
+이메일 인증 내용을 변경해 이를 해결했습니다.
+
+### 중점을 둔 부분
+
+> "확장성에 중점을 두고 프로젝트 구조 설계"
+
+본 프로젝트 특성상 초기 기획 기능보다 추후 기획되는 기능이 많을 것이라 예상되어
+프로젝트가 쉽게 확성될 수 있도록 모듈 간 의존성을 최소화했습니다.
+의존성 최소화를 위해 구글의 wire 라이브러리를 적용하여 DI/IoC 패턴을 구현했습니다.
+
+### 어려웠던 점
+
+> "어떻게 하면 유료 서비스(이메일 전송 서비스)를 이용하지 않고 특정 시각에 수많은 사용자에게 동시에 메일을 보낼 수 있을까?"
+
+메일 전송 서버를 분산 서버로 운영하는 것으로 가닥을 잡았습니다.
+각각의 메일 전송 서버가 사용자를 분담하며, 메일 전송 서버 내에서도 스레드를 활용하도록했습니다.
+또한 메일 전송 전까지 메일 전송에 필요한 모든 작업을 완료 후 전송 시각까지 대기하고,
+전송 시각이 되면 일제히 메일을 전송하도록 했습니다.
+
+## 기원의 회고
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+
+}}>
+
+  <Image
+    alt={`Profile`}
+    src={'/profile/kw.png'}
+    width={250}
+    height={250}
+    priority
+  />
+</div>
+
+안녕하세요, 너드플래닛 프론트엔드 개발을 담당하고 있는 기원입니다.
+
+너드플래닛 1차 기능을 개발하면서 마주한 문제와 이를 해결한 과정을 공유하고자 합니다.
+
+## 기술 블로그 글(feed) 데이터를 어떻게 재사용(cache)할 수 있을까?
+
+너드플래닛의 feed는 매일 한 번씩 기술 블로그 글을 수집하여 업데이트합니다.
+따라서 하루 동안 여러 번 feed 정보를 요청하더라도 동일한 데이터가 반환됩니다.
+백엔드에서 캐싱을 구현할 수도 있지만, 동일한 응답을 반복해서 받을 것이 분명하다면
+프론트엔드에서 캐싱을 활용해 백엔드 요청을 줄이고 동일한 정보를 사용자에게 제공하는 것이 효율적입니다.
+
+### 문제 상황
+
+너드플래닛은 Next.js(v14)를 사용하고 있습니다.
+Next.js의 fetch API를 사용하여 데이터 요청을 관리하고 있으며,
+이를 통해 프론트엔드에서의 캐싱을 구현할 수 있습니다.
+그러나 기본적인 fetch 방식에서는 백엔드에서의
+데이터 업데이트 시점을 정확히 반영하지 못하는 문제가 있었습니다.
+
+#### 기본 캐싱 방식
+
+기본적으로 fetch를 수행할 때, 캐시 파일을 먼저 확인합니다.
+캐시된 데이터가 최신(stale하지 않은) 데이터인 경우 이를 반환하고,
+그렇지 않은 경우 실제 요청을 수행한 후 응답을 캐싱하여 이후 요청에 사용합니다.
+아래는 Next.js의 fetch로 요청하고 캐싱된 데이터 예시입니다.
+
+##### 요청
+
+```typescript
+fetch(API_URL);
+```
+
+##### 캐싱된 데이터
+
+```json
+{
+  "kind": "FETCH",
+  "data": {
+    "headers": {
+      "content-length": "66",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 04 Jun 2024 14:24:13 GMT"
+    },
+    "body": "eyJwYWdlIjoxLCJwZXJfcGFnZSI6MTAwLCJ0b3RhbF9wYWdlIjowLCJ0b3RhbF9jb3VudCI6MCwiZGF0YSI6W119",
+    "status": 200,
+    "url": "API_URL"
+  },
+  "revalidate": 31536000
+}
+```
+
+캐싱된 데이터는 동일한 URL로 요청 시 재사용됩니다.
+별도의 revalidate 값을 설정하지 않으면 기본 1년(31536000초)으로 설정됩니다.
+또한 revalidate 값은 요청시점 기준으로 사용됩니다.
+너드플래닛 feed 서버에서 특정 시점에 feed를 업데이트하기 때문에,
+캐시가 stale하는 시점이 서버의 업데이트 시점과 정확히 일치하지 않을 수 있습니다.
+따라서 revalidate 값으로 stale 시점을 관리하는 것은 적절하지 않았습니다.
+
+### 해결 방법
+
+이를 해결하기 위해 revalidate가 아닌 tags를 사용하여
+수동으로 캐시 데이터를 stale 상태로 변경하는 방법을 사용했습니다.
+아래는 Next.js의 fetch tags option을 사용하여 요청하고 캐싱된 데이터 예시입니다.
+
+##### 요청
+
+```typescript
+fetch(API_URL, {
+  next: {
+    tags: ['feeds'],
+  },
+});
+```
+
+##### 캐싱된 데이터
+
+```json
+{
+  "kind": "FETCH",
+  "data": {
+    "headers": {
+      "content-length": "66",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 04 Jun 2024 14:24:13 GMT"
+    },
+    "body": "eyJwYWdlIjoxLCJwZXJfcGFnZSI6MTAwLCJ0b3RhbF9wYWdlIjowLCJ0b3RhbF9jb3VudCI6MCwiZGF0YSI6W119",
+    "status": 200,
+    "url": "API_URL"
+  },
+  "revalidate": 31536000,
+  "tags": ["feeds"]
+}
+```
+
+Next.js에서 제공하는 revalidateTag를 활용하여
+특정 시점에 특정 tag 값을 가진 캐시 데이터를 수동으로 stale 상태로 변경할 수 있었습니다.
+이를 통해 너드플래닛 feed 서버에서 feed를 업데이트한
+이후의 요청들은 모두 새로운 데이터를 가져올 수 있게 되었습니다.
+또한, revalidateTag를 요청받을 수 있는 API를 제공하여 언제든
+외부에서 캐시 데이터 상태를 변경할 수 있도록 구성하였습니다.
+이 API와 GitHub Actions를 활용하여 약속된 feed 업데이트 시점
+이후에 캐시 데이터 상태를 자동으로 변경할 수 있었습니다.
+이렇게 구현함으로써 프론트엔드에서 효과적으로 캐싱을 관리할 수 있었고,
+불필요한 백엔드 요청을 줄여 성능을 최적화할 수 있었습니다.
+
+### 결론
+
+feed 정보를 재사용하기 위해 아래 전략을 사용하였습니다.
+
+1. **캐싱 데이터 상태 수동 변경**: 특정 시점에 특정 tag를 가진 캐싱 데이터를 stale 상태로 변경하기 위해 revalidateTag 사용
+2. **캐싱 데이터 상태 변경 API 제공**: revalidateTag를 요청받을 수 있는 API를 제공하여 외부에서 언제든 캐싱 데이터 상태를 변경할 수 있도록 구성
+3. **캐싱 데이터 상태 변경 자동화**: API를 GitHub Actions와 연동하여, 약속된 feed 업데이트 시점 이후 캐싱 데이터 상태를 자동으로 변경
+
+이 방법을 통해 너드플래닛은 feed 업데이트 이후 새로운 데이터를 사용자에게 제공할 수 있었고, 캐싱 전략을 적절히 사용하여 백엔드 요청을 효율적으로 관리할 수 있었습니다.
+
+# 최종 정리
+
+```bash
+# GPT 요약
+너드플래닛은 기술 블로그 글을 수집하여 뉴스레터로 제공하는 서비스입니다.
+기본적인 기능 외에도 카테고리별 구독 서비스를 제공하고 있으며,
+추가로 숏폼 형태의 기술 블로그 글 리딩 서비스인 `러쉬`를 준비 중입니다.
+```
+
+이번 프로젝트를 통해 저희는 다양한 기술적인 문제를 해결하고,
+새로운 기술을 도입하며 성장할 수 있는 기회를 가졌습니다.
+더 발전된 너드플래닛을 만들기 위해 노력하겠습니다!
+
+읽어주셔서 감사합니다. 🙏

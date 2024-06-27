@@ -37,7 +37,7 @@ const WorldMap = () => {
         ['CHN', { population: 0, visitors: 10, koreanName: '중국' }],
         ['JPN', { population: 0, visitors: 10, koreanName: '일본' }],
         ['IND', { population: 0, visitors: 9, koreanName: '인도' }],
-        ['SAU', { population: 0, visitors: 8, koreanName: '사우디아라비아F' }],
+        ['SAU', { population: 0, visitors: 8, koreanName: '사우디아라비아' }],
         ['TUR', { population: 0, visitors: 5, koreanName: '터키' }],
         ['VNM', { population: 0, visitors: 5, koreanName: '베트남' }],
         ['DEU', { population: 0, visitors: 3, koreanName: '독인' }],
